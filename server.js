@@ -1,10 +1,22 @@
 import express from "express";
 import dotenv from "dotenv";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 dotenv.config();
+
 const app = express();
 app.use(express.json());
-app.use(express.static("public"));
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const publicDir = path.join(__dirname, "public");
+
+app.use(express.static(publicDir));
+
+app.get("/", (req, res) => {
+  res.sendFile(path.join(publicDir, "index.html"));
+});
 
 app.post("/api/discover", async (req, res) => {
   const query = String(req.body?.query || "").trim();
@@ -45,5 +57,9 @@ app.post("/api/discover", async (req, res) => {
   }
 });
 
-const port = process.env.PORT || 3000;
-app.listen(port, () => console.log(`TastePilot running on http://localhost:${port}`));
+if (!process.env.VERCEL) {
+  const port = process.env.PORT || 3000;
+  app.listen(port, () => console.log(`TastePilot running on http://localhost:${port}`));
+}
+
+export default app;
