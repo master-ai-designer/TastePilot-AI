@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TastePilot AI</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,sans-serif;background:#07080d;color:#f7f7fb;min-height:100vh}
+body:before{content:"";position:fixed;inset:-20%;background:radial-gradient(circle at 15% 20%,#5b3df055,transparent 30%),radial-gradient(circle at 85% 15%,#20c9ff30,transparent 28%),radial-gradient(circle at 70% 85%,#b84dff20,transparent 32%);filter:blur(25px);z-index:-1}
+nav{height:76px;display:flex;align-items:center;justify-content:space-between;padding:0 6vw;border-bottom:1px solid #ffffff12;background:#080910aa;backdrop-filter:blur(22px)}
+.logo{display:flex;align-items:center;gap:12px;font-weight:800;font-size:20px}.orb{width:34px;height:34px;border-radius:11px;background:linear-gradient(135deg,#a78bfa,#38bdf8);box-shadow:0 0 30px #7c5cff55}
+.navlinks{display:flex;gap:28px;color:#aeb1c2;font-size:14px}.pill{border:1px solid #ffffff18;background:#ffffff08;padding:10px 15px;border-radius:999px}
+main{max-width:1180px;margin:auto;padding:70px 24px 80px}.hero{text-align:center;max-width:850px;margin:auto}.eyebrow{display:inline-flex;padding:8px 13px;border-radius:999px;background:#ffffff08;border:1px solid #ffffff12;color:#b9b2ff;font-size:13px}
+h1{font-size:clamp(48px,7vw,86px);line-height:.95;margin:24px 0 20px;letter-spacing:-.06em}.gradient{background:linear-gradient(90deg,#fff,#a78bfa 45%,#67e8f9);-webkit-background-clip:text;color:transparent}
+.hero p{color:#a9adbd;font-size:18px;line-height:1.7;margin:0 auto 32px;max-width:700px}.search{max-width:800px;margin:auto;padding:9px;border:1px solid #ffffff18;background:#ffffff08;border-radius:22px;display:flex;gap:10px;box-shadow:0 25px 70px #0008}
+input{flex:1;background:transparent;border:0;outline:0;color:white;font-size:16px;padding:16px 18px}.go{border:0;border-radius:15px;padding:0 23px;background:linear-gradient(135deg,#8b5cf6,#38bdf8);color:white;font-weight:700;cursor:pointer}
+.chips{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:18px}.chip{padding:9px 13px;border-radius:999px;border:1px solid #ffffff12;background:#ffffff06;color:#9da1b4;font-size:13px;cursor:pointer}
+.section{margin-top:85px}.sectionhead{display:flex;justify-content:space-between;align-items:end;margin-bottom:20px}.section h2{font-size:26px;margin:0}.muted{color:#8f93a5;font-size:14px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.card{border:1px solid #ffffff12;background:linear-gradient(145deg,#ffffff0d,#ffffff04);border-radius:24px;padding:22px;min-height:190px;backdrop-filter:blur(18px);transition:.25s}.card:hover{transform:translateY(-4px);border-color:#ffffff28}.icon{font-size:30px}.tag{display:inline-block;margin-top:18px;font-size:11px;color:#aaa1ff;text-transform:uppercase;letter-spacing:.12em}.card h3{margin:9px 0 8px;font-size:20px}.card p{margin:0;color:#9296a8;line-height:1.55;font-size:14px}
+.status{margin:16px auto 0;max-width:800px;color:#9da1b4;font-size:13px;min-height:20px}
+.profile{display:grid;grid-template-columns:1fr 1fr;gap:18px}.panel{border:1px solid #ffffff12;background:#ffffff07;border-radius:24px;padding:25px}.bars{display:grid;gap:14px;margin-top:20px}.barrow{display:grid;grid-template-columns:90px 1fr 40px;align-items:center;gap:10px;color:#aeb1c0;font-size:13px}.bar{height:8px;border-radius:99px;background:#ffffff0d;overflow:hidden}.fill{height:100%;border-radius:99px;background:linear-gradient(90deg,#8b5cf6,#38bdf8)}
+footer{text-align:center;color:#696d7e;padding:30px;border-top:1px solid #ffffff0c;font-size:13px}
+@media(max-width:800px){.navlinks{display:none}.grid,.profile{grid-template-columns:1fr}.search{flex-direction:column}.go{height:52px}main{padding-top:45px}}
+</style>
+</head>
+<body>
+<nav><div class="logo"><span class="orb"></span>TastePilot AI</div><div class="navlinks"><span>Discover</span><span>Your Taste</span><span>About</span></div><div class="pill">AI Taste Agent ✦</div></nav>
+<main>
+<section class="hero">
+<div class="eyebrow">✦ Cultural intelligence, made personal</div>
+<h1>Discover what feels <span class="gradient">made for you.</span></h1>
+<p>Describe what you love, what you're feeling, or what you want to discover. TastePilot turns that signal into culturally grounded recommendations.</p>
+<div class="search"><input id="q" placeholder="Try “a cozy movie night with dreamy music…”"><button class="go" onclick="discover()">Discover →</button></div>
+<div class="chips"><span class="chip" onclick="fill('a romantic anime with a happy ending')">Romantic anime</span><span class="chip" onclick="fill('a calm late-night playlist')">Late-night music</span><span class="chip" onclick="fill('a stylish place for dinner')">Dinner places</span><span class="chip" onclick="fill('a movie for a rainy evening')">Rainy evening</span></div>
+<div class="status" id="status"></div>
+</section>
+<section class="section">
+<div class="sectionhead"><div><h2>Made for your taste</h2><div class="muted">TastePilot connects intent, taste signals and cultural context.</div></div><div class="muted">Qloo-powered</div></div>
+<div class="grid" id="cards">
+<div class="card"><div class="icon">🎬</div><span class="tag">Cinema</span><h3>Soft, emotional stories</h3><p>Find films and series that fit the mood and taste behind your request.</p></div>
+<div class="card"><div class="icon">🎧</div><span class="tag">Music</span><h3>Dreamy night atmosphere</h3><p>Discover music that complements the same emotional and cultural signal.</p></div>
+<div class="card"><div class="icon">🍜</div><span class="tag">Experiences</span><h3>Connected discoveries</h3><p>Move beyond one category and discover related cultural experiences.</p></div>
+</div>
+</section>
+<section class="section profile">
+<div class="panel"><h2>Your taste signal</h2><div class="muted" style="margin-top:7px">Example profile used by the prototype</div><div class="bars">
+<div class="barrow"><span>Romance</span><div class="bar"><div class="fill" style="width:88%"></div></div><b>88</b></div>
+<div class="barrow"><span>Cozy</span><div class="bar"><div class="fill" style="width:81%"></div></div><b>81</b></div>
+<div class="barrow"><span>Anime</span><div class="bar"><div class="fill" style="width:76%"></div></div><b>76</b></div>
+<div class="barrow"><span>Discovery</span><div class="bar"><div class="fill" style="width:69%"></div></div><b>69</b></div>
+</div></div>
+<div class="panel"><h2>Agent flow</h2><p class="muted" style="line-height:1.7;margin-top:15px">Intent → taste signals → Qloo cultural intelligence → connected recommendations → explanation.</p><div class="chips" style="justify-content:flex-start"><span class="chip">Intent</span><span class="chip">Taste signals</span><span class="chip">Qloo</span><span class="chip">Recommendations</span></div></div>
+</section>
+</main><footer>TastePilot AI · Built for the Qloo Agentic Hackathon</footer>
+<script>
+function fill(t){document.getElementById('q').value=t}
+async function discover(){
+ const q=document.getElementById('q').value.trim(); if(!q){document.getElementById('q').focus();return}
+ const status=document.getElementById('status'); status.textContent='✦ TastePilot is thinking…';
+ try{
+   const r=await fetch('/api/discover',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query:q})});
+   const data=await r.json();
+   status.textContent=data.demo?'Demo mode — add QLOO_API_KEY on the server for live Qloo results.':'✦ Live Qloo response received.';
+   document.getElementById('cards').innerHTML=
+   '<div class="card"><div class="icon">✦</div><span class="tag">Your request</span><h3>'+escapeHtml(q)+'</h3><p>TastePilot converted your intent into a recommendation request.</p></div>'+
+   '<div class="card"><div class="icon">🎯</div><span class="tag">Cultural grounding</span><h3>'+ (data.demo?'Ready for Qloo':'Qloo connected') +'</h3><p>'+ (data.demo?'The backend is ready; the API key activates live cultural data.':'Qloo returned data for this request.') +'</p></div>'+
+   '<div class="card"><div class="icon">🔗</div><span class="tag">Agentic flow</span><h3>Beyond one category</h3><p>The next iteration will connect movies, music, dining and places from one taste signal.</p></div>';
+ }catch(e){status.textContent='Could not reach the backend. Run npm start and try again.'}
+}
+function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}
+</script>
+</body></html>
