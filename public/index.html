@@ -17,7 +17,7 @@ input{flex:1;background:transparent;border:0;outline:0;color:white;font-size:16p
 .section{margin-top:85px}.sectionhead{display:flex;justify-content:space-between;align-items:end;margin-bottom:20px}.section h2{font-size:26px;margin:0}.muted{color:#8f93a5;font-size:14px}
 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.card{border:1px solid #ffffff12;background:linear-gradient(145deg,#ffffff0d,#ffffff04);border-radius:24px;padding:22px;min-height:190px;backdrop-filter:blur(18px);transition:.25s}.card:hover{transform:translateY(-4px);border-color:#ffffff28}.icon{font-size:30px}.tag{display:inline-block;margin-top:18px;font-size:11px;color:#aaa1ff;text-transform:uppercase;letter-spacing:.12em}.card h3{margin:9px 0 8px;font-size:20px}.card p{margin:0;color:#9296a8;line-height:1.55;font-size:14px}
 .status{margin:16px auto 0;max-width:800px;color:#9da1b4;font-size:13px;min-height:20px}
-.chat{margin-top:85px;border:1px solid #ffffff12;background:#ffffff07;border-radius:28px;padding:24px;box-shadow:0 25px 70px #0006}.chathead{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}.chathead h2{margin:0}.chatlog{height:300px;overflow:auto;display:grid;gap:12px;padding:8px}.msg{max-width:78%;padding:13px 16px;border-radius:18px;line-height:1.5;font-size:14px}.bot{justify-self:start;background:#ffffff0b;border:1px solid #ffffff10;color:#dfe1eb}.user{justify-self:end;background:linear-gradient(135deg,#6d4de8,#238fb8);color:#fff}.chatinput{display:flex;gap:10px;margin-top:14px}.chatinput input{border:1px solid #ffffff12;background:#ffffff06;border-radius:16px}.send{border:0;border-radius:15px;padding:0 20px;background:linear-gradient(135deg,#8b5cf6,#38bdf8);color:#fff;font-weight:700;cursor:pointer}
+.chat{margin-top:85px;border:1px solid #ffffff12;background:#ffffff07;border-radius:28px;padding:24px;box-shadow:0 25px 70px #0006}.chathead{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}.chathead h2{margin:0}.chatlog{height:300px;overflow:auto;display:grid;gap:12px;padding:8px}.msg{max-width:82%;padding:14px 17px;border-radius:18px;line-height:1.65;font-size:15px;word-break:break-word}.msg.bot strong{font-weight:750;color:#fff}.msg.bot em{opacity:.92}.msg.bot h3{font-size:17px;margin:12px 0 7px}.msg.bot ul,.msg.bot ol{margin:8px 0 8px 22px;padding:0}.msg.bot li{margin:4px 0}.msg.bot p{margin:0 0 9px}.msg.bot p:last-child{margin-bottom:0}.msg.bot code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:#0006;border:1px solid #ffffff12;border-radius:6px;padding:2px 6px;font-size:13px}.msg.bot pre{margin:10px 0;padding:12px 14px;overflow:auto;background:#05060a;border:1px solid #ffffff12;border-radius:12px}.msg.bot pre code{background:transparent;border:0;padding:0}.msg.bot a{color:#8bdcff;text-decoration:underline}.bot{justify-self:start;background:#ffffff0b;border:1px solid #ffffff10;color:#dfe1eb}.user{justify-self:end;background:linear-gradient(135deg,#6d4de8,#238fb8);color:#fff}.chatinput{display:flex;gap:10px;margin-top:14px}.chatinput input{border:1px solid #ffffff12;background:#ffffff06;border-radius:16px}.send{border:0;border-radius:15px;padding:0 20px;background:linear-gradient(135deg,#8b5cf6,#38bdf8);color:#fff;font-weight:700;cursor:pointer}
 .profile{display:grid;grid-template-columns:1fr 1fr;gap:18px}.panel{border:1px solid #ffffff12;background:#ffffff07;border-radius:24px;padding:25px}.bars{display:grid;gap:14px;margin-top:20px}.barrow{display:grid;grid-template-columns:90px 1fr 40px;align-items:center;gap:10px;color:#aeb1c0;font-size:13px}.bar{height:8px;border-radius:99px;background:#ffffff0d;overflow:hidden}.fill{height:100%;border-radius:99px;background:linear-gradient(90deg,#8b5cf6,#38bdf8)}
 footer{text-align:center;color:#696d7e;padding:30px;border-top:1px solid #ffffff0c;font-size:13px}
 @media(max-width:800px){.navlinks{display:none}.grid,.profile{grid-template-columns:1fr}.search{flex-direction:column}.go{height:52px}main{padding-top:45px}}
@@ -108,8 +108,27 @@ function addChat(text,who,typing=''){
  if(who==='user') h.push({role:'user',text});
  else if(who==='bot' && !typing && text!=='TastePilot is thinking…') h.push({role:'model',text});
  if(h.length>12) h.splice(0,h.length-12);
- const log=document.getElementById('chatlog'); const div=document.createElement('div'); div.className='msg '+who; if(typing)div.dataset.typing='true'; div.innerHTML=escapeHtml(text); log.appendChild(div); log.scrollTop=log.scrollHeight;
+ const log=document.getElementById('chatlog'); const div=document.createElement('div'); div.className='msg '+who; if(typing)div.dataset.typing='true'; div.innerHTML=who==='bot'&&!typing?renderMarkdown(text):escapeHtml(text); log.appendChild(div); log.scrollTop=log.scrollHeight;
 }
 function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}
+function renderMarkdown(text){
+ let s=escapeHtml(String(text)).replace(/\r\n/g,'\n');
+ const blocks=[];
+ s=s.replace(/\x60\x60\x60[a-zA-Z0-9_-]*\n?([\s\S]*?)\x60\x60\x60/g,function(m,code){var i=blocks.length;blocks.push('<pre><code>'+code.trim()+'</code></pre>');return '__CODEBLOCK_'+i+'__';});
+ s=s.replace(/^###\s+(.+)$/gm,'<h3>$1</h3>').replace(/^##\s+(.+)$/gm,'<h3>$1</h3>').replace(/^#\s+(.+)$/gm,'<h3>$1</h3>');
+ s=s.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/__(.+?)__/g,'<strong>$1</strong>');
+ s=s.replace(/(?<!\*)\*([^*\n]+)\*(?!\*)/g,'<em>$1</em>').replace(/(?<!_)_([^_\n]+)_(?!_)/g,'<em>$1</em>');
+ s=s.replace(/\x60([^\x60\n]+)\x60/g,'<code>$1</code>');
+ s=s.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g,'<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+ var lines=s.split('\n'),out=[],list=null;
+ lines.forEach(function(line){
+  if(/^\s*[-*]\s+/.test(line)){if(list!=='ul'){if(list)out.push('</'+list+'>');out.push('<ul>');list='ul';}out.push('<li>'+line.replace(/^\s*[-*]\s+/,'')+'</li>');return;}
+  if(/^\s*\d+\.\s+/.test(line)){if(list!=='ol'){if(list)out.push('</'+list+'>');out.push('<ol>');list='ol';}out.push('<li>'+line.replace(/^\s*\d+\.\s+/,'')+'</li>');return;}
+  if(list){out.push('</'+list+'>');list=null;} if(!line.trim())return;
+  if(/^<h3>/.test(line)||/^__CODEBLOCK_\d+__$/.test(line))out.push(line);else out.push('<p>'+line+'</p>');
+ });
+ if(list)out.push('</'+list+'>');
+ return out.join('').replace(/__CODEBLOCK_(\d+)__/g,function(_,i){return blocks[Number(i)]});
+}
 </script>
 </body></html>
