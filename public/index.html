@@ -98,12 +98,16 @@ async function sendChat(){
  addChat(q,'user'); input.value='';
  addChat('TastePilot is thinking…','bot','typing');
  try{
-  const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:q})});
+  const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:q,history:window.tastePilotChatHistory||[]})});
   const data=await r.json(); document.querySelector('[data-typing="true"]')?.remove();
   addChat(data.reply||'I could not understand that yet. Try describing a movie, anime, music, food, or place you want.','bot');
  }catch(e){document.querySelector('[data-typing="true"]')?.remove();addChat('I could not reach the agent right now. Please try again.','bot')}
 }
 function addChat(text,who,typing=''){
+ const h=window.tastePilotChatHistory||(window.tastePilotChatHistory=[]);
+ if(who==='user') h.push({role:'user',text});
+ else if(who==='bot' && !typing && text!=='TastePilot is thinking…') h.push({role:'model',text});
+ if(h.length>12) h.splice(0,h.length-12);
  const log=document.getElementById('chatlog'); const div=document.createElement('div'); div.className='msg '+who; if(typing)div.dataset.typing='true'; div.innerHTML=escapeHtml(text); log.appendChild(div); log.scrollTop=log.scrollHeight;
 }
 function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}
