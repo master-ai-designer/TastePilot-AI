@@ -166,6 +166,80 @@ nav{background:rgba(8,9,14,.25)}
 @media(prefers-reduced-motion:reduce){
  .aurora-field .blob,.aura-orbit:before,.aura-orbit:after{animation:none}
 }
+</style>
+<style id="tastepilot-button-liquid-glass">
+/* 3D Liquid Glass controls — buttons only */
+.go,.send{
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.28);
+  background:
+    linear-gradient(145deg,rgba(255,255,255,.30),rgba(255,255,255,.08) 42%,rgba(125,92,255,.34)),
+    linear-gradient(135deg,rgba(255,255,255,.12),rgba(255,255,255,.02));
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.48),
+    inset 0 -1px 0 rgba(0,0,0,.20),
+    inset 1px 0 0 rgba(255,255,255,.14),
+    0 2px 0 rgba(255,255,255,.08),
+    0 10px 24px rgba(0,0,0,.28),
+    0 0 28px rgba(139,92,246,.16);
+  backdrop-filter:blur(18px) saturate(150%);
+  -webkit-backdrop-filter:blur(18px) saturate(150%);
+  transform:translateY(0);
+  transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease;
+}
+.go:before,.send:before{
+  content:"";
+  position:absolute;
+  left:8%;
+  right:8%;
+  top:5px;
+  height:42%;
+  border-radius:999px;
+  background:linear-gradient(180deg,rgba(255,255,255,.32),rgba(255,255,255,0));
+  filter:blur(5px);
+  opacity:.72;
+  pointer-events:none;
+}
+.go:after,.send:after{
+  content:"";
+  position:absolute;
+  width:55%;
+  height:140%;
+  left:-28%;
+  top:-45%;
+  transform:rotate(18deg);
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.20),transparent);
+  filter:blur(7px);
+  pointer-events:none;
+}
+.go:hover,.send:hover{
+  transform:translateY(-2px);
+  border-color:rgba(255,255,255,.40);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.55),
+    inset 0 -1px 0 rgba(0,0,0,.18),
+    0 6px 0 rgba(255,255,255,.05),
+    0 16px 32px rgba(0,0,0,.32),
+    0 0 36px rgba(139,92,246,.24);
+}
+.go:active,.send:active{
+  transform:translateY(1px) scale(.985);
+  box-shadow:
+    inset 0 2px 5px rgba(0,0,0,.20),
+    inset 0 1px rgba(255,255,255,.25),
+    0 4px 12px rgba(0,0,0,.25);
+}
+@media(max-width:800px){
+  .go,.send{
+    backdrop-filter:blur(12px) saturate(135%);
+    -webkit-backdrop-filter:blur(12px) saturate(135%);
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  .go,.send{transition:none}
+}
 </style></head>
 <body><div class="aurora-field" aria-hidden="true"><span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span><span class="wave"></span><span class="wave w2"></span><i class="spark s1"></i><i class="spark s2"></i><i class="spark s3"></i><i class="spark s4"></i></div><div class="aura-orbit" aria-hidden="true"><div class="aura-core"></div></div>
 <nav><div class="logo"><span class="brandmark" aria-label="TastePilot AI logo"><svg viewBox="0 0 48 48" role="img"><defs><linearGradient id="tpG" x1="8" y1="6" x2="40" y2="42"><stop stop-color="#c4b5fd"/><stop offset=".5" stop-color="#67e8f9"/><stop offset="1" stop-color="#a78bfa"/></linearGradient></defs><rect x="3" y="3" width="42" height="42" rx="14" fill="#11131c" stroke="#ffffff18"/><path d="M14 24c0-5.8 4.6-10 10-10s10 4.2 10 10-4.6 10-10 10" fill="none" stroke="url(#tpG)" stroke-width="3.4" stroke-linecap="round"/><circle cx="24" cy="24" r="4.2" fill="url(#tpG)"/><circle cx="35.5" cy="14.5" r="2.2" fill="#67e8f9"/><circle cx="12.5" cy="34" r="1.8" fill="#a78bfa"/></svg></span><span>TastePilot <b>AI</b></span></div><div class="navlinks"><span>Discover</span><span>Your Taste</span><span>About</span></div><div class="pill">AI Taste Agent ✦</div></nav>
