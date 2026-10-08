@@ -33,7 +33,7 @@ function cleanHistory(history){
 async function geminiReply(message,history){
  const key=process.env.GEMINI_API_KEY;
  if(!key) return null;
- const model=process.env.GEMINI_MODEL||"gemini-3.6-flash";
+ const model=process.env.GEMINI_MODEL||"gemini-flash-latest";
  const contents=[...cleanHistory(history),{role:"user",parts:[{text:message}]}];
  const response=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(key)}`,{
   method:"POST",
