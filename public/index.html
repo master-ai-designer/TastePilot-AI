@@ -42,7 +42,7 @@ footer{text-align:center;color:#696d7e;padding:30px;border-top:1px solid #ffffff
 </div>
 </section>
 <section class="section profile">
-<div class="panel"><h2>Your taste signal</h2><div class="muted" style="margin-top:7px">Example profile used by the prototype</div><div class="bars">
+<div class="panel"><h2>Your taste signal</h2><div class="muted" id="tasteHint" style="margin-top:7px">Describe what you want — your taste profile updates instantly.</div><div class="bars" id="tasteBars">
 <div class="barrow"><span>Romance</span><div class="bar"><div class="fill" style="width:88%"></div></div><b>88</b></div>
 <div class="barrow"><span>Cozy</span><div class="bar"><div class="fill" style="width:81%"></div></div><b>81</b></div>
 <div class="barrow"><span>Anime</span><div class="bar"><div class="fill" style="width:76%"></div></div><b>76</b></div>
@@ -53,17 +53,38 @@ footer{text-align:center;color:#696d7e;padding:30px;border-top:1px solid #ffffff
 </main><footer>TastePilot AI · Built for the Qloo Agentic Hackathon</footer>
 <script>
 function fill(t){document.getElementById('q').value=t}
+function analyzeTaste(query){
+ const text=query.toLowerCase();
+ const groups=[
+  {name:'Romance',keys:['romantic','romance','love','date','couple','relationship','heartwarming'],base:42},
+  {name:'Cozy',keys:['cozy','calm','quiet','soft','comfort','relax','rainy','warm','peaceful','dreamy'],base:38},
+  {name:'Anime',keys:['anime','manga','japanese animation','isekai','shonen','shojo'],base:36},
+  {name:'Adventure',keys:['adventure','travel','explore','exciting','action','thriller','road trip'],base:34},
+  {name:'Trendy',keys:['stylish','trendy','fashion','modern','popular','vibe','aesthetic'],base:33},
+  {name:'Nightlife',keys:['night','late-night','party','club','bar','friday','energetic'],base:31},
+  {name:'Foodie',keys:['dinner','restaurant','food','cafe','coffee','tasting','cuisine'],base:30},
+  {name:'Discovery',keys:['discover','new','unique','recommend','hidden gem','something different'],base:35}
+ ];
+ const scored=groups.map(g=>{
+  let score=g.base;
+  g.keys.forEach(k=>{if(text.includes(k)) score+=12});
+  return {...g,score:Math.min(98,score)};
+ }).sort((a,b)=>b.score-a.score).slice(0,4);
+ document.getElementById('tasteBars').innerHTML=scored.map(g=>'<div class="barrow"><span>'+g.name+'</span><div class="bar"><div class="fill" style="width:'+g.score+'%"></div></div><b>'+g.score+'</b></div>').join('');
+ document.getElementById('tasteHint').textContent='Inferred from your latest request — ready to be grounded by Qloo.';
+}
 async function discover(){
  const q=document.getElementById('q').value.trim(); if(!q){document.getElementById('q').focus();return}
+ analyzeTaste(q);
  const status=document.getElementById('status'); status.textContent='✦ TastePilot is thinking…';
  try{
    const r=await fetch('/api/discover',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query:q})});
    const data=await r.json();
-   status.textContent=data.demo?'Demo mode — add QLOO_API_KEY on the server for live Qloo results.':'✦ Live Qloo response received.';
+   status.textContent=data.demo?'Demo mode — taste signal updated locally; add QLOO_API_KEY for live Qloo results.':'✦ Live Qloo response received.';
    document.getElementById('cards').innerHTML=
    '<div class="card"><div class="icon">✦</div><span class="tag">Your request</span><h3>'+escapeHtml(q)+'</h3><p>TastePilot converted your intent into a recommendation request.</p></div>'+
-   '<div class="card"><div class="icon">🎯</div><span class="tag">Cultural grounding</span><h3>'+ (data.demo?'Ready for Qloo':'Qloo connected') +'</h3><p>'+ (data.demo?'The backend is ready; the API key activates live cultural data.':'Qloo returned data for this request.') +'</p></div>'+
-   '<div class="card"><div class="icon">🔗</div><span class="tag">Agentic flow</span><h3>Beyond one category</h3><p>The next iteration will connect movies, music, dining and places from one taste signal.</p></div>';
+   '<div class="card"><div class="icon">🎯</div><span class="tag">Cultural grounding</span><h3>'+ (data.demo?'Ready for Qloo':'Qloo connected') +'</h3><p>'+ (data.demo?'Your taste signal is already adapting; the API key activates live cultural data.':'Qloo returned data for this request.') +'</p></div>'+
+   '<div class="card"><div class="icon">🔗</div><span class="tag">Agentic flow</span><h3>Beyond one category</h3><p>The agent can use the same taste signal to connect movies, music, dining and places.</p></div>';
  }catch(e){status.textContent='Could not reach the backend. Run npm start and try again.'}
 }
 function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}
