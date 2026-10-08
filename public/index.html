@@ -22,9 +22,33 @@ input{flex:1;background:transparent;border:0;outline:0;color:white;font-size:16p
 footer{text-align:center;color:#696d7e;padding:30px;border-top:1px solid #ffffff0c;font-size:13px}
 @media(max-width:800px){.navlinks{display:none}.grid,.profile{grid-template-columns:1fr}.search{flex-direction:column}.go{height:52px}main{padding-top:45px}}
 </style>
-</head>
+<style>
+:root{--bg:#05060a;--panel:rgba(15,17,26,.72);--line:rgba(255,255,255,.09);--text:#f7f8ff;--muted:#9298ad;--violet:#9b7cff;--cyan:#58e1ff}
+body{background:#05060a;letter-spacing:-.01em}
+body:before{background:radial-gradient(circle at 50% -5%,#7657ff20,transparent 32%),radial-gradient(circle at 5% 35%,#3ccfff10,transparent 28%),radial-gradient(circle at 95% 70%,#9b5cff0c,transparent 30%);filter:blur(34px)}
+nav{height:82px;padding:0 5vw;background:rgba(5,6,10,.68);border-bottom:1px solid var(--line);box-shadow:0 12px 50px #0005}
+.logo{gap:11px;font-size:19px;letter-spacing:-.04em}.logo b{font-weight:500;color:#9da3b8}.brandmark{width:38px;height:38px;display:grid;place-items:center;border-radius:13px;background:linear-gradient(145deg,#151824,#0c0e15);box-shadow:0 0 35px #8b5cf625,inset 0 1px #ffffff16}.brandmark svg{width:38px;height:38px}
+.navlinks{gap:30px;color:#858b9e}.navlinks span{transition:.2s}.navlinks span:hover{color:#fff}
+.pill{background:rgba(255,255,255,.045);border-color:rgba(255,255,255,.10);box-shadow:inset 0 1px #ffffff0c}
+main{padding-top:92px}
+.hero{max-width:930px}.eyebrow{background:#ffffff05;border-color:#ffffff10;box-shadow:inset 0 1px #ffffff0a;color:#b7abff}
+h1{font-size:clamp(55px,8vw,98px);line-height:.91;letter-spacing:-.075em;margin:25px 0}.gradient{background:linear-gradient(105deg,#fff 8%,#c4b5fd 43%,#67e8f9 78%,#fff);-webkit-background-clip:text}
+.hero p{color:#9ca2b5;font-size:17px;max-width:720px}
+.search{padding:8px;background:rgba(12,14,21,.76);border-color:#ffffff12;border-radius:20px;box-shadow:0 30px 100px #0008,0 0 0 1px #ffffff03,inset 0 1px #ffffff08}
+.search input{font-size:16px}.go{height:54px;border-radius:14px;box-shadow:0 10px 30px #6d4de83d}
+.chip{background:#ffffff04;border-color:#ffffff0c;transition:.2s}.chip:hover{transform:translateY(-2px);background:#ffffff09;color:#fff;border-color:#ffffff18}
+.section{margin-top:100px}.sectionhead{margin-bottom:24px}.section h2{letter-spacing:-.035em}
+.grid{gap:18px}.card,.panel,.chat{background:linear-gradient(145deg,rgba(20,22,33,.72),rgba(10,12,18,.58));border-color:var(--line);box-shadow:0 20px 70px #0005,inset 0 1px #ffffff08}
+.card{min-height:210px;padding:25px;position:relative;overflow:hidden}.card:after{content:"";position:absolute;width:140px;height:140px;right:-70px;top:-70px;background:#8b5cf625;filter:blur(35px);border-radius:50%}.card:hover{transform:translateY(-5px);box-shadow:0 28px 80px #0007,inset 0 1px #ffffff0c}
+.icon{font-size:27px}.tag{color:#a99bff}
+.profile{gap:18px}.panel{padding:27px}.bar{background:#ffffff09}.fill{background:linear-gradient(90deg,#8b5cf6,#5ee7ff);box-shadow:0 0 14px #8b5cf644}
+.chat{padding:27px;margin-top:100px}.chatlog{height:340px;padding:12px}.msg{border-radius:17px}.bot{background:#ffffff06;border-color:#ffffff0b}.user{box-shadow:0 10px 35px #4c46a044}
+.chatinput input{background:#ffffff04;border-color:#ffffff10}.send{height:50px}.status{color:#858ca2}
+footer{border-color:#ffffff0a;color:#62697c}
+@media(max-width:800px){main{padding-top:52px}.hero p{font-size:16px}.chat,.panel{padding:20px}.navlinks{display:none}}
+</style></head>
 <body>
-<nav><div class="logo"><span class="orb"></span>TastePilot AI</div><div class="navlinks"><span>Discover</span><span>Your Taste</span><span>About</span></div><div class="pill">AI Taste Agent ✦</div></nav>
+<nav><div class="logo"><span class="brandmark" aria-label="TastePilot AI logo"><svg viewBox="0 0 48 48" role="img"><defs><linearGradient id="tpG" x1="8" y1="6" x2="40" y2="42"><stop stop-color="#c4b5fd"/><stop offset=".5" stop-color="#67e8f9"/><stop offset="1" stop-color="#a78bfa"/></linearGradient></defs><rect x="3" y="3" width="42" height="42" rx="14" fill="#11131c" stroke="#ffffff18"/><path d="M14 24c0-5.8 4.6-10 10-10s10 4.2 10 10-4.6 10-10 10" fill="none" stroke="url(#tpG)" stroke-width="3.4" stroke-linecap="round"/><circle cx="24" cy="24" r="4.2" fill="url(#tpG)"/><circle cx="35.5" cy="14.5" r="2.2" fill="#67e8f9"/><circle cx="12.5" cy="34" r="1.8" fill="#a78bfa"/></svg></span><span>TastePilot <b>AI</b></span></div><div class="navlinks"><span>Discover</span><span>Your Taste</span><span>About</span></div><div class="pill">AI Taste Agent ✦</div></nav>
 <main>
 <section class="hero">
 <div class="eyebrow">✦ Cultural intelligence, made personal</div>
