@@ -131,6 +131,41 @@ nav{background:rgba(8,9,14,.38)}
  .aurora-field .blob{filter:blur(24px);opacity:.16}
  nav,.search,.card,.panel,.chat{backdrop-filter:blur(14px) saturate(120%);-webkit-backdrop-filter:blur(14px) saturate(120%)}
 }
+</style><style id="tastepilot-refined-glass">
+/* Refined iPhone-inspired glass: subtle motion, higher transparency, low GPU cost */
+body:before{filter:blur(22px);opacity:.62}
+.aurora-field .blob{filter:blur(38px);opacity:.16;will-change:transform}
+.aurora-field .b1{animation:lightFloat1 18s ease-in-out infinite alternate}
+.aurora-field .b2{animation:lightFloat2 22s ease-in-out infinite alternate}
+.aurora-field .b3{animation:lightFloat3 25s ease-in-out infinite alternate}
+@keyframes lightFloat1{0%{transform:translate3d(0,0,0) scale(.96)}100%{transform:translate3d(5vw,3vh,0) scale(1.04)}}
+@keyframes lightFloat2{0%{transform:translate3d(0,0,0) scale(.98)}100%{transform:translate3d(-4vw,4vh,0) scale(1.05)}}
+@keyframes lightFloat3{0%{transform:translate3d(0,0,0) scale(.97)}100%{transform:translate3d(3vw,-3vh,0) scale(1.04)}}
+.aura-orbit{opacity:.28}
+.aura-orbit:before,.aura-orbit:after{animation:softOrbit 42s linear infinite}
+.aura-orbit:after{animation-duration:55s}
+@keyframes softOrbit{to{transform:rotate(360deg)}}
+.aura-core{opacity:.32}
+nav,.search,.card,.panel,.chat,.pill,.chip,.chatinput input{
+ background:linear-gradient(135deg,rgba(255,255,255,.035),rgba(255,255,255,.008));
+ border-color:rgba(255,255,255,.085);
+ box-shadow:inset 0 1px rgba(255,255,255,.12),inset 0 -1px rgba(0,0,0,.10),0 12px 38px rgba(0,0,0,.18);
+ backdrop-filter:blur(16px) saturate(118%);
+ -webkit-backdrop-filter:blur(16px) saturate(118%);
+}
+nav{background:rgba(8,9,14,.25)}
+.search{background:linear-gradient(135deg,rgba(255,255,255,.042),rgba(255,255,255,.008))}
+.card,.panel,.chat{background:linear-gradient(135deg,rgba(255,255,255,.035),rgba(255,255,255,.008))}
+.search:before,.card:before,.panel:before,.chat:before{background:linear-gradient(115deg,rgba(255,255,255,.075),transparent 28%,transparent 74%,rgba(255,255,255,.018));opacity:.48}
+.card:after{opacity:.3;filter:blur(24px)}
+@media(max-width:800px){
+ .aurora-field .blob{filter:blur(26px);opacity:.12}
+ .aurora-field .b1,.aurora-field .b2,.aurora-field .b3{animation-duration:28s}
+ nav,.search,.card,.panel,.chat{backdrop-filter:blur(12px) saturate(115%);-webkit-backdrop-filter:blur(12px) saturate(115%)}
+}
+@media(prefers-reduced-motion:reduce){
+ .aurora-field .blob,.aura-orbit:before,.aura-orbit:after{animation:none}
+}
 </style></head>
 <body><div class="aurora-field" aria-hidden="true"><span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span><span class="wave"></span><span class="wave w2"></span><i class="spark s1"></i><i class="spark s2"></i><i class="spark s3"></i><i class="spark s4"></i></div><div class="aura-orbit" aria-hidden="true"><div class="aura-core"></div></div>
 <nav><div class="logo"><span class="brandmark" aria-label="TastePilot AI logo"><svg viewBox="0 0 48 48" role="img"><defs><linearGradient id="tpG" x1="8" y1="6" x2="40" y2="42"><stop stop-color="#c4b5fd"/><stop offset=".5" stop-color="#67e8f9"/><stop offset="1" stop-color="#a78bfa"/></linearGradient></defs><rect x="3" y="3" width="42" height="42" rx="14" fill="#11131c" stroke="#ffffff18"/><path d="M14 24c0-5.8 4.6-10 10-10s10 4.2 10 10-4.6 10-10 10" fill="none" stroke="url(#tpG)" stroke-width="3.4" stroke-linecap="round"/><circle cx="24" cy="24" r="4.2" fill="url(#tpG)"/><circle cx="35.5" cy="14.5" r="2.2" fill="#67e8f9"/><circle cx="12.5" cy="34" r="1.8" fill="#a78bfa"/></svg></span><span>TastePilot <b>AI</b></span></div><div class="navlinks"><span>Discover</span><span>Your Taste</span><span>About</span></div><div class="pill">AI Taste Agent ✦</div></nav>
