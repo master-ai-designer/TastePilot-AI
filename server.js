@@ -26,52 +26,103 @@ function chatReply(message){
 
 function cleanHistory(history){
  if(!Array.isArray(history)) return [];
- return history.slice(-12).filter(m=>m && (m.role==="user"||m.role==="model") && typeof m.text==="string")
-   .map(m=>({role:m.role,parts:[{text:m.text.slice(0,3000)}]}));
+ return history.slice(-6).filter(m=>m && (m.role==="user"||m.role==="model") && typeof m.text==="string")
+   .map(m=>({role:m.role,parts:[{text:m.text.slice(0,1800)}]}));
+}
+
+const requestLog=new Map();
+function allowChatRequest(req){
+ const ip=String(req.headers["x-forwarded-for"]||req.socket?.remoteAddress||"unknown").split(",")[0].trim();
+ const now=Date.now();
+ const recent=(requestLog.get(ip)||[]).filter(t=>now-t<60000);
+ if(recent.length>=8)return false;
+ recent.push(now); requestLog.set(ip,recent);
+ return true;
 }
 
 async function geminiReply(message,history){
  const key=process.env.GEMINI_API_KEY;
  if(!key) return null;
- const model=process.env.GEMINI_MODEL||"gemini-3.6-flash";
- const systemText="You are TastePilot AI, a friendly multilingual cultural-discovery agent. Understand Uzbek, English and Russian and reply in the same language as the user. Have natural conversation, ask useful follow-up questions when needed, remember recent chat context, and help users discover movies, music, restaurants, travel and experiences. Turn vague preferences into clear taste signals. Be honest: do not claim Qloo data was used unless the server actually provides Qloo results. Do not invent watch links, prices, availability, or facts. Keep replies useful but complete. When the user asks for a numbered list or a specific number of recommendations, provide the full requested number before stopping. Do not cut a recommendation in the middle. TastePilot will later use Qloo for cultural recommendations.";
+ const primary=process.env.GEMINI_MODEL||"gemini-3.5-flash-lite";
+ const fallback=process.env.GEMINI_FALLBACK_MODEL||"gemini-2.5-flash-lite";
+ const systemText="You are TastePilot AI, a polished multilingual cultural-discovery agent. Understand Uzbek, English and Russian and reply in the same language as the user. Be warm, concise, natural and useful. Help with movies, music, restaurants, travel and experiences. Turn vague preferences into clear taste signals. Remember recent context. Never claim Qloo data was used unless the server actually provides Qloo results. Never invent links, prices, availability or facts. If the user asks for N recommendations, provide all N. Prefer practical recommendations and brief explanations.";
  const prior=cleanHistory(history);
  const last=prior[prior.length-1];
  const contents=(last?.role==="user" && last?.parts?.[0]?.text===message) ? prior : [...prior,{role:"user",parts:[{text:message}]}];
- const payload={systemInstruction:{parts:[{text:systemText}]},contents,generationConfig:{maxOutputTokens:3000}};
- async function call(body){
+ const payload={systemInstruction:{parts:[{text:systemText}]},contents,generationConfig:{maxOutputTokens:1200}};
+ async function call(model,body){
   const response=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(key)}`,{
    method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)
   });
   const raw=await response.text();
-  if(!response.ok) throw new Error(`Gemini request failed: ${response.status} ${raw.slice(0,800)}`);
+  if(!response.ok){
+   const error=new Error(`Gemini request failed: ${response.status}`);
+   error.status=response.status;
+   error.raw=raw.slice(0,500);
+   throw error;
+  }
   const data=JSON.parse(raw);
   const reply=data?.candidates?.[0]?.content?.parts?.map(p=>p.text||"").join("").trim();
-  if(!reply) throw new Error("Gemini returned no text.");
+  if(!reply)throw new Error("Gemini returned no text.");
   return reply;
  }
- try{return await call(payload)}
+ try{return await call(primary,payload)}
  catch(firstError){
-  console.error("Gemini history request failed:",firstError);
-  // Retry once without conversation history so a malformed/legacy turn cannot break the chat.
-  try{return await call({...payload,contents:[{role:"user",parts:[{text:message}]}]})}
+  console.error("Primary Gemini failed:",firstError.status,firstError.raw||firstError.message);
+  if(firstError.status!==429 || fallback===primary)throw firstError;
+  try{return await call(fallback,{...payload,contents:[{role:"user",parts:[{text:message}]}]})}
   catch(secondError){
-   console.error("Gemini single-turn retry failed:",secondError);
+   console.error("Fallback Gemini failed:",secondError.status,secondError.raw||secondError.message);
    throw secondError;
   }
  }
 }
+
 app.post("/api/chat",async(req,res)=>{
  const message=String(req.body?.message||"").trim();
  if(!message)return res.status(400).json({error:"Message is required."});
+ if(!allowChatRequest(req))return res.status(429).json({error:"Too many requests. Please wait a moment and try again."});
  const history=Array.isArray(req.body?.history)?req.body.history:[];
  try{
   const ai=await geminiReply(message,history);
-  if(ai) return res.json({reply:ai,brain:"gemini",demo:false});
+  if(ai)return res.json({reply:ai,brain:"gemini",demo:false});
   return res.json({reply:chatReply(message),brain:"fallback",demo:true});
  }catch(error){
   console.error(error);
-  return res.status(502).json({error:"AI brain is temporarily unavailable.",details:error.message});
+  const status=error.status===429?429:502;
+  const messageOut=status===429?"AI usage limit reached for the moment. Please try again shortly.":"AI brain is temporarily unavailable. Please try again.";
+  return res.status(status).json({error:messageOut});
+ }
+});
+
+app.post("/api/voice-token",async(req,res)=>{
+ const key=process.env.GEMINI_API_KEY;
+ if(!key)return res.status(503).json({error:"Voice AI is not configured yet."});
+ try{
+  const now=Date.now();
+  const body={
+   uses:1,
+   expireTime:new Date(now+30*60*1000).toISOString(),
+   newSessionExpireTime:new Date(now+60*1000).toISOString(),
+   liveConnectConstraints:{
+    model:"models/gemini-3.8-live",
+    config:{
+     sessionResumption:{},
+     responseModalities:["AUDIO"],
+     systemInstruction:{parts:[{text:"You are TastePilot AI, a friendly multilingual cultural-discovery voice agent. Speak naturally, briefly and helpfully. Understand Uzbek, English and Russian and reply in the user's language. Help with movies, music, restaurants, travel and experiences. Do not invent facts or claim Qloo data unless it was actually provided."}]}
+    }
+   }
+  };
+  const response=await fetch("https://generativelanguage.googleapis.com/v1beta/auth_tokens",{
+   method:"POST",headers:{"x-goog-api-key":key,"Content-Type":"application/json"},body:JSON.stringify(body)
+  });
+  const raw=await response.text();
+  if(!response.ok)return res.status(response.status).json({error:"Could not start voice agent."});
+  const data=JSON.parse(raw);
+  return res.json({token:data.name,model:"gemini-3.8-live"});
+ }catch(error){
+  console.error("Voice token error:",error);
+  return res.status(502).json({error:"Voice agent is temporarily unavailable."});
  }
 });
 
