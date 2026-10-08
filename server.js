@@ -34,28 +34,33 @@ async function geminiReply(message,history){
  const key=process.env.GEMINI_API_KEY;
  if(!key) return null;
  const model=process.env.GEMINI_MODEL||"gemini-3.6-flash";
+ const systemText="You are TastePilot AI, a friendly multilingual cultural-discovery agent. Understand Uzbek, English and Russian and reply in the same language as the user. Have natural conversation, ask useful follow-up questions when needed, remember recent chat context, and help users discover movies, music, restaurants, travel and experiences. Turn vague preferences into clear taste signals. Be honest: do not claim Qloo data was used unless the server actually provides Qloo results. Do not invent watch links, prices, availability, or facts. Keep replies useful but complete. When the user asks for a numbered list or a specific number of recommendations, provide the full requested number before stopping. Do not cut a recommendation in the middle. TastePilot will later use Qloo for cultural recommendations.";
  const prior=cleanHistory(history);
  const last=prior[prior.length-1];
  const contents=(last?.role==="user" && last?.parts?.[0]?.text===message) ? prior : [...prior,{role:"user",parts:[{text:message}]}];
- const response=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(key)}`,{
-  method:"POST",
-  headers:{"Content-Type":"application/json"},
-  body:JSON.stringify({
-   systemInstruction:{parts:[{text:
-    "You are TastePilot AI, a friendly multilingual cultural-discovery agent. Understand Uzbek, English and Russian and reply in the same language as the user. Have natural conversation, ask useful follow-up questions when needed, remember the recent chat context, and help users discover anime, movies, music, restaurants, travel and experiences. Turn vague preferences into clear taste signals. Be honest: do not claim Qloo data was used unless the server actually provides Qloo results. Do not invent watch links, prices, availability, or facts. Keep replies useful but complete. When the user asks for a numbered list or a specific number of recommendations, provide the full requested number before stopping. Do not cut a recommendation in the middle. For anime recommendations, briefly explain why each pick matches the user, and finish with a useful follow-up question. TastePilot will later use Qloo for cultural recommendations."
-   }]},
-   contents,
-   generationConfig:{maxOutputTokens:3000}
-  })
- });
- const raw=await response.text();
- if(!response.ok) throw new Error(`Gemini request failed: ${response.status} ${raw.slice(0,500)}`);
- const data=JSON.parse(raw);
- const reply=data?.candidates?.[0]?.content?.parts?.map(p=>p.text||"").join("").trim();
- if(!reply) throw new Error("Gemini returned no text.");
- return reply;
+ const payload={systemInstruction:{parts:[{text:systemText}]},contents,generationConfig:{maxOutputTokens:3000}};
+ async function call(body){
+  const response=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(key)}`,{
+   method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)
+  });
+  const raw=await response.text();
+  if(!response.ok) throw new Error(`Gemini request failed: ${response.status} ${raw.slice(0,800)}`);
+  const data=JSON.parse(raw);
+  const reply=data?.candidates?.[0]?.content?.parts?.map(p=>p.text||"").join("").trim();
+  if(!reply) throw new Error("Gemini returned no text.");
+  return reply;
+ }
+ try{return await call(payload)}
+ catch(firstError){
+  console.error("Gemini history request failed:",firstError);
+  // Retry once without conversation history so a malformed/legacy turn cannot break the chat.
+  try{return await call({...payload,contents:[{role:"user",parts:[{text:message}]}]})}
+  catch(secondError){
+   console.error("Gemini single-turn retry failed:",secondError);
+   throw secondError;
+  }
+ }
 }
-
 app.post("/api/chat",async(req,res)=>{
  const message=String(req.body?.message||"").trim();
  if(!message)return res.status(400).json({error:"Message is required."});
