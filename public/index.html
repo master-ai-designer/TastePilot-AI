@@ -17,6 +17,7 @@ input{flex:1;background:transparent;border:0;outline:0;color:white;font-size:16p
 .section{margin-top:85px}.sectionhead{display:flex;justify-content:space-between;align-items:end;margin-bottom:20px}.section h2{font-size:26px;margin:0}.muted{color:#8f93a5;font-size:14px}
 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.card{border:1px solid #ffffff12;background:linear-gradient(145deg,#ffffff0d,#ffffff04);border-radius:24px;padding:22px;min-height:190px;backdrop-filter:blur(18px);transition:.25s}.card:hover{transform:translateY(-4px);border-color:#ffffff28}.icon{font-size:30px}.tag{display:inline-block;margin-top:18px;font-size:11px;color:#aaa1ff;text-transform:uppercase;letter-spacing:.12em}.card h3{margin:9px 0 8px;font-size:20px}.card p{margin:0;color:#9296a8;line-height:1.55;font-size:14px}
 .status{margin:16px auto 0;max-width:800px;color:#9da1b4;font-size:13px;min-height:20px}
+.chat{margin-top:85px;border:1px solid #ffffff12;background:#ffffff07;border-radius:28px;padding:24px;box-shadow:0 25px 70px #0006}.chathead{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}.chathead h2{margin:0}.chatlog{height:300px;overflow:auto;display:grid;gap:12px;padding:8px}.msg{max-width:78%;padding:13px 16px;border-radius:18px;line-height:1.5;font-size:14px}.bot{justify-self:start;background:#ffffff0b;border:1px solid #ffffff10;color:#dfe1eb}.user{justify-self:end;background:linear-gradient(135deg,#6d4de8,#238fb8);color:#fff}.chatinput{display:flex;gap:10px;margin-top:14px}.chatinput input{border:1px solid #ffffff12;background:#ffffff06;border-radius:16px}.send{border:0;border-radius:15px;padding:0 20px;background:linear-gradient(135deg,#8b5cf6,#38bdf8);color:#fff;font-weight:700;cursor:pointer}
 .profile{display:grid;grid-template-columns:1fr 1fr;gap:18px}.panel{border:1px solid #ffffff12;background:#ffffff07;border-radius:24px;padding:25px}.bars{display:grid;gap:14px;margin-top:20px}.barrow{display:grid;grid-template-columns:90px 1fr 40px;align-items:center;gap:10px;color:#aeb1c0;font-size:13px}.bar{height:8px;border-radius:99px;background:#ffffff0d;overflow:hidden}.fill{height:100%;border-radius:99px;background:linear-gradient(90deg,#8b5cf6,#38bdf8)}
 footer{text-align:center;color:#696d7e;padding:30px;border-top:1px solid #ffffff0c;font-size:13px}
 @media(max-width:800px){.navlinks{display:none}.grid,.profile{grid-template-columns:1fr}.search{flex-direction:column}.go{height:52px}main{padding-top:45px}}
@@ -49,6 +50,11 @@ footer{text-align:center;color:#696d7e;padding:30px;border-top:1px solid #ffffff
 <div class="barrow"><span>Discovery</span><div class="bar"><div class="fill" style="width:69%"></div></div><b>69</b></div>
 </div></div>
 <div class="panel"><h2>Agent flow</h2><p class="muted" style="line-height:1.7;margin-top:15px">Intent → taste signals → Qloo cultural intelligence → connected recommendations → explanation.</p><div class="chips" style="justify-content:flex-start"><span class="chip">Intent</span><span class="chip">Taste signals</span><span class="chip">Qloo</span><span class="chip">Recommendations</span></div></div>
+</section>
+<section class="chat">
+<div class="chathead"><div><h2>Chat with TastePilot</h2><div class="muted">Tell the agent what you want. Ask follow-up questions naturally.</div></div><div class="pill">Agent ✦</div></div>
+<div class="chatlog" id="chatlog"><div class="msg bot">Hi! 👋 I'm TastePilot. Tell me what you want to watch, listen to, eat, or discover — I’ll help narrow it down.</div></div>
+<div class="chatinput"><input id="chatq" placeholder="e.g. Menga romantik va kulgili anime topib ber..." onkeydown="if(event.key==='Enter')sendChat()"><button class="send" onclick="sendChat()">Send →</button></div>
 </section>
 </main><footer>TastePilot AI · Built for the Qloo Agentic Hackathon</footer>
 <script>
@@ -86,6 +92,19 @@ async function discover(){
    '<div class="card"><div class="icon">🎯</div><span class="tag">Cultural grounding</span><h3>'+ (data.demo?'Ready for Qloo':'Qloo connected') +'</h3><p>'+ (data.demo?'Your taste signal is already adapting; the API key activates live cultural data.':'Qloo returned data for this request.') +'</p></div>'+
    '<div class="card"><div class="icon">🔗</div><span class="tag">Agentic flow</span><h3>Beyond one category</h3><p>The agent can use the same taste signal to connect movies, music, dining and places.</p></div>';
  }catch(e){status.textContent='Could not reach the backend. Run npm start and try again.'}
+}
+async function sendChat(){
+ const input=document.getElementById('chatq'); const q=input.value.trim(); if(!q)return;
+ addChat(q,'user'); input.value='';
+ addChat('TastePilot is thinking…','bot','typing');
+ try{
+  const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:q})});
+  const data=await r.json(); document.querySelector('[data-typing="true"]')?.remove();
+  addChat(data.reply||'I could not understand that yet. Try describing a movie, anime, music, food, or place you want.','bot');
+ }catch(e){document.querySelector('[data-typing="true"]')?.remove();addChat('I could not reach the agent right now. Please try again.','bot')}
+}
+function addChat(text,who,typing=''){
+ const log=document.getElementById('chatlog'); const div=document.createElement('div'); div.className='msg '+who; if(typing)div.dataset.typing='true'; div.innerHTML=escapeHtml(text); log.appendChild(div); log.scrollTop=log.scrollHeight;
 }
 function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}
 </script>
