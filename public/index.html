@@ -54,7 +54,7 @@ footer{text-align:center;color:#696d7e;padding:30px;border-top:1px solid #ffffff
 <section class="chat">
 <div class="chathead"><div><h2>Chat with TastePilot</h2><div class="muted">Tell the agent what you want. Ask follow-up questions naturally.</div></div><div class="pill">Agent ✦</div></div>
 <div class="chatlog" id="chatlog"><div class="msg bot">Hi! 👋 I'm TastePilot. Tell me what you want to watch, listen to, eat, or discover — I’ll help you find something that fits.</div></div>
-<div class="chatinput"><input id="chatq" placeholder="e.g. Menga kechki dam olish uchun biror narsa topib ber..." onkeydown="if(event.key==='Enter')sendChat()"><button class="voice" id="voiceBtn" onclick="toggleVoice()">🎙️ Voice</button><button class="send" onclick="sendChat()">Send →</button></div><div class="status" id="voiceStatus" style="text-align:left"></div>
+<div class="chatinput"><input id="chatq" placeholder="e.g. Menga kechki dam olish uchun biror narsa topib ber..." onkeydown="if(event.key==='Enter')sendChat()"><button class="send" onclick="sendChat()">Send →</button></div><div class="status" id="voiceStatus" style="text-align:left"></div>
 </section>
 </main><footer>TastePilot AI · Built for the Qloo Agentic Hackathon</footer>
 <script>
@@ -154,72 +154,6 @@ function renderMarkdown(text){
  return out.join('').replace(/__CODEBLOCK_(\d+)__/g,function(_,i){return blocks[Number(i)]});
 }
 
-let voiceSocket=null,voiceStream=null,voiceProcessor=null,voiceAudioContext=null,voiceNextTime=0;
-function base64FromBytes(bytes){let s='';for(let i=0;i<bytes.length;i+=32768)s+=String.fromCharCode(...bytes.subarray(i,i+32768));return btoa(s)}
-function downsamplePCM(input,fromRate,toRate){
- const ratio=fromRate/toRate,newLen=Math.round(input.length/ratio),out=new Int16Array(newLen);
- for(let i=0;i<newLen;i++){const start=Math.floor(i*ratio),end=Math.min(Math.floor((i+1)*ratio),input.length);let sum=0,count=0;for(let j=start;j<end;j++){sum+=input[j];count++}const v=count?sum/count:0;out[i]=Math.max(-1,Math.min(1,v))*32767}
- return out;
-}
-function playPCM(base64){
- const raw=Uint8Array.from(atob(base64),c=>c.charCodeAt(0)),pcm=new Int16Array(raw.buffer.slice(raw.byteOffset,raw.byteOffset+raw.byteLength));
- if(!voiceAudioContext)voiceAudioContext=new AudioContext();
- const buffer=voiceAudioContext.createBuffer(1,pcm.length,24000),data=buffer.getChannelData(0);
- for(let i=0;i<pcm.length;i++)data[i]=pcm[i]/32768;
- const src=voiceAudioContext.createBufferSource();src.buffer=buffer;src.connect(voiceAudioContext.destination);
- const now=voiceAudioContext.currentTime;voiceNextTime=Math.max(voiceNextTime,now);src.start(voiceNextTime);voiceNextTime+=buffer.duration;
-}
-async function toggleVoice(){
- const btn=document.getElementById('voiceBtn'),status=document.getElementById('voiceStatus');
- if(voiceSocket){stopVoice();return}
- try{
-  if(!navigator.mediaDevices?.getUserMedia)throw new Error('microphone unsupported');
-  status.textContent='Connecting to TastePilot Voice…';
-  const tr=await fetch('/api/voice-token',{method:'POST'}),td=await tr.json();if(!tr.ok)throw new Error(td.error||'voice setup failed');
-  voiceAudioContext=new AudioContext();await voiceAudioContext.resume();
-  voiceSocket=new WebSocket('wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1beta.GenerativeService.BidiGenerateContentConstrained?access_token='+encodeURIComponent(td.token));
-  voiceSocket.onopen=()=>{
-   // Google requires setupComplete before realtime audio is sent.
-   voiceSocket.send(JSON.stringify({setup:{model:'models/'+td.model,responseModalities:['AUDIO'],systemInstruction:{parts:[{text:'You are TastePilot AI. Speak naturally and briefly. Understand Uzbek, English and Russian and answer in the user language. Help with movies, music, restaurants, travel and experiences.'}]}}}));
-   status.textContent='Connecting to the voice model…';
-  };
-  voiceSocket.onmessage=async e=>{
-   const d=JSON.parse(e.data);
-   if(d?.setupComplete){
-    try{
-     voiceStream=await navigator.mediaDevices.getUserMedia({audio:{channelCount:1,echoCancellation:true,noiseSuppression:true}});
-     const source=voiceAudioContext.createMediaStreamSource(voiceStream);
-     voiceProcessor=voiceAudioContext.createScriptProcessor(4096,1,1);
-     voiceProcessor.onaudioprocess=ev=>{
-      if(!voiceSocket||voiceSocket.readyState!==WebSocket.OPEN)return;
-      const pcm=downsamplePCM(ev.inputBuffer.getChannelData(0),voiceAudioContext.sampleRate,16000);
-      voiceSocket.send(JSON.stringify({realtimeInput:{audio:{data:base64FromBytes(new Uint8Array(pcm.buffer)),mimeType:'audio/pcm;rate=16000'}}}));
-     };
-     source.connect(voiceProcessor);voiceProcessor.connect(voiceAudioContext.destination);
-     btn.classList.add('active');btn.textContent='⏹ Stop';status.textContent='🎙️ Listening… Speak naturally.';
-    }catch(err){status.textContent='Microphone access failed. Please allow the microphone and try again.';stopVoice()}
-    return;
-   }
-   const parts=d?.serverContent?.modelTurn?.parts||[];
-   for(const p of parts)if(p.inlineData?.data)playPCM(p.inlineData.data);
-   if(d?.serverContent?.turnComplete)status.textContent='🎙️ Listening…';
-  };
-  voiceSocket.onerror=e=>{console.error('TastePilot Voice WebSocket error',e);status.textContent='Voice connection error.'};
-  voiceSocket.onclose=e=>{
-   console.warn('TastePilot Voice closed',e.code,e.reason);
-   const detail=e.reason?' (code '+e.code+': '+e.reason+')':' (code '+e.code+')';
-   if(e.code!==1000)status.textContent='Voice connection closed'+detail+'. Try again.';
-   voiceProcessor?.disconnect();voiceStream?.getTracks().forEach(t=>t.stop());voiceProcessor=null;voiceStream=null;voiceSocket=null;btn.classList.remove('active');btn.textContent='🎙️ Voice';
-  };
-  voiceSocket.onerror=()=>{status.textContent='Voice connection error. Try again.';stopVoice()};
-  voiceSocket.onclose=()=>{voiceSocket=null;btn.classList.remove('active');btn.textContent='🎙️ Voice'};
- }catch(e){status.textContent='Voice setup failed. Please allow microphone access and try again.';stopVoice()}
-}
-function stopVoice(){
- try{voiceProcessor?.disconnect();voiceStream?.getTracks().forEach(t=>t.stop());voiceSocket?.close()}catch{}
- voiceProcessor=null;voiceStream=null;voiceSocket=null;
- const btn=document.getElementById('voiceBtn');if(btn){btn.classList.remove('active');btn.textContent='🎙️ Voice'}
- document.getElementById('voiceStatus').textContent='Voice mode stopped.';
-}
+
 </script>
 </body></html>
