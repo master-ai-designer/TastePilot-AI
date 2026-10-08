@@ -100,6 +100,37 @@ nav{background:rgba(5,6,10,.55)}
 .aurora-field .blob{filter:blur(70px);opacity:.34}
 .aurora-field .wave{border-color:rgba(196,181,253,.095);box-shadow:0 0 120px rgba(139,92,246,.09),inset 0 0 110px rgba(103,232,249,.045)}
 @media(max-width:800px){nav,.search,.card,.panel,.chat{backdrop-filter:blur(20px) saturate(135%);-webkit-backdrop-filter:blur(20px) saturate(135%)}}
+</style><style id="tastepilot-light-glass">
+/* Lightweight Liquid Glass — clearer, cooler and easier on the GPU */
+body:before{filter:blur(24px);opacity:.72}
+body:after{animation:none;opacity:.72}
+.aurora-field{background:#030407}
+.aurora-field .blob{filter:blur(34px);opacity:.20;animation:none;transform:none}
+.aurora-field .b1{width:34vw;height:34vw;left:-8vw;top:-8vw}
+.aurora-field .b2{width:30vw;height:30vw;right:-7vw;top:12vh}
+.aurora-field .b3{width:32vw;height:27vw;left:34vw;bottom:-18vw}
+.aurora-field .wave{display:none}
+.aurora-field .spark{display:none}
+.aura-orbit{opacity:.42}
+.aura-orbit:before,.aura-orbit:after{animation:none;box-shadow:none}
+.aura-core{filter:blur(6px);animation:none;opacity:.55}
+nav,.search,.card,.panel,.chat,.pill,.chip,.chatinput input{
+ background:linear-gradient(135deg,rgba(255,255,255,.055),rgba(255,255,255,.012));
+ border-color:rgba(255,255,255,.115);
+ box-shadow:inset 0 1px rgba(255,255,255,.14),inset 0 -1px rgba(0,0,0,.16),0 14px 45px rgba(0,0,0,.24);
+ backdrop-filter:blur(20px) saturate(125%);
+ -webkit-backdrop-filter:blur(20px) saturate(125%);
+}
+nav{background:rgba(8,9,14,.38)}
+.search{background:linear-gradient(135deg,rgba(255,255,255,.065),rgba(255,255,255,.015))}
+.card,.panel,.chat{background:linear-gradient(135deg,rgba(255,255,255,.052),rgba(255,255,255,.012))}
+.search:before,.card:before,.panel:before,.chat:before{background:linear-gradient(115deg,rgba(255,255,255,.10),transparent 25%,transparent 72%,rgba(255,255,255,.025));opacity:.55}
+.search:after{opacity:.45}
+.card:after{opacity:.45;filter:blur(28px)}
+@media(max-width:800px){
+ .aurora-field .blob{filter:blur(24px);opacity:.16}
+ nav,.search,.card,.panel,.chat{backdrop-filter:blur(14px) saturate(120%);-webkit-backdrop-filter:blur(14px) saturate(120%)}
+}
 </style></head>
 <body><div class="aurora-field" aria-hidden="true"><span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span><span class="wave"></span><span class="wave w2"></span><i class="spark s1"></i><i class="spark s2"></i><i class="spark s3"></i><i class="spark s4"></i></div><div class="aura-orbit" aria-hidden="true"><div class="aura-core"></div></div>
 <nav><div class="logo"><span class="brandmark" aria-label="TastePilot AI logo"><svg viewBox="0 0 48 48" role="img"><defs><linearGradient id="tpG" x1="8" y1="6" x2="40" y2="42"><stop stop-color="#c4b5fd"/><stop offset=".5" stop-color="#67e8f9"/><stop offset="1" stop-color="#a78bfa"/></linearGradient></defs><rect x="3" y="3" width="42" height="42" rx="14" fill="#11131c" stroke="#ffffff18"/><path d="M14 24c0-5.8 4.6-10 10-10s10 4.2 10 10-4.6 10-10 10" fill="none" stroke="url(#tpG)" stroke-width="3.4" stroke-linecap="round"/><circle cx="24" cy="24" r="4.2" fill="url(#tpG)"/><circle cx="35.5" cy="14.5" r="2.2" fill="#67e8f9"/><circle cx="12.5" cy="34" r="1.8" fill="#a78bfa"/></svg></span><span>TastePilot <b>AI</b></span></div><div class="navlinks"><span>Discover</span><span>Your Taste</span><span>About</span></div><div class="pill">AI Taste Agent ✦</div></nav>
