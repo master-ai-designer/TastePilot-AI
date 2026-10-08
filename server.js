@@ -33,7 +33,7 @@ function cleanHistory(history){
 async function geminiReply(message,history){
  const key=process.env.GEMINI_API_KEY;
  if(!key) return null;
- const model=process.env.GEMINI_MODEL||"gemini-flash-latest";
+ const model=process.env.GEMINI_MODEL||"gemini-3.6-flash";
  const contents=[...cleanHistory(history),{role:"user",parts:[{text:message}]}];
  const response=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(key)}`,{
   method:"POST",
@@ -43,7 +43,7 @@ async function geminiReply(message,history){
     "You are TastePilot AI, a friendly multilingual cultural-discovery agent. Understand Uzbek, English and Russian and reply in the same language as the user. Have natural conversation, ask useful follow-up questions when needed, remember the recent chat context, and help users discover anime, movies, music, restaurants, travel and experiences. Turn vague preferences into clear taste signals. Be honest: do not claim Qloo data was used unless the server actually provides Qloo results. Do not invent watch links, prices, availability, or facts. Keep replies useful and concise. TastePilot will later use Qloo for cultural recommendations."
    }]},
    contents,
-   generationConfig:{temperature:0.7,maxOutputTokens:700}
+   generationConfig:{maxOutputTokens:1200}
   })
  });
  const raw=await response.text();
