@@ -178,23 +178,38 @@ async function toggleVoice(){
   const tr=await fetch('/api/voice-token',{method:'POST'}),td=await tr.json();if(!tr.ok)throw new Error(td.error||'voice setup failed');
   voiceAudioContext=new AudioContext();await voiceAudioContext.resume();
   voiceSocket=new WebSocket('wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1beta.GenerativeService.BidiGenerateContentConstrained?access_token='+encodeURIComponent(td.token));
-  voiceSocket.onopen=async()=>{
+  voiceSocket.onopen=()=>{
+   // Google requires setupComplete before realtime audio is sent.
    voiceSocket.send(JSON.stringify({setup:{model:'models/'+td.model,responseModalities:['AUDIO'],systemInstruction:{parts:[{text:'You are TastePilot AI. Speak naturally and briefly. Understand Uzbek, English and Russian and answer in the user language. Help with movies, music, restaurants, travel and experiences.'}]}}}));
-   voiceStream=await navigator.mediaDevices.getUserMedia({audio:{channelCount:1,echoCancellation:true,noiseSuppression:true}});
-   const source=voiceAudioContext.createMediaStreamSource(voiceStream);
-   voiceProcessor=voiceAudioContext.createScriptProcessor(4096,1,1);
-   voiceProcessor.onaudioprocess=e=>{
-    if(!voiceSocket||voiceSocket.readyState!==WebSocket.OPEN)return;
-    const pcm=downsamplePCM(e.inputBuffer.getChannelData(0),voiceAudioContext.sampleRate,16000);
-    voiceSocket.send(JSON.stringify({realtimeInput:{audio:{data:base64FromBytes(new Uint8Array(pcm.buffer)),mimeType:'audio/pcm;rate=16000'}}}));
-   };
-   source.connect(voiceProcessor);voiceProcessor.connect(voiceAudioContext.destination);
-   btn.classList.add('active');btn.textContent='⏹ Stop';status.textContent='🎙️ Listening… Speak naturally.';
+   status.textContent='Connecting to the voice model…';
   };
-  voiceSocket.onmessage=e=>{
-   const d=JSON.parse(e.data),parts=d?.serverContent?.modelTurn?.parts||[];
+  voiceSocket.onmessage=async e=>{
+   const d=JSON.parse(e.data);
+   if(d?.setupComplete){
+    try{
+     voiceStream=await navigator.mediaDevices.getUserMedia({audio:{channelCount:1,echoCancellation:true,noiseSuppression:true}});
+     const source=voiceAudioContext.createMediaStreamSource(voiceStream);
+     voiceProcessor=voiceAudioContext.createScriptProcessor(4096,1,1);
+     voiceProcessor.onaudioprocess=ev=>{
+      if(!voiceSocket||voiceSocket.readyState!==WebSocket.OPEN)return;
+      const pcm=downsamplePCM(ev.inputBuffer.getChannelData(0),voiceAudioContext.sampleRate,16000);
+      voiceSocket.send(JSON.stringify({realtimeInput:{audio:{data:base64FromBytes(new Uint8Array(pcm.buffer)),mimeType:'audio/pcm;rate=16000'}}}));
+     };
+     source.connect(voiceProcessor);voiceProcessor.connect(voiceAudioContext.destination);
+     btn.classList.add('active');btn.textContent='⏹ Stop';status.textContent='🎙️ Listening… Speak naturally.';
+    }catch(err){status.textContent='Microphone access failed. Please allow the microphone and try again.';stopVoice()}
+    return;
+   }
+   const parts=d?.serverContent?.modelTurn?.parts||[];
    for(const p of parts)if(p.inlineData?.data)playPCM(p.inlineData.data);
    if(d?.serverContent?.turnComplete)status.textContent='🎙️ Listening…';
+  };
+  voiceSocket.onerror=e=>{console.error('TastePilot Voice WebSocket error',e);status.textContent='Voice connection error.'};
+  voiceSocket.onclose=e=>{
+   console.warn('TastePilot Voice closed',e.code,e.reason);
+   const detail=e.reason?' (code '+e.code+': '+e.reason+')':' (code '+e.code+')';
+   if(e.code!==1000)status.textContent='Voice connection closed'+detail+'. Try again.';
+   voiceProcessor?.disconnect();voiceStream?.getTracks().forEach(t=>t.stop());voiceProcessor=null;voiceStream=null;voiceSocket=null;btn.classList.remove('active');btn.textContent='🎙️ Voice';
   };
   voiceSocket.onerror=()=>{status.textContent='Voice connection error. Try again.';stopVoice()};
   voiceSocket.onclose=()=>{voiceSocket=null;btn.classList.remove('active');btn.textContent='🎙️ Voice'};
