@@ -62,8 +62,26 @@ animation:auraBreath 9s ease-in-out infinite alternate}
 @keyframes corePulse{0%,100%{transform:translate(-50%,-50%) scale(.86);opacity:.55}50%{transform:translate(-50%,-50%) scale(1.16);opacity:1}}
 @media(max-width:800px){.aura-orbit{top:16%;width:105vw;opacity:.5}.aura-core{width:130px;height:130px}}
 @media(prefers-reduced-motion:reduce){.aura-orbit:before,.aura-orbit:after,.aura-core,body:after{animation:none}}
+</style><style id="tastepilot-living-aura">
+/* Signature Living Aurora — the agent has a visible, breathing presence */
+.aurora-field{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:-2;background:#05060a}
+.aurora-field .blob{position:absolute;border-radius:50%;filter:blur(55px);mix-blend-mode:screen;opacity:.42;will-change:transform}
+.aurora-field .b1{width:48vw;height:48vw;left:-13vw;top:-18vw;background:radial-gradient(circle,#9b5cff 0%,#6d4de8 25%,transparent 68%);animation:a1 14s ease-in-out infinite alternate}
+.aurora-field .b2{width:42vw;height:42vw;right:-12vw;top:8vh;background:radial-gradient(circle,#32d8ff 0%,#3b82f6 28%,transparent 70%);animation:a2 17s ease-in-out infinite alternate}
+.aurora-field .b3{width:46vw;height:38vw;left:28vw;bottom:-25vw;background:radial-gradient(circle,#b76cff 0%,#7c3aed 25%,transparent 70%);animation:a3 19s ease-in-out infinite alternate}
+.aurora-field .wave{position:absolute;left:-15%;top:8%;width:130%;height:70%;border-radius:50%;border:1px solid rgba(177,150,255,.12);box-shadow:0 0 90px rgba(123,92,246,.07),inset 0 0 90px rgba(77,211,255,.035);transform:rotate(-8deg);animation:waveDrift 11s ease-in-out infinite alternate}
+.aurora-field .wave.w2{top:19%;transform:rotate(12deg) scale(.82);border-color:rgba(91,226,255,.09);animation-duration:15s}
+.aurora-field .spark{position:absolute;width:3px;height:3px;border-radius:50%;background:#c8f7ff;box-shadow:0 0 12px #67e8f9;opacity:0;animation:spark 5s ease-in-out infinite}
+.aurora-field .s1{left:23%;top:31%;animation-delay:0s}.aurora-field .s2{left:73%;top:26%;animation-delay:1.4s}.aurora-field .s3{left:61%;top:61%;animation-delay:2.8s}.aurora-field .s4{left:34%;top:72%;animation-delay:4s}
+@keyframes a1{0%{transform:translate(0,0) scale(.9)}50%{transform:translate(18vw,8vh) scale(1.1)}100%{transform:translate(6vw,25vh) scale(.96)}}
+@keyframes a2{0%{transform:translate(0,0) scale(.88)}50%{transform:translate(-16vw,12vh) scale(1.12)}100%{transform:translate(-5vw,-12vh) scale(.98)}}
+@keyframes a3{0%{transform:translate(0,0) scale(.9)}50%{transform:translate(-10vw,-12vh) scale(1.12)}100%{transform:translate(15vw,-5vh) scale(.95)}}
+@keyframes waveDrift{0%{transform:rotate(-8deg) translate(-2%,0) scale(1)}100%{transform:rotate(-2deg) translate(5%,4%) scale(1.08)}}
+@keyframes spark{0%,100%{opacity:0;transform:scale(.4)}35%{opacity:.8;transform:scale(1.5)}65%{opacity:.25;transform:scale(.8)}}
+@media(max-width:800px){.aurora-field .blob{filter:blur(38px);opacity:.3}.aurora-field .b1{width:70vw;height:70vw}.aurora-field .b2{width:65vw;height:65vw}.aurora-field .b3{width:70vw;height:60vw}}
+@media(prefers-reduced-motion:reduce){.aurora-field .blob,.aurora-field .wave,.aurora-field .spark{animation:none}}
 </style></head>
-<body><div class="aura-orbit" aria-hidden="true"><div class="aura-core"></div></div>
+<body><div class="aurora-field" aria-hidden="true"><span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span><span class="wave"></span><span class="wave w2"></span><i class="spark s1"></i><i class="spark s2"></i><i class="spark s3"></i><i class="spark s4"></i></div><div class="aura-orbit" aria-hidden="true"><div class="aura-core"></div></div>
 <nav><div class="logo"><span class="brandmark" aria-label="TastePilot AI logo"><svg viewBox="0 0 48 48" role="img"><defs><linearGradient id="tpG" x1="8" y1="6" x2="40" y2="42"><stop stop-color="#c4b5fd"/><stop offset=".5" stop-color="#67e8f9"/><stop offset="1" stop-color="#a78bfa"/></linearGradient></defs><rect x="3" y="3" width="42" height="42" rx="14" fill="#11131c" stroke="#ffffff18"/><path d="M14 24c0-5.8 4.6-10 10-10s10 4.2 10 10-4.6 10-10 10" fill="none" stroke="url(#tpG)" stroke-width="3.4" stroke-linecap="round"/><circle cx="24" cy="24" r="4.2" fill="url(#tpG)"/><circle cx="35.5" cy="14.5" r="2.2" fill="#67e8f9"/><circle cx="12.5" cy="34" r="1.8" fill="#a78bfa"/></svg></span><span>TastePilot <b>AI</b></span></div><div class="navlinks"><span>Discover</span><span>Your Taste</span><span>About</span></div><div class="pill">AI Taste Agent ✦</div></nav>
 <main>
 <section class="hero">
