@@ -34,7 +34,7 @@ async function geminiReply(message,history){
  const key=process.env.GEMINI_API_KEY;
  if(!key) return null;
  const model=process.env.GEMINI_MODEL||"gemini-3.6-flash";
- const contents=[...cleanHistory(history),{role:"user",parts:[{text:message}]}];
+ const prior=cleanHistory(history);\n const last=prior[prior.length-1];\n const contents=(last?.role==="user" && last?.parts?.[0]?.text===message) ? prior : [...prior,{role:"user",parts:[{text:message}]}];
  const response=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(key)}`,{
   method:"POST",
   headers:{"Content-Type":"application/json"},
