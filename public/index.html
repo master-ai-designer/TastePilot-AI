@@ -80,6 +80,26 @@ animation:auraBreath 9s ease-in-out infinite alternate}
 @keyframes spark{0%,100%{opacity:0;transform:scale(.4)}35%{opacity:.8;transform:scale(1.5)}65%{opacity:.25;transform:scale(.8)}}
 @media(max-width:800px){.aurora-field .blob{filter:blur(38px);opacity:.3}.aurora-field .b1{width:70vw;height:70vw}.aurora-field .b2{width:65vw;height:65vw}.aurora-field .b3{width:70vw;height:60vw}}
 @media(prefers-reduced-motion:reduce){.aurora-field .blob,.aurora-field .wave,.aurora-field .spark{animation:none}}
+</style><style id="tastepilot-liquid-glass">
+/* TastePilot Liquid Glass system */
+:root{--glass:rgba(255,255,255,.055);--glass-hi:rgba(255,255,255,.095);--glass-line:rgba(255,255,255,.14)}
+body{background:#030407}
+body:before{background:radial-gradient(circle at 50% 10%,rgba(145,110,255,.15),transparent 30%),radial-gradient(circle at 12% 65%,rgba(56,210,255,.08),transparent 25%),radial-gradient(circle at 88% 55%,rgba(191,103,255,.07),transparent 24%);filter:blur(42px)}
+nav,.search,.card,.panel,.chat,.pill,.chip,.chatinput input{background:linear-gradient(135deg,rgba(255,255,255,.075),rgba(255,255,255,.025));border-color:var(--glass-line);box-shadow:inset 0 1px rgba(255,255,255,.13),inset 0 -1px rgba(0,0,0,.25),0 18px 70px rgba(0,0,0,.34);backdrop-filter:blur(28px) saturate(145%);-webkit-backdrop-filter:blur(28px) saturate(145%)}
+nav{background:rgba(5,6,10,.55)}
+.search{position:relative;overflow:hidden}
+.search:before,.card:before,.panel:before,.chat:before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg,rgba(255,255,255,.13),transparent 23%,transparent 68%,rgba(255,255,255,.035));opacity:.65}
+.search:after{content:"";position:absolute;width:180px;height:70px;left:18%;top:-55px;background:rgba(255,255,255,.12);filter:blur(28px);transform:rotate(-8deg);pointer-events:none}
+.card,.panel,.chat{position:relative;overflow:hidden}
+.card:hover{border-color:rgba(255,255,255,.22);box-shadow:inset 0 1px rgba(255,255,255,.16),0 30px 90px rgba(0,0,0,.42),0 0 45px rgba(139,92,246,.08)}
+.brandmark{background:linear-gradient(145deg,rgba(255,255,255,.12),rgba(255,255,255,.025));border:1px solid rgba(255,255,255,.16);box-shadow:inset 0 1px rgba(255,255,255,.18),0 0 35px rgba(139,92,246,.2)}
+.go{box-shadow:inset 0 1px rgba(255,255,255,.28),0 10px 35px rgba(99,78,220,.35)}
+.send{box-shadow:inset 0 1px rgba(255,255,255,.18),0 8px 28px rgba(99,78,220,.2)}
+.chatlog{scrollbar-width:thin}
+.aura-orbit{opacity:.9;mix-blend-mode:screen}
+.aurora-field .blob{filter:blur(70px);opacity:.34}
+.aurora-field .wave{border-color:rgba(196,181,253,.095);box-shadow:0 0 120px rgba(139,92,246,.09),inset 0 0 110px rgba(103,232,249,.045)}
+@media(max-width:800px){nav,.search,.card,.panel,.chat{backdrop-filter:blur(20px) saturate(135%);-webkit-backdrop-filter:blur(20px) saturate(135%)}}
 </style></head>
 <body><div class="aurora-field" aria-hidden="true"><span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span><span class="wave"></span><span class="wave w2"></span><i class="spark s1"></i><i class="spark s2"></i><i class="spark s3"></i><i class="spark s4"></i></div><div class="aura-orbit" aria-hidden="true"><div class="aura-core"></div></div>
 <nav><div class="logo"><span class="brandmark" aria-label="TastePilot AI logo"><svg viewBox="0 0 48 48" role="img"><defs><linearGradient id="tpG" x1="8" y1="6" x2="40" y2="42"><stop stop-color="#c4b5fd"/><stop offset=".5" stop-color="#67e8f9"/><stop offset="1" stop-color="#a78bfa"/></linearGradient></defs><rect x="3" y="3" width="42" height="42" rx="14" fill="#11131c" stroke="#ffffff18"/><path d="M14 24c0-5.8 4.6-10 10-10s10 4.2 10 10-4.6 10-10 10" fill="none" stroke="url(#tpG)" stroke-width="3.4" stroke-linecap="round"/><circle cx="24" cy="24" r="4.2" fill="url(#tpG)"/><circle cx="35.5" cy="14.5" r="2.2" fill="#67e8f9"/><circle cx="12.5" cy="34" r="1.8" fill="#a78bfa"/></svg></span><span>TastePilot <b>AI</b></span></div><div class="navlinks"><span>Discover</span><span>Your Taste</span><span>About</span></div><div class="pill">AI Taste Agent ✦</div></nav>
