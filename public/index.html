@@ -30,8 +30,8 @@ footer{text-align:center;color:#696d7e;padding:30px;border-top:1px solid #ffffff
 <div class="eyebrow">✦ Cultural intelligence, made personal</div>
 <h1>Discover what feels <span class="gradient">made for you.</span></h1>
 <p>Describe what you love, what you're feeling, or what you want to discover. TastePilot turns that signal into culturally grounded recommendations.</p>
-<div class="search"><input id="q" placeholder="Try “a cozy movie night with dreamy music…”"><button class="go" onclick="discover()">Discover →</button></div>
-<div class="chips"><span class="chip" onclick="fill('a romantic anime with a happy ending')">Romantic anime</span><span class="chip" onclick="fill('a calm late-night playlist')">Late-night music</span><span class="chip" onclick="fill('a stylish place for dinner')">Dinner places</span><span class="chip" onclick="fill('a movie for a rainy evening')">Rainy evening</span></div>
+<div class="search"><input id="q" placeholder="Try “a cozy evening with dreamy music…”"><button class="go" onclick="discover()">Discover →</button></div>
+<div class="chips"><span class="chip" onclick="fill('a romantic movie with a happy ending')">Romantic movies</span><span class="chip" onclick="fill('a calm late-night playlist')">Late-night music</span><span class="chip" onclick="fill('a stylish place for dinner')">Dinner places</span><span class="chip" onclick="fill('a movie for a rainy evening')">Rainy evening</span></div>
 <div class="status" id="status"></div>
 </section>
 <section class="section">
@@ -46,7 +46,7 @@ footer{text-align:center;color:#696d7e;padding:30px;border-top:1px solid #ffffff
 <div class="panel"><h2>Your taste signal</h2><div class="muted" id="tasteHint" style="margin-top:7px">Describe what you want — your taste profile updates instantly.</div><div class="bars" id="tasteBars">
 <div class="barrow"><span>Romance</span><div class="bar"><div class="fill" style="width:88%"></div></div><b>88</b></div>
 <div class="barrow"><span>Cozy</span><div class="bar"><div class="fill" style="width:81%"></div></div><b>81</b></div>
-<div class="barrow"><span>Anime</span><div class="bar"><div class="fill" style="width:76%"></div></div><b>76</b></div>
+<div class="barrow"><span>Stories</span><div class="bar"><div class="fill" style="width:76%"></div></div><b>76</b></div>
 <div class="barrow"><span>Discovery</span><div class="bar"><div class="fill" style="width:69%"></div></div><b>69</b></div>
 </div></div>
 <div class="panel"><h2>Agent flow</h2><p class="muted" style="line-height:1.7;margin-top:15px">Intent → taste signals → Qloo cultural intelligence → connected recommendations → explanation.</p><div class="chips" style="justify-content:flex-start"><span class="chip">Intent</span><span class="chip">Taste signals</span><span class="chip">Qloo</span><span class="chip">Recommendations</span></div></div>
@@ -54,7 +54,7 @@ footer{text-align:center;color:#696d7e;padding:30px;border-top:1px solid #ffffff
 <section class="chat">
 <div class="chathead"><div><h2>Chat with TastePilot</h2><div class="muted">Tell the agent what you want. Ask follow-up questions naturally.</div></div><div class="pill">Agent ✦</div></div>
 <div class="chatlog" id="chatlog"><div class="msg bot">Hi! 👋 I'm TastePilot. Tell me what you want to watch, listen to, eat, or discover — I’ll help narrow it down.</div></div>
-<div class="chatinput"><input id="chatq" placeholder="e.g. Menga romantik va kulgili anime topib ber..." onkeydown="if(event.key==='Enter')sendChat()"><button class="send" onclick="sendChat()">Send →</button></div>
+<div class="chatinput"><input id="chatq" placeholder="e.g. Menga romantik va qiziqarli narsa topib ber..." onkeydown="if(event.key==='Enter')sendChat()"><button class="send" onclick="sendChat()">Send →</button></div>
 </section>
 </main><footer>TastePilot AI · Built for the Qloo Agentic Hackathon</footer>
 <script>
@@ -64,7 +64,7 @@ function analyzeTaste(query){
  const groups=[
   {name:'Romance',keys:['romantic','romance','love','date','couple','relationship','heartwarming'],base:42},
   {name:'Cozy',keys:['cozy','calm','quiet','soft','comfort','relax','rainy','warm','peaceful','dreamy'],base:38},
-  {name:'Anime',keys:['anime','manga','japanese animation','isekai','shonen','shojo'],base:36},
+  {name:'Stories',keys:['anime','manga','japanese animation','isekai','shonen','shojo'],base:36},
   {name:'Adventure',keys:['adventure','travel','explore','exciting','action','thriller','road trip'],base:34},
   {name:'Trendy',keys:['stylish','trendy','fashion','modern','popular','vibe','aesthetic'],base:33},
   {name:'Nightlife',keys:['night','late-night','party','club','bar','friday','energetic'],base:31},
