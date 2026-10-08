@@ -46,8 +46,24 @@ h1{font-size:clamp(55px,8vw,98px);line-height:.91;letter-spacing:-.075em;margin:
 .chatinput input{background:#ffffff04;border-color:#ffffff10}.send{height:50px}.status{color:#858ca2}
 footer{border-color:#ffffff0a;color:#62697c}
 @media(max-width:800px){main{padding-top:52px}.hero p{font-size:16px}.chat,.panel{padding:20px}.navlinks{display:none}}
+</style><style id="tastepilot-aura">
+/* TastePilot signature aura */
+body:after{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;background:
+radial-gradient(circle at 50% 18%,rgba(139,92,246,.11),transparent 24%),
+radial-gradient(circle at 18% 58%,rgba(56,189,248,.07),transparent 22%),
+radial-gradient(circle at 82% 68%,rgba(167,139,250,.06),transparent 24%);
+animation:auraBreath 9s ease-in-out infinite alternate}
+.aura-orbit{position:fixed;left:50%;top:18%;width:min(760px,85vw);aspect-ratio:1;transform:translate(-50%,-50%);pointer-events:none;z-index:-1;opacity:.72}
+.aura-orbit:before,.aura-orbit:after{content:"";position:absolute;inset:8%;border-radius:50%;border:1px solid rgba(167,139,250,.075);box-shadow:0 0 90px rgba(139,92,246,.08),inset 0 0 80px rgba(56,189,248,.035);animation:orbitSpin 28s linear infinite}
+.aura-orbit:after{inset:20%;border-color:rgba(103,232,249,.065);animation-duration:20s;animation-direction:reverse}
+.aura-core{position:absolute;left:50%;top:50%;width:190px;height:190px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(167,139,250,.18) 0%,rgba(103,232,249,.07) 28%,transparent 68%);filter:blur(10px);animation:corePulse 5s ease-in-out infinite}
+@keyframes auraBreath{0%{opacity:.65;transform:scale(1)}100%{opacity:1;transform:scale(1.025)}}
+@keyframes orbitSpin{to{transform:rotate(360deg)}}
+@keyframes corePulse{0%,100%{transform:translate(-50%,-50%) scale(.86);opacity:.55}50%{transform:translate(-50%,-50%) scale(1.16);opacity:1}}
+@media(max-width:800px){.aura-orbit{top:16%;width:105vw;opacity:.5}.aura-core{width:130px;height:130px}}
+@media(prefers-reduced-motion:reduce){.aura-orbit:before,.aura-orbit:after,.aura-core,body:after{animation:none}}
 </style></head>
-<body>
+<body><div class="aura-orbit" aria-hidden="true"><div class="aura-core"></div></div>
 <nav><div class="logo"><span class="brandmark" aria-label="TastePilot AI logo"><svg viewBox="0 0 48 48" role="img"><defs><linearGradient id="tpG" x1="8" y1="6" x2="40" y2="42"><stop stop-color="#c4b5fd"/><stop offset=".5" stop-color="#67e8f9"/><stop offset="1" stop-color="#a78bfa"/></linearGradient></defs><rect x="3" y="3" width="42" height="42" rx="14" fill="#11131c" stroke="#ffffff18"/><path d="M14 24c0-5.8 4.6-10 10-10s10 4.2 10 10-4.6 10-10 10" fill="none" stroke="url(#tpG)" stroke-width="3.4" stroke-linecap="round"/><circle cx="24" cy="24" r="4.2" fill="url(#tpG)"/><circle cx="35.5" cy="14.5" r="2.2" fill="#67e8f9"/><circle cx="12.5" cy="34" r="1.8" fill="#a78bfa"/></svg></span><span>TastePilot <b>AI</b></span></div><div class="navlinks"><span>Discover</span><span>Your Taste</span><span>About</span></div><div class="pill">AI Taste Agent ✦</div></nav>
 <main>
 <section class="hero">
