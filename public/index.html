@@ -100,7 +100,10 @@ async function sendChat(){
  try{
   const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:q,history:window.tastePilotChatHistory||[]})});
   const data=await r.json(); document.querySelector('[data-typing="true"]')?.remove();
-  addChat(data.reply||'I could not understand that yet. Try describing a movie, anime, music, food, or place you want.','bot');
+  const reply=data.reply||'I could not understand that yet. Try describing what you want to watch, listen to, eat, or discover.';
+  window.tastePilotChatHistory.push({role:'model',text:reply});
+  if(window.tastePilotChatHistory.length>12)window.tastePilotChatHistory.splice(0,window.tastePilotChatHistory.length-12);
+  typeChatMessage(reply);
  }catch(e){document.querySelector('[data-typing="true"]')?.remove();addChat('I could not reach the agent right now. Please try again.','bot')}
 }
 function addChat(text,who,typing=''){
@@ -109,6 +112,23 @@ function addChat(text,who,typing=''){
  else if(who==='bot' && !typing && text!=='TastePilot is thinking…') h.push({role:'model',text});
  if(h.length>12) h.splice(0,h.length-12);
  const log=document.getElementById('chatlog'); const div=document.createElement('div'); div.className='msg '+who; if(typing)div.dataset.typing='true'; div.innerHTML=who==='bot'&&!typing?renderMarkdown(text):escapeHtml(text); log.appendChild(div); log.scrollTop=log.scrollHeight;
+}
+function typeChatMessage(text){
+ const log=document.getElementById('chatlog');
+ const div=document.createElement('div');
+ div.className='msg bot';
+ log.appendChild(div);
+ let i=0;
+ const speed=14;
+ function tick(){
+   if(i>=text.length){div.innerHTML=renderMarkdown(text);log.scrollTop=log.scrollHeight;return;}
+   const chunk=text.slice(0,Math.min(text.length,i+2));
+   div.textContent=chunk;
+   i+=2;
+   log.scrollTop=log.scrollHeight;
+   setTimeout(tick,speed);
+ }
+ tick();
 }
 function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}
 function renderMarkdown(text){
