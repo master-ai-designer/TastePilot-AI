@@ -516,6 +516,70 @@ footer{margin-top:8px;border-top:1px solid #1d2230;color:#7e879c}
  .agent-pill{display:none}.chathead h2{font-size:20px}
 }
 </style>
+
+<style id="tastepilot-premium-interactions">
+/* Refined premium interactions: tactile controls, restrained motion, low GPU cost */
+:root{--motion-fast:140ms;--motion-smooth:220ms;--ease-premium:cubic-bezier(.2,.75,.25,1)}
+button,a,.chip,.mini-prompt,.card,.panel,.pill{ -webkit-tap-highlight-color:transparent }
+button{font:inherit}
+button:not(:disabled),a{cursor:pointer}
+.go,.send{
+ position:relative;isolation:isolate;overflow:hidden;
+ display:inline-flex;align-items:center;justify-content:center;gap:10px;
+ min-height:48px;padding:0 19px;border-radius:12px;
+ color:#fff;font-size:13px;font-weight:750;letter-spacing:-.01em;
+ border:1px solid rgba(205,195,255,.38);
+ background:linear-gradient(135deg,#8d73ef 0%,#6b62d8 48%,#3f83b7 100%);
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.34),inset 0 -1px 0 rgba(22,18,62,.35),0 5px 0 rgba(27,26,62,.42),0 9px 22px rgba(73,73,166,.18);
+ text-shadow:0 1px 1px rgba(0,0,0,.14);
+ transition:transform var(--motion-smooth) var(--ease-premium),box-shadow var(--motion-smooth) var(--ease-premium),filter var(--motion-smooth) var(--ease-premium),border-color var(--motion-smooth) var(--ease-premium);
+}
+.go:before,.send:before{
+ content:"";position:absolute;inset:1px 1px 52%;border-radius:11px 11px 50% 50%;
+ background:linear-gradient(180deg,rgba(255,255,255,.20),rgba(255,255,255,0));
+ pointer-events:none;z-index:-1
+}
+.go:after,.send:after{
+ content:"";position:absolute;top:-40%;bottom:-40%;left:-65%;width:34%;
+ transform:skewX(-20deg);
+ background:linear-gradient(90deg,transparent,rgba(255,255,255,.23),transparent);
+ transition:left 420ms var(--ease-premium);pointer-events:none;z-index:-1
+}
+.go:hover,.send:hover{transform:translateY(-2px);filter:brightness(1.06);border-color:rgba(224,217,255,.65);box-shadow:inset 0 1px 0 rgba(255,255,255,.42),inset 0 -1px 0 rgba(22,18,62,.3),0 6px 0 rgba(27,26,62,.36),0 14px 27px rgba(73,73,166,.27)}
+.go:hover:after,.send:hover:after{left:135%}
+.go:active,.send:active{transform:translateY(2px);box-shadow:inset 0 2px 5px rgba(15,12,40,.22),0 2px 5px rgba(30,25,70,.18);filter:brightness(.98)}
+.go:focus-visible,.send:focus-visible,.chip:focus-visible,.mini-prompt:focus-visible,.navlinks a:focus-visible{outline:2px solid #c4b5fd;outline-offset:4px}
+.chip,.mini-prompt{
+ position:relative;transition:background var(--motion-smooth) var(--ease-premium),border-color var(--motion-smooth) var(--ease-premium),color var(--motion-smooth) var(--ease-premium),transform var(--motion-fast) var(--ease-premium),box-shadow var(--motion-smooth) var(--ease-premium);
+}
+.chip{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:39px}
+.chip:hover{transform:translateY(-1px);box-shadow:0 5px 14px rgba(0,0,0,.16)}
+.chip:active,.mini-prompt:active{transform:scale(.98)}
+.mini-prompt{min-height:34px}
+.mini-prompt:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.18)}
+.navlinks a{position:relative;transition:color var(--motion-smooth) var(--ease-premium)}
+.navlinks a:after{content:"";position:absolute;left:0;right:100%;bottom:2px;height:2px;border-radius:2px;background:linear-gradient(90deg,#ad98ff,#77deef);transition:right var(--motion-smooth) var(--ease-premium)}
+.navlinks a:hover:after,.navlinks a:focus-visible:after{right:0}
+.search,.chatinput input{transition:border-color var(--motion-smooth) var(--ease-premium),box-shadow var(--motion-smooth) var(--ease-premium),background var(--motion-smooth) var(--ease-premium)}
+.search:focus-within{border-color:rgba(158,139,255,.62);box-shadow:0 0 0 3px rgba(139,115,239,.10),0 12px 34px rgba(0,0,0,.18)}
+.chatinput input:focus{border-color:rgba(158,139,255,.66);box-shadow:0 0 0 3px rgba(139,115,239,.10);outline:none}
+.card{transition:transform var(--motion-smooth) var(--ease-premium),border-color var(--motion-smooth) var(--ease-premium),box-shadow var(--motion-smooth) var(--ease-premium)}
+.card:hover{transform:translateY(-3px);border-color:#46415f;box-shadow:0 17px 36px rgba(0,0,0,.22)}
+.msg{animation:messageIn 180ms var(--ease-premium) both}
+@keyframes messageIn{from{opacity:.55;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.chatlog{scroll-behavior:smooth;overscroll-behavior:contain}
+.agent-status{box-shadow:0 0 0 3px rgba(105,216,178,.10)}
+@media(max-width:760px){
+ .go,.send{min-height:46px;box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 4px 0 rgba(27,26,62,.34),0 7px 16px rgba(73,73,166,.14)}
+ .go:hover,.send:hover{transform:none}
+ .card:hover{transform:none}
+ .chatlog{scroll-behavior:auto}
+}
+@media(prefers-reduced-motion:reduce){
+ *,*::before,*::after{scroll-behavior:auto!important;animation:none!important;transition:none!important}
+ .go:hover,.send:hover,.chip:hover,.mini-prompt:hover,.card:hover{transform:none!important}
+}
+</style>
 </head>
 <body>
 <nav><div class="logo"><span class="brandmark" aria-label="TastePilot AI logo"><svg viewBox="0 0 48 48" role="img"><defs><linearGradient id="tpG" x1="8" y1="6" x2="40" y2="42"><stop stop-color="#c4b5fd"/><stop offset=".5" stop-color="#67e8f9"/><stop offset="1" stop-color="#a78bfa"/></linearGradient></defs><rect x="3" y="3" width="42" height="42" rx="14" fill="#11131c" stroke="#ffffff18"/><path d="M14 24c0-5.8 4.6-10 10-10s10 4.2 10 10-4.6 10-10 10" fill="none" stroke="url(#tpG)" stroke-width="3.4" stroke-linecap="round"/><circle cx="24" cy="24" r="4.2" fill="url(#tpG)"/><circle cx="35.5" cy="14.5" r="2.2" fill="#67e8f9"/><circle cx="12.5" cy="34" r="1.8" fill="#a78bfa"/></svg></span><span>TastePilot <b>AI</b></span></div><div class="navlinks"><a href="#discover">Discover</a><a href="#taste">Your Taste</a><a href="#chat">Chat with agent</a></div><div class="pill">AI Taste Agent ✦</div></nav>
