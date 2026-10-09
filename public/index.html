@@ -18,6 +18,31 @@ footer{border-top:1px solid #ffffff0d;padding:24px clamp(20px,5vw,76px);display:
 @media(max-width:640px){nav{height:68px;padding:0 17px}.navlinks{display:none}.logo{font-size:16px}.brandmark{width:37px;height:37px}.pill{padding:9px 10px;font-size:10px}main{padding:28px 16px 55px}.hero{padding-top:10px}h1{font-size:clamp(45px,13vw,65px);margin:20px 0}.hero p{font-size:14px;line-height:1.75}.hero-art{min-height:260px;padding:16px}.search-panel{flex-direction:column;padding:8px}.search-panel input{height:42px;padding:0 10px}.search-panel .go{width:100%}.section{margin-top:55px}.sectionhead{align-items:start;flex-direction:column}.section-note{display:none}.grid,.profile{grid-template-columns:1fr}.card{min-height:165px}.panel{padding:19px}.flow-steps{grid-template-columns:repeat(2,1fr)}.chat{margin-top:55px;padding:15px}.chathead{align-items:flex-start;flex-direction:column}.chatlog{height:340px}.msg{max-width:94%;font-size:12px}.chatinput{gap:7px}.chatinput input{font-size:12px;padding:0 10px}.send{padding:0 13px;font-size:12px}.art-code{font-size:9px}footer{padding:20px 17px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important}}
 </style>
+
+<style id="tastepilot-signature-future">
+/* Signature direction: editorial command deck, quiet precision, no heavy effects */
+:root{--bg:#080b12;--panel:#101722;--line:#293545;--cyan:#75e4e8;--violet:#a99bff}
+body:before{background:radial-gradient(ellipse at 70% 0%,#1b39401c,transparent 44%),linear-gradient(120deg,transparent 0 58%,#75e4e805 58.1%,transparent 58.2%)}
+nav{backdrop-filter:none;-webkit-backdrop-filter:none;background:rgba(8,11,18,.97)}
+.brandmark{position:relative;box-shadow:inset 0 0 0 1px #75e4e810}
+.hero-art{box-shadow:0 24px 70px #0003}
+.hero-art .king-emblem{box-shadow:inset 0 0 40px #a99bff0b}
+.search-panel:focus-within{border-color:#75e4e85e;box-shadow:0 0 0 3px #75e4e80b}
+.go,.send{letter-spacing:.01em}
+.go:hover,.send:hover{background:#91eff0}
+.card:hover{box-shadow:0 14px 36px #0002}
+.chat{background:linear-gradient(145deg,#111925,#0b1018);box-shadow:0 22px 60px #0002}
+.chatlog{scroll-behavior:smooth}
+.typing-message{min-width:48px}
+.typing-cursor{display:inline-block;width:6px;height:15px;vertical-align:-2px;margin-left:3px;background:var(--cyan);border-radius:1px;animation:cursorBlink .85s steps(2,start) infinite}
+@keyframes cursorBlink{to{visibility:hidden}}
+.typing-message:before{content:"";display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--cyan);margin:0 8px 2px 0;opacity:.85}
+.msg.bot.typing-message{border-color:#75e4e822}
+.msg.bot h3{color:#e9f9fb}
+.mini-prompt{transition:background .16s,border-color .16s,color .16s}
+.mini-prompt:hover{background:#75e4e80b;border-color:#75e4e84a}
+@media(prefers-reduced-motion:reduce){.typing-cursor{animation:none}.chatlog{scroll-behavior:auto}}
+</style>
 </head>
 <body>
 <nav><a class="logo" href="#discover" aria-label="TastePilot home"><span class="brandmark" aria-label="TastePilot logo"><svg viewBox="0 0 48 48" role="img"><path d="M24 4 29 15 40 11 34 22 44 28 31 30 30 43 22 34 12 41 14 29 4 23 17 20Z" fill="none" stroke="#75e4e8" stroke-width="1.5"/><circle cx="24" cy="24" r="7" fill="#a99bff"/><circle cx="24" cy="24" r="3" fill="#f1f5fb"/></svg></span><span>TastePilot <b>AI</b></span></a><div class="navlinks"><a href="#discover">Discover</a><a href="#taste">Taste map</a><a href="#chat">AI agent</a></div><div class="pill"><span class="agent-status"></span> CULTURE INTELLIGENCE</div></nav>
@@ -95,10 +120,28 @@ function addChat(text,who,typing=''){
 function typeChatMessage(text){
  const log=document.getElementById('chatlog');
  const div=document.createElement('div');
- div.className='msg bot';
- div.innerHTML=renderMarkdown(text);
+ div.className='msg bot typing-message';
+ div.setAttribute('aria-live','polite');
+ const body=document.createElement('span');
+ body.className='typing-copy';
+ const cursor=document.createElement('span');
+ cursor.className='typing-cursor';
+ cursor.setAttribute('aria-hidden','true');
+ div.append(body,cursor);
  log.appendChild(div);
- log.scrollTop=log.scrollHeight;
+ const clean=String(text);
+ let index=0;
+ const step=()=>{
+  if(!div.isConnected)return;
+  index=Math.min(clean.length,index+(clean[index]===' '||clean[index]==='\n'?2:3));
+  body.textContent=clean.slice(0,index);
+  log.scrollTop=log.scrollHeight;
+  if(index<clean.length){window.setTimeout(step,Math.min(22,10+(clean.length>500?3:8)));return;}
+  div.classList.remove('typing-message');
+  div.innerHTML=renderMarkdown(clean);
+  log.scrollTop=log.scrollHeight;
+ };
+ step();
 }
 function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}
 function renderMarkdown(text){
