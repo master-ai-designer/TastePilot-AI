@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800">
+<defs>
+ <linearGradient id="chrome" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f8ffff"/><stop offset=".22" stop-color="#7ceeff"/><stop offset=".47" stop-color="#fff"/><stop offset=".7" stop-color="#ff6a72"/><stop offset="1" stop-color="#fff"/></linearGradient>
+ <linearGradient id="blue" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#00bfff"/><stop offset="1" stop-color="#1474ff"/></linearGradient>
+ <linearGradient id="red" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#ff252f"/><stop offset="1" stop-color="#ff7865"/></linearGradient>
+ <radialGradient id="bg"><stop stop-color="#142434"/><stop offset=".58" stop-color="#080b12"/><stop offset="1" stop-color="#020304"/></radialGradient>
+ <filter id="glow"><feGaussianBlur stdDeviation="8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+ <filter id="shadow"><feGaussianBlur stdDeviation="3"/></filter>
+</defs>
+<circle cx="400" cy="400" r="382" fill="url(#bg)" stroke="#101820" stroke-width="16"/>
+<circle cx="400" cy="400" r="366" fill="none" stroke="url(#chrome)" stroke-width="8" filter="url(#glow)"/>
+<path d="M45 310 190 150 330 150 400 95 465 150 610 150 755 310 670 310 610 255 490 255 400 305 310 255 190 255 130 310Z" fill="none" stroke="url(#blue)" stroke-width="13" filter="url(#glow)"/>
+<path d="M755 490 610 650 490 650 400 705 310 650 190 650 45 490 130 490 190 545 310 545 400 495 490 545 610 545 670 490Z" fill="none" stroke="url(#red)" stroke-width="11" opacity=".9"/>
+<path d="M300 170 340 115 365 155 400 60 435 155 463 115 500 170 472 192 328 192Z" fill="url(#chrome)" stroke="#f7fbff" stroke-width="4"/>
+<path d="M330 185H470" stroke="#ff3946" stroke-width="8" filter="url(#glow)"/>
+<text x="400" y="430" font-family="Arial Black,Impact,sans-serif" font-weight="900" font-size="178" text-anchor="middle" fill="#000" stroke="#000" stroke-width="26" paint-order="stroke" transform="skewX(-8)">KING</text>
+<text x="400" y="430" font-family="Arial Black,Impact,sans-serif" font-weight="900" font-size="178" text-anchor="middle" fill="url(#chrome)" stroke="#fff" stroke-width="2" paint-order="stroke" transform="skewX(-8)">KING</text>
+<path d="M108 455H260L290 420M692 455H540L510 420" fill="none" stroke="url(#blue)" stroke-width="13" filter="url(#glow)"/>
+<path d="M125 477H260M675 477H540" stroke="url(#red)" stroke-width="8"/>
+<text x="400" y="530" font-family="Arial,sans-serif" font-size="22" font-weight="700" letter-spacing="11" text-anchor="middle" fill="#c8e9ff">PERSONAL BRAND / KING</text>
+</svg>
