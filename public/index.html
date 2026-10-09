@@ -384,8 +384,51 @@ nav{
   .card,.panel,.chat{transition:none}
   .search:hover:after,.card:hover:after,.panel:hover:after,.chat:hover:after{left:-25%}
 }
-</style></head>
-<body><div class="aurora-field" aria-hidden="true"><span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span><span class="wave"></span><span class="wave w2"></span><i class="spark s1"></i><i class="spark s2"></i><i class="spark s3"></i><i class="spark s4"></i></div><div class="aura-orbit" aria-hidden="true"><div class="aura-core"></div></div>
+</style>
+<style id="tastepilot-static-premium">
+/* Static premium theme: no animated background, no motion, reduced GPU effects */
+html{scroll-behavior:auto}
+body{
+ background:
+   radial-gradient(ellipse at 50% 0%,rgba(93,76,160,.16),transparent 42%),
+   linear-gradient(180deg,#0b0d14 0%,#080a10 48%,#07080d 100%);
+ background-attachment:fixed;
+}
+body:before,body:after{animation:none!important;transform:none!important;filter:none!important;opacity:.35}
+nav,.search,.card,.panel,.chat,.pill,.chip,.chatinput input,.eyebrow,
+.msg.bot,.msg.user,.go,.send{
+ animation:none!important;
+ transition:none!important;
+ backdrop-filter:none!important;
+ -webkit-backdrop-filter:none!important;
+}
+nav,.search,.card,.panel,.chat,.pill,.chip,.chatinput input,.eyebrow{
+ background:linear-gradient(145deg,rgba(27,30,44,.96),rgba(13,15,23,.96));
+ border-color:rgba(255,255,255,.10);
+ box-shadow:inset 0 1px rgba(255,255,255,.07),0 8px 24px rgba(0,0,0,.18);
+}
+nav{background:rgba(9,11,17,.98)}
+.search{background:linear-gradient(145deg,#171a27,#0e111a)}
+.card,.panel,.chat{background:linear-gradient(145deg,#151824,#0e1018)}
+.search:before,.search:after,.card:before,.card:after,.panel:before,.panel:after,
+.chat:before,.chat:after,nav:before,nav:after{display:none!important;content:none!important}
+.card:hover,.panel:hover,.chat:hover,.chip:hover,.pill:hover,.go:hover,.send:hover{
+ transform:none!important;
+ filter:none!important;
+ border-color:rgba(255,255,255,.12);
+ box-shadow:inset 0 1px rgba(255,255,255,.07),0 8px 24px rgba(0,0,0,.18);
+}
+.go,.send{
+ background:linear-gradient(135deg,#7655dc,#267e9f);
+ border:1px solid rgba(255,255,255,.16);
+ box-shadow:inset 0 1px rgba(255,255,255,.15),0 5px 14px rgba(0,0,0,.20);
+}
+.go:before,.go:after,.send:before,.send:after{display:none!important;content:none!important}
+.aurora-field,.aura-orbit{display:none!important}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
 <nav><div class="logo"><span class="brandmark" aria-label="TastePilot AI logo"><svg viewBox="0 0 48 48" role="img"><defs><linearGradient id="tpG" x1="8" y1="6" x2="40" y2="42"><stop stop-color="#c4b5fd"/><stop offset=".5" stop-color="#67e8f9"/><stop offset="1" stop-color="#a78bfa"/></linearGradient></defs><rect x="3" y="3" width="42" height="42" rx="14" fill="#11131c" stroke="#ffffff18"/><path d="M14 24c0-5.8 4.6-10 10-10s10 4.2 10 10-4.6 10-10 10" fill="none" stroke="url(#tpG)" stroke-width="3.4" stroke-linecap="round"/><circle cx="24" cy="24" r="4.2" fill="url(#tpG)"/><circle cx="35.5" cy="14.5" r="2.2" fill="#67e8f9"/><circle cx="12.5" cy="34" r="1.8" fill="#a78bfa"/></svg></span><span>TastePilot <b>AI</b></span></div><div class="navlinks"><span>Discover</span><span>Your Taste</span><span>About</span></div><div class="pill">AI Taste Agent ✦</div></nav>
 <main>
 <section class="hero">
@@ -482,18 +525,9 @@ function typeChatMessage(text){
  const log=document.getElementById('chatlog');
  const div=document.createElement('div');
  div.className='msg bot';
+ div.innerHTML=renderMarkdown(text);
  log.appendChild(div);
- let i=0;
- const speed=14;
- function tick(){
-   if(i>=text.length){div.innerHTML=renderMarkdown(text);log.scrollTop=log.scrollHeight;return;}
-   const chunk=text.slice(0,Math.min(text.length,i+2));
-   div.textContent=chunk;
-   i+=2;
-   log.scrollTop=log.scrollHeight;
-   setTimeout(tick,speed);
- }
- tick();
+ log.scrollTop=log.scrollHeight;
 }
 function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}
 function renderMarkdown(text){
