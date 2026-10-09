@@ -279,6 +279,35 @@ html[data-compact="true"] .chat{margin-top:40px;padding:18px}
 html[data-reduce-motion="true"] *,html[data-reduce-motion="true"] *:before,html[data-reduce-motion="true"] *:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
 .appearance-panel{max-height:calc(100vh - 100px);overflow:auto}
 @media(max-width:640px){.appearance-panel{max-height:calc(100vh - 86px);padding:16px}.theme-option{font-size:9px}.setting-toggle{padding:11px 0}}
+</style><style id="tastepilot-global-accent-system">
+/* One accent token drives the full interface, not just selected labels. */
+:root{--accent-soft:color-mix(in srgb,var(--user-accent) 12%,transparent);--accent-border:color-mix(in srgb,var(--user-accent) 34%,#142019);--accent-line:color-mix(in srgb,var(--user-accent) 22%,#101b13);--accent-glow:color-mix(in srgb,var(--user-accent) 18%,transparent);--accent-muted:color-mix(in srgb,var(--user-accent) 62%,#8ba493)}
+html body:before{background:linear-gradient(90deg,color-mix(in srgb,var(--user-accent) 5%,transparent) 1px,transparent 1px),linear-gradient(0deg,color-mix(in srgb,var(--user-accent) 4%,transparent) 1px,transparent 1px),radial-gradient(ellipse at 80% 0%,color-mix(in srgb,var(--user-accent) 12%,transparent),transparent 42%)!important;background-size:32px 32px,32px 32px,auto!important}
+nav,.sectionhead,.chathead,footer{border-color:var(--accent-line)!important}
+nav{box-shadow:0 8px 25px color-mix(in srgb,var(--user-accent) 5%,transparent)!important}
+.brandmark,.pill,.settings-trigger,.search-panel,.panel,.chat,.card,.flow-step,.chatlog,.msg.bot,.chatinput input,.chip,.mini-prompt,.section-note,.appearance-panel,.theme-option,.accent-option,.settings-close,.custom-accent-row input,.setting-toggle i{border-color:var(--accent-border)!important}
+.brandmark,.search-panel,.panel,.chat,.card,.chatlog,.msg.bot,.chatinput input,.chip,.mini-prompt,.flow-step,.pill,.settings-trigger{box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--user-accent) 2%,transparent)!important}
+.card,.panel,.chat,.search-panel{background:linear-gradient(145deg,color-mix(in srgb,var(--user-accent) 4%,#09120f),#050a08)!important}
+.card:after{border-color:color-mix(in srgb,var(--user-accent) 12%,transparent)!important}
+.card:hover,.chip:hover,.mini-prompt:hover,.flow-step:hover{border-color:color-mix(in srgb,var(--user-accent) 75%,transparent)!important;box-shadow:0 0 22px var(--accent-glow)!important}
+.go,.send{background:var(--user-accent)!important;color:#041008!important;border-color:color-mix(in srgb,var(--user-accent) 70%,white)!important;box-shadow:3px 3px 0 color-mix(in srgb,var(--user-accent) 35%,#07100a)!important}
+.go:hover,.send:hover{background:color-mix(in srgb,var(--user-accent) 82%,white)!important}
+.logo b,.eyebrow,.section-kicker,.tag,.icon,.live-label,.art-corner,.barrow b,.flow-step b,.msg.bot strong,.msg.bot h3,.typing-cursor,.settings-kicker,.settings-label,.custom-accent-row label{color:var(--user-accent)!important}
+.eyebrow-dot,.agent-status,.settings-foot .agent-status{background:var(--user-accent)!important;box-shadow:0 0 9px var(--accent-glow)!important}
+.gradient{background:linear-gradient(100deg,currentColor 0%,var(--user-accent) 55%,color-mix(in srgb,var(--user-accent) 72%,white) 100%)!important;background-clip:text!important;-webkit-background-clip:text!important;-webkit-text-fill-color:transparent!important}
+.fill{background:linear-gradient(90deg,color-mix(in srgb,var(--user-accent) 42%,#102016),var(--user-accent),color-mix(in srgb,var(--user-accent) 65%,white))!important}
+.bar{background:color-mix(in srgb,var(--user-accent) 9%,#102016)!important}
+.search-panel:focus-within,.chatinput input:focus{border-color:var(--user-accent)!important;box-shadow:0 0 0 2px var(--accent-soft),0 0 22px var(--accent-glow)!important}
+.brandmark svg path{stroke:var(--user-accent)!important}.brandmark svg circle:first-of-type{fill:var(--user-accent)!important}
+.chip:hover,.mini-prompt:hover{color:var(--user-accent)!important;background:var(--accent-soft)!important}
+.appearance-panel{border-color:color-mix(in srgb,var(--user-accent) 52%,#142019)!important;box-shadow:0 22px 70px #000b,0 0 35px var(--accent-glow)!important}
+.settings-close:hover,.theme-option:hover,.theme-option.is-active,.accent-option:hover,.accent-option.is-active{border-color:var(--user-accent)!important;color:var(--user-accent)!important}
+.setting-toggle input:checked+i{border-color:var(--user-accent)!important;background:var(--accent-soft)!important}.setting-toggle input:checked+i:after{background:var(--user-accent)!important}
+.settings-reset:hover{color:var(--user-accent)!important}
+.anime-stage,.king-brand-stage{border-color:var(--accent-border)!important;box-shadow:inset 0 0 35px var(--accent-soft),0 20px 55px #0008!important}
+.anime-stage:before,.king-brand-stage:after{background-color:transparent}
+html[data-theme="light"] body:before{background:linear-gradient(90deg,color-mix(in srgb,var(--user-accent) 8%,transparent) 1px,transparent 1px),linear-gradient(0deg,color-mix(in srgb,var(--user-accent) 6%,transparent) 1px,transparent 1px),radial-gradient(ellipse at 80% 0%,color-mix(in srgb,var(--user-accent) 16%,transparent),transparent 42%)!important;background-size:32px 32px,32px 32px,auto!important}
+html[data-theme="light"] .card,html[data-theme="light"] .panel,html[data-theme="light"] .chat,html[data-theme="light"] .search-panel{background:#fff!important}
 </style></head>
 <body>
 <nav><a class="logo" href="#discover" aria-label="TastePilot home"><span class="brandmark" aria-label="TastePilot logo"><svg viewBox="0 0 48 48" role="img"><path d="M24 4 29 15 40 11 34 22 44 28 31 30 30 43 22 34 12 41 14 29 4 23 17 20Z" fill="none" stroke="#75e4e8" stroke-width="1.5"/><circle cx="24" cy="24" r="7" fill="#a99bff"/><circle cx="24" cy="24" r="3" fill="#f1f5fb"/></svg></span><span>TastePilot <b>AI</b></span></a><div class="navlinks"><a href="#discover">Discover</a><a href="#taste">Taste map</a><a href="#chat">AI agent</a></div><div class="nav-right"><div class="pill"><span class="agent-status"></span> CULTURE INTELLIGENCE</div><button class="settings-trigger" id="settingsTrigger" type="button" aria-expanded="false" aria-controls="appearancePanel" onclick="toggleAppearance()">⚙ <span>SETTINGS</span></button></div></nav><aside class="appearance-panel" id="appearancePanel" aria-label="User settings" hidden>
