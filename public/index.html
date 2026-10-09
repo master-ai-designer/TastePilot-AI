@@ -175,6 +175,17 @@ footer b{color:#6bff9b}
 .king-brand-caption .art-caption{color:#c1e7cc}
 .king-brand-caption .art-corner{border-radius:3px;border-color:#28633e;background:#06100a;color:#6bff9b;font-size:9px}
 @media(max-width:640px){.king-brand-stage{min-height:365px;padding:16px}.king-logo-frame{left:4%;right:4%;top:17%;bottom:14%}.king-brand-logo{width:min(100%,290px)}}
+</style><style id="tastepilot-simple-brand">
+.hero{grid-template-columns:minmax(0,1fr);max-width:900px;margin:0 auto;justify-items:center;text-align:center;gap:22px;padding-top:38px}
+.hero-copy{width:100%;max-width:820px;display:flex;flex-direction:column;align-items:center}
+.hero-copy p{margin-left:auto;margin-right:auto}
+.hero-actions{justify-content:center}
+.search-panel{width:100%;margin-left:auto;margin-right:auto}
+.helper-line{margin-top:12px}
+.chips{justify-content:center}
+.king-brand-stage{display:none!important}
+.hero-copy h1{margin-top:20px}
+@media(max-width:640px){.hero{padding-top:20px;gap:18px}.hero-copy h1{font-size:clamp(42px,12vw,60px)}.search-panel{max-width:100%}.chips{gap:6px}.chip{font-size:10px}}
 </style></head>
 <body>
 <nav><a class="logo" href="#discover" aria-label="TastePilot home"><span class="brandmark" aria-label="TastePilot logo"><svg viewBox="0 0 48 48" role="img"><path d="M24 4 29 15 40 11 34 22 44 28 31 30 30 43 22 34 12 41 14 29 4 23 17 20Z" fill="none" stroke="#75e4e8" stroke-width="1.5"/><circle cx="24" cy="24" r="7" fill="#a99bff"/><circle cx="24" cy="24" r="3" fill="#f1f5fb"/></svg></span><span>TastePilot <b>AI</b></span></a><div class="navlinks"><a href="#discover">Discover</a><a href="#taste">Taste map</a><a href="#chat">AI agent</a></div><div class="pill"><span class="agent-status"></span> CULTURE INTELLIGENCE</div></nav>
@@ -182,10 +193,8 @@ footer b{color:#6bff9b}
 <section class="hero" id="discover">
 <div class="hero-copy"><div class="eyebrow"><span class="eyebrow-dot"></span> ROOT ACCESS TO YOUR NEXT DISCOVERY</div><h1><span style="font-size:.48em;display:block;color:#6bff9b;letter-spacing:.12em;margin-bottom:15px">TASTEPILOT // TERMINAL 01</span>Enter the <br><span class="gradient">unknown.</span></h1><p>A personal discovery intelligence console. Enter a mood, a signal, or a direction — let the agent map your next move through culture.</p>
 <div class="search-panel"><label class="sr-only" for="q" style="position:absolute;left:-9999px">What would you like to discover?</label><input id="q" aria-label="What would you like to discover?" placeholder="A film for a quiet night, music for a drive…"><button class="go" onclick="discover()">Explore <span>↗</span></button></div><div class="helper-line">Start with a mood, a favorite, or a plan. No special prompt needed.</div><div class="chips"><button class="chip" onclick="fill('a memorable movie for a relaxed evening')">01 / Cinema</button><button class="chip" onclick="fill('a relaxed evening playlist')">02 / Music</button><button class="chip" onclick="fill('a stylish place to eat')">03 / Places</button><button class="chip" onclick="fill('something to do when I am bored')">04 / Experiences</button></div><div class="status" id="status"></div></div>
-<div class="hero-art anime-stage king-brand-stage" aria-label="KING brand logo integrated into TastePilot hacker interface">
-<div class="art-top"><span class="micro-label">TASTEPILOT / BRAND CORE</span><span class="live-label">● IDENTITY VERIFIED</span></div>
-<div class="king-logo-frame"><div class="logo-crosshair crosshair-a"></div><div class="logo-crosshair crosshair-b"></div><img class="king-brand-logo" src="/king-logo.svg" alt="KING crown logo in blue and red chrome style"><div class="logo-scanline"></div></div>
-<div class="king-brand-caption"><div><div class="micro-label">PERSONAL BRAND / KING</div><div class="art-caption">Your signature. Your universe.</div></div><div class="art-corner">BRAND CORE / 001</div></div>
+<div class="hero-art king-brand-stage" aria-label="KING brand logo">
+<img class="king-brand-logo" src="/king-logo.svg" alt="KING logo">
 </div>
 </section>
 <section class="section"><div class="sectionhead"><div><div class="section-kicker">01 // DISCOVERY MODULE</div><h2>Choose your next signal.</h2><div class="muted">Input a signal. Trace unexpected connections across culture.</div></div><div class="section-note muted">CURATED · CONNECTED · PERSONAL</div></div><div class="grid" id="cards"><div class="card"><div class="icon">◈</div><span class="tag">01 / Cinema</span><h3>Stories that stay with you</h3><p>Find a film or series that matches the feeling you want from tonight.</p></div><div class="card"><div class="icon">♫</div><span class="tag">02 / Sound</span><h3>Build a world through music</h3><p>Explore sounds that fit your mood, your setting, and your personal rhythm.</p></div><div class="card"><div class="icon">⌁</div><span class="tag">03 / Out there</span><h3>Discover your next place</h3><p>Connect your interests to restaurants, places, and experiences worth trying.</p></div></div></section>
