@@ -186,9 +186,58 @@ footer b{color:#6bff9b}
 .king-brand-stage{display:none!important}
 .hero-copy h1{margin-top:20px}
 @media(max-width:640px){.hero{padding-top:20px;gap:18px}.hero-copy h1{font-size:clamp(42px,12vw,60px)}.search-panel{max-width:100%}.chips{gap:6px}.chip{font-size:10px}}
+</style><style id="tastepilot-user-appearance">
+:root{--user-accent:#6bff9b;--user-accent-rgb:107,255,155}
+.nav-right{display:flex;align-items:center;gap:10px}
+.settings-trigger{height:34px;display:inline-flex;align-items:center;gap:7px;padding:0 11px;border:1px solid color-mix(in srgb,var(--user-accent) 40%,transparent);border-radius:3px;background:color-mix(in srgb,var(--user-accent) 6%,#050a08);color:var(--user-accent);font:700 10px inherit;letter-spacing:.06em;cursor:pointer;transition:background .16s,border-color .16s,transform .16s}
+.settings-trigger:hover{background:color-mix(in srgb,var(--user-accent) 13%,#050a08);border-color:var(--user-accent);transform:translateY(-1px)}
+.appearance-panel{position:fixed;z-index:100;top:82px;right:clamp(12px,4vw,60px);width:min(350px,calc(100vw - 24px));padding:20px;background:#08110b;border:1px solid color-mix(in srgb,var(--user-accent) 55%,#153521);box-shadow:0 22px 70px #000b,0 0 35px color-mix(in srgb,var(--user-accent) 8%,transparent);color:#dfffe9}
+.appearance-panel[hidden]{display:none}
+.settings-head{display:flex;align-items:start;justify-content:space-between;gap:12px}
+.settings-kicker,.settings-label,.custom-accent-row label{font-size:9px;letter-spacing:.14em;color:var(--user-accent)}
+.settings-head h3{font-size:20px;letter-spacing:-.04em;margin:7px 0 0}
+.settings-close{border:1px solid #24432e;background:#07100a;color:#c4e6cd;font-size:22px;line-height:1;width:30px;height:30px;cursor:pointer}
+.appearance-panel>p{font-size:11px;line-height:1.7;color:#83a58f;margin:14px 0 19px}
+.settings-label{margin-bottom:10px}
+.accent-options{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px}
+.accent-option{min-width:0;padding:9px 2px 8px;display:flex;align-items:center;flex-direction:column;gap:8px;background:#050a07;border:1px solid #1c3926;color:#9cbaa5;font:10px inherit;cursor:pointer}
+.accent-option span{width:18px;height:18px;border-radius:50%;background:var(--swatch);box-shadow:0 0 12px color-mix(in srgb,var(--swatch) 25%,transparent)}
+.accent-option:hover,.accent-option.is-active{border-color:var(--swatch);color:#effff2;background:#ffffff06}
+.accent-option.is-active{box-shadow:inset 0 0 0 1px var(--swatch)}
+.custom-accent-row{display:flex;align-items:center;justify-content:space-between;margin-top:19px;padding:12px 0;border-top:1px solid #183c2a;border-bottom:1px solid #183c2a}
+.custom-accent-row input{width:38px;height:30px;border:1px solid #31523a;background:#07100a;padding:2px;cursor:pointer}
+.settings-reset{width:100%;text-align:left;margin-top:12px;padding:10px 0;border:0;background:transparent;color:#a3c5ad;font:11px inherit;cursor:pointer}
+.settings-reset:hover{color:var(--user-accent)}
+.settings-foot{display:flex;align-items:center;gap:9px;margin-top:12px;padding-top:12px;border-top:1px solid #183c2a;font-size:8px;letter-spacing:.06em;color:#62816c}
+.settings-foot .agent-status{background:var(--user-accent);box-shadow:0 0 8px var(--user-accent)}
+/* Accent-only overrides keep the chosen layout intact. */
+.logo b,.eyebrow,.section-kicker,.tag,.icon,.live-label,.art-corner,.barrow b,.flow-step b,.msg.bot strong,.msg.bot h3,.typing-cursor{color:var(--user-accent)!important}
+.eyebrow-dot,.agent-status{background:var(--user-accent)!important;box-shadow:0 0 9px color-mix(in srgb,var(--user-accent) 65%,transparent)!important}
+.go,.send{background:var(--user-accent)!important;border-color:color-mix(in srgb,var(--user-accent) 80%,white)!important;box-shadow:3px 3px 0 color-mix(in srgb,var(--user-accent) 30%,#07100a)!important}
+.go:hover,.send:hover{background:color-mix(in srgb,var(--user-accent) 80%,white)!important}
+.search-panel:focus-within,.chatinput input:focus{border-color:var(--user-accent)!important}
+.fill{background:linear-gradient(90deg,color-mix(in srgb,var(--user-accent) 45%,#145a30),var(--user-accent),color-mix(in srgb,var(--user-accent) 70%,white))!important}
+.brandmark svg path{stroke:var(--user-accent)!important}.brandmark svg circle:first-of-type{fill:var(--user-accent)!important}
+.chip:hover,.mini-prompt:hover{border-color:color-mix(in srgb,var(--user-accent) 65%,transparent)!important;color:var(--user-accent)!important}
+@media(max-width:640px){.nav-right{gap:6px}.nav-right .pill{display:none}.settings-trigger{padding:0 8px}.appearance-panel{top:74px;right:12px}.accent-options{gap:4px}.accent-option{font-size:9px}}
+@media(prefers-reduced-motion:reduce){.settings-trigger,.accent-option{transition:none}}
 </style></head>
 <body>
-<nav><a class="logo" href="#discover" aria-label="TastePilot home"><span class="brandmark" aria-label="TastePilot logo"><svg viewBox="0 0 48 48" role="img"><path d="M24 4 29 15 40 11 34 22 44 28 31 30 30 43 22 34 12 41 14 29 4 23 17 20Z" fill="none" stroke="#75e4e8" stroke-width="1.5"/><circle cx="24" cy="24" r="7" fill="#a99bff"/><circle cx="24" cy="24" r="3" fill="#f1f5fb"/></svg></span><span>TastePilot <b>AI</b></span></a><div class="navlinks"><a href="#discover">Discover</a><a href="#taste">Taste map</a><a href="#chat">AI agent</a></div><div class="pill"><span class="agent-status"></span> CULTURE INTELLIGENCE</div></nav>
+<nav><a class="logo" href="#discover" aria-label="TastePilot home"><span class="brandmark" aria-label="TastePilot logo"><svg viewBox="0 0 48 48" role="img"><path d="M24 4 29 15 40 11 34 22 44 28 31 30 30 43 22 34 12 41 14 29 4 23 17 20Z" fill="none" stroke="#75e4e8" stroke-width="1.5"/><circle cx="24" cy="24" r="7" fill="#a99bff"/><circle cx="24" cy="24" r="3" fill="#f1f5fb"/></svg></span><span>TastePilot <b>AI</b></span></a><div class="navlinks"><a href="#discover">Discover</a><a href="#taste">Taste map</a><a href="#chat">AI agent</a></div><div class="nav-right"><div class="pill"><span class="agent-status"></span> CULTURE INTELLIGENCE</div><button class="settings-trigger" id="settingsTrigger" type="button" aria-expanded="false" aria-controls="appearancePanel" onclick="toggleAppearance()">⚙ <span>SETTINGS</span></button></div></nav><aside class="appearance-panel" id="appearancePanel" aria-label="Appearance settings" hidden>
+<div class="settings-head"><div><span class="settings-kicker">USER CONFIGURATION</span><h3>Appearance</h3></div><button class="settings-close" type="button" onclick="toggleAppearance(false)" aria-label="Close settings">×</button></div>
+<p>Customize the accent color across the interface. Your choice stays saved on this device.</p>
+<div class="settings-label">ACCENT PRESETS</div>
+<div class="accent-options">
+<button type="button" class="accent-option is-active" data-color="#6bff9b" style="--swatch:#6bff9b" onclick="setAccent('#6bff9b',this)" aria-label="Neon green"><span></span>Neon</button>
+<button type="button" class="accent-option" data-color="#59d9ff" style="--swatch:#59d9ff" onclick="setAccent('#59d9ff',this)" aria-label="Cyber cyan"><span></span>Cyan</button>
+<button type="button" class="accent-option" data-color="#b69cff" style="--swatch:#b69cff" onclick="setAccent('#b69cff',this)" aria-label="Violet"><span></span>Violet</button>
+<button type="button" class="accent-option" data-color="#ffc36b" style="--swatch:#ffc36b" onclick="setAccent('#ffc36b',this)" aria-label="Amber"><span></span>Amber</button>
+<button type="button" class="accent-option" data-color="#ff718b" style="--swatch:#ff718b" onclick="setAccent('#ff718b',this)" aria-label="Red"><span></span>Red</button>
+</div>
+<div class="custom-accent-row"><label for="customAccent">CUSTOM COLOR</label><input id="customAccent" type="color" value="#6bff9b" aria-label="Choose custom accent color" oninput="setAccent(this.value,null,false)"></div>
+<button type="button" class="settings-reset" onclick="setAccent('#6bff9b',document.querySelector('[data-color=&quot;#6bff9b&quot;]'))">↺ Reset to default</button>
+<div class="settings-foot"><span class="agent-status"></span> LOCAL PREFERENCE / SAVED AUTOMATICALLY</div>
+</aside>
 <main>
 <section class="hero" id="discover">
 <div class="hero-copy"><div class="eyebrow"><span class="eyebrow-dot"></span> ROOT ACCESS TO YOUR NEXT DISCOVERY</div><h1><span style="font-size:.48em;display:block;color:#6bff9b;letter-spacing:.12em;margin-bottom:15px">TASTEPILOT // TERMINAL 01</span>Enter the <br><span class="gradient">unknown.</span></h1><p>A personal discovery intelligence console. Enter a mood, a signal, or a direction — let the agent map your next move through culture.</p>
@@ -311,4 +360,25 @@ function renderMarkdown(text){
 
 
 </script>
-</body></html>
+<script>
+function toggleAppearance(force){
+ const panel=document.getElementById('appearancePanel');
+ const trigger=document.getElementById('settingsTrigger');
+ const open=typeof force==='boolean'?force:panel.hidden;
+ panel.hidden=!open;trigger.setAttribute('aria-expanded',String(open));
+ if(open){const colorInput=document.getElementById('customAccent');if(colorInput)colorInput.value=getComputedStyle(document.documentElement).getPropertyValue('--user-accent').trim()||'#6bff9b';}
+}
+function setAccent(color,button,save=true){
+ if(!/^#[0-9a-f]{6}$/i.test(color))return;
+ document.documentElement.style.setProperty('--user-accent',color);
+ const hex=color.slice(1);const r=parseInt(hex.slice(0,2),16),g=parseInt(hex.slice(2,4),16),b=parseInt(hex.slice(4,6),16);
+ document.documentElement.style.setProperty('--user-accent-rgb',r+','+g+','+b);
+ const input=document.getElementById('customAccent');if(input)input.value=color;
+ document.querySelectorAll('.accent-option').forEach(el=>el.classList.toggle('is-active',el.dataset.color.toLowerCase()===color.toLowerCase()));
+ if(button&&button.classList.contains('accent-option'))button.classList.add('is-active');
+ if(save){try{localStorage.setItem('tastepilot-accent',color)}catch(e){}}
+}
+(function(){let saved=null;try{saved=localStorage.getItem('tastepilot-accent')}catch(e){}if(saved&&/^#[0-9a-f]{6}$/i.test(saved))setAccent(saved,null,false);})();
+document.addEventListener('keydown',function(e){if(e.key==='Escape')toggleAppearance(false)});
+document.addEventListener('click',function(e){const panel=document.getElementById('appearancePanel'),trigger=document.getElementById('settingsTrigger');if(panel&&!panel.hidden&&!panel.contains(e.target)&&!trigger.contains(e.target))toggleAppearance(false)});
+</script></body></html>
