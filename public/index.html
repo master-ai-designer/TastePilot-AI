@@ -427,27 +427,116 @@ nav{background:rgba(9,11,17,.98)}
 .aurora-field,.aura-orbit{display:none!important}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 </style>
+
+<style id="tastepilot-ux-premium">
+:root{color-scheme:dark;--ux-line:rgba(190,198,225,.13);--ux-muted:#9aa3b8}
+html{scroll-behavior:auto;scroll-padding-top:24px}
+body{font-family:Inter,"Segoe UI",system-ui,sans-serif;background:#090b11;color:#f5f6fc;line-height:1.5}
+body:before{inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(112,89,202,.12),transparent 45%);filter:none;opacity:1}
+nav{position:sticky;top:0;z-index:20;height:72px;padding:0 clamp(18px,5vw,72px);gap:18px;background:#090b11;border-bottom:1px solid var(--ux-line);box-shadow:0 8px 24px rgba(0,0,0,.16)}
+.logo{flex-shrink:0}.navlinks{display:flex;align-items:center;gap:clamp(12px,2.5vw,30px)}
+.navlinks a{color:#aab1c4;text-decoration:none;font-size:13px;font-weight:600;padding:9px 0}
+.navlinks a:hover,.navlinks a:focus-visible{color:#fff}
+.navlinks a:focus-visible,.chip:focus-visible,.mini-prompt:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #9f8cff;outline-offset:3px}
+nav .pill{font-size:12px;white-space:nowrap;background:#141522;border-color:var(--ux-line)}
+main{max-width:1160px;padding:clamp(46px,7vw,84px) 24px 72px}
+.hero{text-align:left;max-width:860px;margin:0 auto}
+.eyebrow{display:inline-flex;align-items:center;gap:9px;text-transform:uppercase;letter-spacing:.13em;font-size:10px;font-weight:800;color:#c2b7ff;background:#151421;border-color:#29243e;border-radius:7px;padding:8px 11px;box-shadow:none}
+.eyebrow-dot{width:6px;height:6px;background:#a995ff;border-radius:50%}
+h1{max-width:800px;font-size:clamp(44px,7vw,78px);line-height:1.02;letter-spacing:-.065em;margin:23px 0 17px}
+.gradient{background:linear-gradient(100deg,#c6b8ff,#8fe7f1);-webkit-background-clip:text;background-clip:text}
+.hero p{font-size:16px;line-height:1.75;color:#a7aec1;max-width:650px;margin:0 0 26px}
+.search{display:flex;gap:10px;max-width:790px;padding:8px;border:1px solid #303449;border-radius:16px;background:#11141e;box-shadow:0 12px 34px rgba(0,0,0,.18)}
+.search input{min-width:0;width:100%;padding:15px 14px;font-size:15px}
+input::placeholder{color:#7f879b;opacity:1}
+.go,.send{min-height:48px;padding:0 18px;white-space:nowrap;border-radius:11px;background:linear-gradient(135deg,#8065e8,#4c72c7);border:1px solid #9c8bff45;box-shadow:0 5px 16px #5e52b326;font-size:13px;cursor:pointer}
+.helper-line{display:flex;align-items:center;gap:8px;color:#8992a8;font-size:12px;margin-top:12px}.helper-icon{color:#b8a9ff}
+.section-kicker,.starter-label{color:#9c91d7;font-size:10px;font-weight:800;letter-spacing:.15em;text-transform:uppercase}
+.starter-label{margin-top:26px}
+.chips{justify-content:flex-start;gap:9px;margin-top:10px}
+.chip{color:#d1d5e4;font-size:12px;font-weight:600;border-radius:10px;padding:10px 12px;background:#121520;border:1px solid #292e40;cursor:pointer}
+.chip:hover{background:#191c2b;border-color:#51477c}
+.section{margin-top:76px}.sectionhead{align-items:center;gap:20px;margin-bottom:18px}
+.section h2,.chathead h2{font-size:clamp(22px,3vw,28px);letter-spacing:-.04em;margin:5px 0 4px}
+.muted{color:var(--ux-muted);font-size:13px;line-height:1.6}
+.section-note{border:1px solid var(--ux-line);border-radius:8px;padding:8px 11px;white-space:nowrap;font-size:11px}
+.grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.card,.panel,.chat{background:linear-gradient(150deg,#151925,#10131c);border:1px solid #272c3b;border-radius:17px;box-shadow:0 12px 30px rgba(0,0,0,.14)}
+.card{min-height:188px;padding:21px}.card:after{display:none}
+.card .icon{display:inline-grid;place-items:center;width:42px;height:42px;border-radius:12px;background:#202238;font-size:22px}
+.card .tag{display:block;margin-top:17px;color:#a99bff;font-size:10px;font-weight:800;letter-spacing:.12em}
+.card h3{font-size:17px;letter-spacing:-.02em;margin:7px 0}.card p{font-size:13px;color:#9ba3b6;line-height:1.65}
+.profile{grid-template-columns:1fr 1fr;gap:14px}.panel{padding:23px;min-width:0}.panel h2{font-size:19px;letter-spacing:-.03em;margin:0}
+.barrow{grid-template-columns:90px minmax(40px,1fr) 28px;gap:9px}.bar{background:#252a39}.fill{box-shadow:none;background:linear-gradient(90deg,#9277ef,#6bcfe2)}
+.panel .chips{margin-top:20px}.panel .chip{cursor:default}
+.chat{margin-top:76px;padding:clamp(18px,3vw,28px);scroll-margin-top:18px}
+.chathead{gap:16px;align-items:center;margin-bottom:20px}.chathead .section-kicker{margin-bottom:7px}.chathead h2{margin:0 0 5px}
+.agent-pill{display:flex;align-items:center;gap:8px;font-size:11px;background:#141725;border-color:#2a3042;white-space:nowrap}
+.agent-status{width:7px;height:7px;border-radius:50%;background:#69d8b2;display:inline-block}
+.chatlog{height:clamp(280px,36vw,390px);min-height:260px;background:#0c0f17;border:1px solid #222738;border-radius:13px;padding:17px;gap:13px}
+.msg{max-width:min(88%,680px);font-size:14px;line-height:1.7;border-radius:13px;padding:13px 15px}
+.msg.bot{background:#171b27;border-color:#2a3040;color:#e0e4f0}.msg.user{background:#34305a;border-color:#5a4f8d}
+.welcome-msg{display:flex;gap:12px;align-items:flex-start;max-width:94%}
+.welcome-msg p{margin:5px 0 0;color:#b4bbcd}
+.welcome-mark{display:grid;place-items:center;flex:0 0 30px;height:30px;border-radius:9px;background:#28223f;color:#c6b8ff}
+.welcome-examples{display:flex;gap:7px;flex-wrap:wrap;margin-top:13px}
+.mini-prompt{font:inherit;font-size:11px;font-weight:600;color:#cbd0e0;background:#202436;border:1px solid #343a50;border-radius:8px;padding:7px 9px;cursor:pointer}
+.mini-prompt:hover{background:#292e43;border-color:#62548d}
+.chatinput{align-items:stretch;margin-top:12px}.chatinput input{background:#0d1018;border:1px solid #2b3040;border-radius:11px;min-height:49px;padding:12px 14px;font-size:14px}
+.input-hint{font-size:11px;color:#7f899e;margin:8px 2px 0}.input-hint span{padding:0 5px;color:#596177}
+.status{font-size:12px;line-height:1.6}
+footer{margin-top:8px;border-top:1px solid #1d2230;color:#7e879c}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:760px){
+ nav{height:auto;min-height:66px;flex-wrap:wrap;padding:12px 18px}
+ .logo{font-size:17px}.brandmark,.brandmark svg{width:34px;height:34px}
+ .navlinks{order:3;width:100%;justify-content:space-between;gap:10px;border-top:1px solid #202536;padding-top:8px}
+ .navlinks a{font-size:12px;padding:5px 0}
+ nav>.pill{margin-left:auto;font-size:10px;padding:8px 10px}
+ main{padding:42px 17px 56px}
+ h1{font-size:clamp(40px,11vw,62px);line-height:1.04}
+ .hero p{font-size:14px;line-height:1.7}
+ .search{align-items:stretch;gap:7px}
+ .search input{padding:12px 9px;font-size:13px}
+ .go{padding:0 12px;min-height:46px;font-size:12px}
+ .chips{gap:7px}.chip{font-size:11px;padding:9px 10px}
+ .section{margin-top:55px}.sectionhead{align-items:flex-start}.section-note{display:none}
+ .grid,.profile{grid-template-columns:minmax(0,1fr)}
+ .card{min-height:0;padding:19px}.card .tag{margin-top:12px}.panel{padding:20px}
+ .chat{margin-top:55px;padding:14px}.chathead{align-items:flex-start}
+ .agent-pill{font-size:0;padding:10px}.agent-status{width:8px;height:8px}
+ .chatlog{height:350px;padding:10px}.msg{max-width:94%;font-size:13px;padding:11px 12px}
+ .welcome-msg{max-width:100%}.chatinput{gap:7px}
+ .chatinput input{padding:10px;font-size:12px}.send{padding:0 12px;min-width:66px}
+ .barrow{grid-template-columns:78px minmax(35px,1fr) 24px}
+}
+@media(max-width:390px){
+ .navlinks a{font-size:11px}.search{flex-direction:column}
+ .search input{min-height:44px;padding:10px 12px}.go{width:100%}
+ .agent-pill{display:none}.chathead h2{font-size:20px}
+}
+</style>
 </head>
 <body>
-<nav><div class="logo"><span class="brandmark" aria-label="TastePilot AI logo"><svg viewBox="0 0 48 48" role="img"><defs><linearGradient id="tpG" x1="8" y1="6" x2="40" y2="42"><stop stop-color="#c4b5fd"/><stop offset=".5" stop-color="#67e8f9"/><stop offset="1" stop-color="#a78bfa"/></linearGradient></defs><rect x="3" y="3" width="42" height="42" rx="14" fill="#11131c" stroke="#ffffff18"/><path d="M14 24c0-5.8 4.6-10 10-10s10 4.2 10 10-4.6 10-10 10" fill="none" stroke="url(#tpG)" stroke-width="3.4" stroke-linecap="round"/><circle cx="24" cy="24" r="4.2" fill="url(#tpG)"/><circle cx="35.5" cy="14.5" r="2.2" fill="#67e8f9"/><circle cx="12.5" cy="34" r="1.8" fill="#a78bfa"/></svg></span><span>TastePilot <b>AI</b></span></div><div class="navlinks"><span>Discover</span><span>Your Taste</span><span>About</span></div><div class="pill">AI Taste Agent ✦</div></nav>
+<nav><div class="logo"><span class="brandmark" aria-label="TastePilot AI logo"><svg viewBox="0 0 48 48" role="img"><defs><linearGradient id="tpG" x1="8" y1="6" x2="40" y2="42"><stop stop-color="#c4b5fd"/><stop offset=".5" stop-color="#67e8f9"/><stop offset="1" stop-color="#a78bfa"/></linearGradient></defs><rect x="3" y="3" width="42" height="42" rx="14" fill="#11131c" stroke="#ffffff18"/><path d="M14 24c0-5.8 4.6-10 10-10s10 4.2 10 10-4.6 10-10 10" fill="none" stroke="url(#tpG)" stroke-width="3.4" stroke-linecap="round"/><circle cx="24" cy="24" r="4.2" fill="url(#tpG)"/><circle cx="35.5" cy="14.5" r="2.2" fill="#67e8f9"/><circle cx="12.5" cy="34" r="1.8" fill="#a78bfa"/></svg></span><span>TastePilot <b>AI</b></span></div><div class="navlinks"><a href="#discover">Discover</a><a href="#taste">Your Taste</a><a href="#chat">Chat with agent</a></div><div class="pill">AI Taste Agent ✦</div></nav>
 <main>
-<section class="hero">
-<div class="eyebrow">✦ Cultural intelligence, made personal</div>
-<h1>Discover what feels <span class="gradient">made for you.</span></h1>
-<p>Describe what you love, what you're feeling, or what you want to discover. TastePilot turns that signal into culturally grounded recommendations.</p>
-<div class="search"><input id="q" placeholder="Try “a cozy evening with dreamy music…”"><button class="go" onclick="discover()">Discover →</button></div>
+<section class="hero" id="discover">
+<div class="eyebrow"><span class="eyebrow-dot"></span> YOUR PERSONAL DISCOVERY AGENT</div>
+<h1>Find your next <span class="gradient">favorite thing.</span></h1>
+<p>Movies, music, places and experiences — tell TastePilot your mood or interests, and explore discoveries shaped around your taste.</p>
+<div class="search"><label class="sr-only" for="q">What would you like to discover?</label><input id="q" aria-label="What would you like to discover?" placeholder="I’m in the mood for…"><button class="go" onclick="discover()">Explore taste →</button></div><div class="helper-line"><span class="helper-icon">✦</span> Start with a mood, a favorite, or a plan. No special prompt needed.</div>
 <div class="chips"><span class="chip" onclick="fill('a memorable movie for a relaxed evening')">Movies</span><span class="chip" onclick="fill('a relaxed evening playlist')">Late-night music</span><span class="chip" onclick="fill('a stylish place to eat')">Dinner places</span><span class="chip" onclick="fill('something to watch on a rainy evening')">Rainy evening</span></div>
 <div class="status" id="status"></div>
 </section>
 <section class="section">
-<div class="sectionhead"><div><h2>Made for your taste</h2><div class="muted">TastePilot connects intent, taste signals and cultural context.</div></div><div class="muted">Qloo-powered</div></div>
+<div class="sectionhead"><div><div class="section-kicker">YOUR DISCOVERY SPACE</div><h2>Ideas worth exploring</h2><div class="muted">A starting point for discovering something that fits you.</div></div><div class="muted section-note">Personalized discovery</div></div>
 <div class="grid" id="cards">
 <div class="card"><div class="icon">🎬</div><span class="tag">Cinema</span><h3>Soft, emotional stories</h3><p>Find films and series that fit the mood and taste behind your request.</p></div>
 <div class="card"><div class="icon">🎧</div><span class="tag">Music</span><h3>Dreamy night atmosphere</h3><p>Discover music that complements the same emotional and cultural signal.</p></div>
 <div class="card"><div class="icon">🍜</div><span class="tag">Experiences</span><h3>Connected discoveries</h3><p>Move beyond one category and discover related cultural experiences.</p></div>
 </div>
 </section>
-<section class="section profile">
+<section class="section profile" id="taste">
 <div class="panel"><h2>Your taste profile</h2><div class="muted" id="tasteHint" style="margin-top:7px">Describe what you want — your profile adapts to your preferences.</div><div class="bars" id="tasteBars">
 <div class="barrow"><span>Romance</span><div class="bar"><div class="fill" style="width:88%"></div></div><b>88</b></div>
 <div class="barrow"><span>Cozy</span><div class="bar"><div class="fill" style="width:81%"></div></div><b>81</b></div>
@@ -456,14 +545,16 @@ nav{background:rgba(9,11,17,.98)}
 </div></div>
 <div class="panel"><h2>Agent flow</h2><p class="muted" style="line-height:1.7;margin-top:15px">Intent → taste signals → Qloo cultural intelligence → connected recommendations → explanation.</p><div class="chips" style="justify-content:flex-start"><span class="chip">Intent</span><span class="chip">Taste signals</span><span class="chip">Qloo</span><span class="chip">Recommendations</span></div></div>
 </section>
-<section class="chat">
-<div class="chathead"><div><h2>Chat with TastePilot</h2><div class="muted">Tell the agent what you want. Ask follow-up questions naturally.</div></div><div class="pill">Agent ✦</div></div>
-<div class="chatlog" id="chatlog"><div class="msg bot">Hi! 👋 I'm TastePilot. Tell me what you want to watch, listen to, eat, or discover — I’ll help you find something that fits.</div></div>
-<div class="chatinput"><input id="chatq" placeholder="e.g. Menga kechki dam olish uchun biror narsa topib ber..." onkeydown="if(event.key==='Enter')sendChat()"><button class="send" onclick="sendChat()">Send →</button></div><div class="status" id="voiceStatus" style="text-align:left"></div>
+<section class="chat" id="chat">
+<div class="chathead"><div><div class="section-kicker">YOUR AI COMPANION</div><h2>Let’s find your next favorite</h2><div class="muted">Ask naturally. Refine the answer together, one message at a time.</div></div><div class="pill agent-pill"><span class="agent-status"></span> TastePilot agent</div></div>
+<div class="chatlog" id="chatlog"><div class="msg bot welcome-msg"><span class="welcome-mark">✦</span><div><strong>Hi, I’m TastePilot.</strong><p>Not sure where to start? Tell me how you feel, what you enjoy, or what kind of day you want. I’ll help you narrow it down.</p><div class="welcome-examples"><button class="mini-prompt" onclick="setChatPrompt('I am bored. Suggest something that fits my mood.')">I’m bored</button><button class="mini-prompt" onclick="setChatPrompt('Help me choose a movie for tonight.')">Pick a movie</button><button class="mini-prompt" onclick="setChatPrompt('Suggest somewhere to go with a friend.')">Plan with a friend</button></div></div></div></div>
+<div class="chatinput"><input id="chatq" aria-label="Message TastePilot" placeholder="Tell me what you’re in the mood for…" onkeydown="if(event.key==='Enter')sendChat()"><button class="send" onclick="sendChat()">Send →</button></div><div class="input-hint">Enter to send <span>·</span> You can ask follow-up questions</div><div class="status" id="voiceStatus" style="text-align:left"></div>
 </section>
 </main><footer>TastePilot AI · Built for the Qloo Agentic Hackathon</footer>
 <script>
 function fill(t){document.getElementById('q').value=t}
+function setChatPrompt(t){const input=document.getElementById('chatq');input.value=t;input.focus()}
+function setChatPrompt(t){const input=document.getElementById('chatq');input.value=t;input.focus()}
 function analyzeTaste(query){
  const text=query.toLowerCase();
  const groups=[
