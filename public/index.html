@@ -221,12 +221,76 @@ footer b{color:#6bff9b}
 .chip:hover,.mini-prompt:hover{border-color:color-mix(in srgb,var(--user-accent) 65%,transparent)!important;color:var(--user-accent)!important}
 @media(max-width:640px){.nav-right{gap:6px}.nav-right .pill{display:none}.settings-trigger{padding:0 8px}.appearance-panel{top:74px;right:12px}.accent-options{gap:4px}.accent-option{font-size:9px}}
 @media(prefers-reduced-motion:reduce){.settings-trigger,.accent-option{transition:none}}
+</style><style id="tastepilot-full-settings">
+:root{--user-accent:#6bff9b;--user-font-scale:1}
+html{font-size:calc(16px * var(--user-font-scale))}
+.settings-space{margin-top:19px}
+.theme-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.theme-option{min-width:0;padding:10px 4px;border:1px solid #1c3926;background:#050a07;color:#91b29b;font:inherit;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px}
+.theme-option span{font-size:14px}
+.theme-option:hover,.theme-option.is-active{border-color:var(--user-accent);color:var(--user-accent);background:#ffffff07}
+.setting-toggle{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 0;border-bottom:1px solid #183c2a;cursor:pointer}
+.setting-toggle span{display:flex;flex-direction:column;gap:4px}
+.setting-toggle b{font-size:11px;font-weight:600;color:var(--settings-text,#dfffe9)}
+.setting-toggle small{font-size:9px;color:var(--settings-muted,#83a58f)}
+.setting-toggle input{position:absolute;opacity:0;width:1px;height:1px}
+.setting-toggle i{width:34px;height:19px;border:1px solid #31523a;background:#07100a;position:relative;flex-shrink:0}
+.setting-toggle i:after{content:"";position:absolute;top:3px;left:3px;width:11px;height:11px;background:#75917e;transition:transform .16s,background .16s}
+.setting-toggle input:checked+i{border-color:var(--user-accent);background:color-mix(in srgb,var(--user-accent) 13%,#07100a)}
+.setting-toggle input:checked+i:after{transform:translateX(15px);background:var(--user-accent)}
+.settings-reset{border-top:1px solid #183c2a}
+html[data-theme="light"] body{background:#f1f5f2!important;color:#17251c!important}
+html[data-theme="light"] body:before{opacity:.5;background:linear-gradient(90deg,#153b2410 1px,transparent 1px),linear-gradient(0deg,#153b2408 1px,transparent 1px),radial-gradient(ellipse at 80% 0%,#6bff9b20,transparent 42%)!important;background-size:32px 32px,32px 32px,auto!important}
+html[data-theme="light"] nav{background:#f7faf8!important;border-color:#d3e0d7!important;box-shadow:0 5px 20px #1c392608!important}
+html[data-theme="light"] .logo,html[data-theme="light"] h1,html[data-theme="light"] h2,html[data-theme="light"] h3{color:#17251c}
+html[data-theme="light"] .logo b{color:var(--user-accent)!important}
+html[data-theme="light"] .navlinks a{color:#50675a}
+html[data-theme="light"] .pill{background:#e9f2ec!important;border-color:#cbdccf!important;color:#3f5b49!important}
+html[data-theme="light"] .hero p,html[data-theme="light"] .muted,html[data-theme="light"] .helper-line,html[data-theme="light"] .input-hint{color:#5d7063!important}
+html[data-theme="light"] .gradient{background:linear-gradient(100deg,#17251c,#23804a 65%,var(--user-accent));background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+html[data-theme="light"] .search-panel,html[data-theme="light"] .panel,html[data-theme="light"] .chat,html[data-theme="light"] .card{background:#fff!important;border-color:#d3e0d7!important;box-shadow:0 10px 30px #1c392608!important}
+html[data-theme="light"] .search-panel input,html[data-theme="light"] .chatinput input{background:#fff!important;color:#17251c!important;border-color:#cbdccf!important}
+html[data-theme="light"] .chip,html[data-theme="light"] .mini-prompt{background:#f5f9f6!important;border-color:#d3e0d7!important;color:#52695a!important}
+html[data-theme="light"] .card p,html[data-theme="light"] .art-caption{color:#607266!important}
+html[data-theme="light"] .sectionhead,html[data-theme="light"] .chathead,html[data-theme="light"] footer{border-color:#d3e0d7!important}
+html[data-theme="light"] .bar{background:#e4ece6!important}
+html[data-theme="light"] .barrow{color:#52695a!important}
+html[data-theme="light"] .flow-step{background:#f5f9f6!important;border-color:#d3e0d7!important;color:#52695a!important}
+html[data-theme="light"] .msg.bot{background:#f4f8f5!important;border-color:#d3e0d7!important;color:#263b2d!important}
+html[data-theme="light"] .msg.user{background:#e0f4e6!important;border-color:#b9dec4!important;color:#173c25!important}
+html[data-theme="light"] .msg.bot code,html[data-theme="light"] .msg.bot pre{background:#e9f0eb!important;border-color:#d3e0d7!important;color:#243a2b!important}
+html[data-theme="light"] footer{color:#607266!important}
+html[data-theme="light"] footer b{color:#31543b!important}
+html[data-theme="light"] .appearance-panel{background:#f7faf8!important;color:#17251c!important;border-color:#cbdccf!important;box-shadow:0 22px 70px #17251c26!important}
+html[data-theme="light"] .appearance-panel>p{color:#5d7063!important}
+html[data-theme="light"] .theme-option,html[data-theme="light"] .accent-option{background:#fff!important;border-color:#d3e0d7!important;color:#52695a!important}
+html[data-theme="light"] .theme-option.is-active,html[data-theme="light"] .accent-option.is-active{border-color:var(--user-accent)!important;color:#203b29!important;background:#eaf5ed!important}
+html[data-theme="light"] .settings-close,html[data-theme="light"] .custom-accent-row input{background:#fff!important;color:#203b29!important;border-color:#cbdccf!important}
+html[data-theme="light"] .setting-toggle b{color:#17251c!important}
+html[data-theme="light"] .setting-toggle small,html[data-theme="light"] .settings-reset{color:#5d7063!important}
+html[data-theme="light"] .setting-toggle i{background:#e5eee7!important;border-color:#bdcfc2!important}
+html[data-theme="light"] .settings-foot,html[data-theme="light"] .custom-accent-row{border-color:#d3e0d7!important}
+html[data-theme="light"] .settings-foot{color:#5d7063!important}
+html[data-compact="true"] main{padding-top:28px;padding-bottom:48px}
+html[data-compact="true"] .section{margin-top:38px}
+html[data-compact="true"] .hero{padding-top:18px;padding-bottom:8px}
+html[data-compact="true"] .card{min-height:150px;padding:16px}
+html[data-compact="true"] .chat{margin-top:40px;padding:18px}
+html[data-reduce-motion="true"] *,html[data-reduce-motion="true"] *:before,html[data-reduce-motion="true"] *:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+.appearance-panel{max-height:calc(100vh - 100px);overflow:auto}
+@media(max-width:640px){.appearance-panel{max-height:calc(100vh - 86px);padding:16px}.theme-option{font-size:9px}.setting-toggle{padding:11px 0}}
 </style></head>
 <body>
-<nav><a class="logo" href="#discover" aria-label="TastePilot home"><span class="brandmark" aria-label="TastePilot logo"><svg viewBox="0 0 48 48" role="img"><path d="M24 4 29 15 40 11 34 22 44 28 31 30 30 43 22 34 12 41 14 29 4 23 17 20Z" fill="none" stroke="#75e4e8" stroke-width="1.5"/><circle cx="24" cy="24" r="7" fill="#a99bff"/><circle cx="24" cy="24" r="3" fill="#f1f5fb"/></svg></span><span>TastePilot <b>AI</b></span></a><div class="navlinks"><a href="#discover">Discover</a><a href="#taste">Taste map</a><a href="#chat">AI agent</a></div><div class="nav-right"><div class="pill"><span class="agent-status"></span> CULTURE INTELLIGENCE</div><button class="settings-trigger" id="settingsTrigger" type="button" aria-expanded="false" aria-controls="appearancePanel" onclick="toggleAppearance()">⚙ <span>SETTINGS</span></button></div></nav><aside class="appearance-panel" id="appearancePanel" aria-label="Appearance settings" hidden>
-<div class="settings-head"><div><span class="settings-kicker">USER CONFIGURATION</span><h3>Appearance</h3></div><button class="settings-close" type="button" onclick="toggleAppearance(false)" aria-label="Close settings">×</button></div>
-<p>Customize the accent color across the interface. Your choice stays saved on this device.</p>
-<div class="settings-label">ACCENT PRESETS</div>
+<nav><a class="logo" href="#discover" aria-label="TastePilot home"><span class="brandmark" aria-label="TastePilot logo"><svg viewBox="0 0 48 48" role="img"><path d="M24 4 29 15 40 11 34 22 44 28 31 30 30 43 22 34 12 41 14 29 4 23 17 20Z" fill="none" stroke="#75e4e8" stroke-width="1.5"/><circle cx="24" cy="24" r="7" fill="#a99bff"/><circle cx="24" cy="24" r="3" fill="#f1f5fb"/></svg></span><span>TastePilot <b>AI</b></span></a><div class="navlinks"><a href="#discover">Discover</a><a href="#taste">Taste map</a><a href="#chat">AI agent</a></div><div class="nav-right"><div class="pill"><span class="agent-status"></span> CULTURE INTELLIGENCE</div><button class="settings-trigger" id="settingsTrigger" type="button" aria-expanded="false" aria-controls="appearancePanel" onclick="toggleAppearance()">⚙ <span>SETTINGS</span></button></div></nav><aside class="appearance-panel" id="appearancePanel" aria-label="User settings" hidden>
+<div class="settings-head"><div><span class="settings-kicker">USER CONFIGURATION</span><h3>Settings</h3></div><button class="settings-close" type="button" onclick="toggleAppearance(false)" aria-label="Close settings">×</button></div>
+<p>Make TastePilot feel right for you. Preferences are saved on this device.</p>
+<div class="settings-label">THEME</div>
+<div class="theme-options" role="group" aria-label="Color theme">
+<button type="button" class="theme-option is-active" data-theme-choice="dark" onclick="setTheme('dark')"><span>◐</span> Dark</button>
+<button type="button" class="theme-option" data-theme-choice="light" onclick="setTheme('light')"><span>☼</span> Light</button>
+<button type="button" class="theme-option" data-theme-choice="system" onclick="setTheme('system')"><span>◑</span> System</button>
+</div>
+<div class="settings-label settings-space">ACCENT COLOR</div>
 <div class="accent-options">
 <button type="button" class="accent-option is-active" data-color="#6bff9b" style="--swatch:#6bff9b" onclick="setAccent('#6bff9b',this)" aria-label="Neon green"><span></span>Neon</button>
 <button type="button" class="accent-option" data-color="#59d9ff" style="--swatch:#59d9ff" onclick="setAccent('#59d9ff',this)" aria-label="Cyber cyan"><span></span>Cyan</button>
@@ -234,9 +298,17 @@ footer b{color:#6bff9b}
 <button type="button" class="accent-option" data-color="#ffc36b" style="--swatch:#ffc36b" onclick="setAccent('#ffc36b',this)" aria-label="Amber"><span></span>Amber</button>
 <button type="button" class="accent-option" data-color="#ff718b" style="--swatch:#ff718b" onclick="setAccent('#ff718b',this)" aria-label="Red"><span></span>Red</button>
 </div>
-<div class="custom-accent-row"><label for="customAccent">CUSTOM COLOR</label><input id="customAccent" type="color" value="#6bff9b" aria-label="Choose custom accent color" oninput="setAccent(this.value,null,false)"></div>
-<button type="button" class="settings-reset" onclick="setAccent('#6bff9b',document.querySelector('[data-color=&quot;#6bff9b&quot;]'))">↺ Reset to default</button>
-<div class="settings-foot"><span class="agent-status"></span> LOCAL PREFERENCE / SAVED AUTOMATICALLY</div>
+<div class="custom-accent-row"><label for="customAccent">CUSTOM COLOR</label><input id="customAccent" type="color" value="#6bff9b" aria-label="Choose custom accent color" oninput="setAccent(this.value,null,false)" onchange="saveAccent()"></div>
+<div class="settings-label settings-space">TEXT SIZE</div>
+<div class="theme-options text-options" role="group" aria-label="Text size">
+<button type="button" class="theme-option" data-text-size="small" onclick="setTextSize('small')">A− Small</button>
+<button type="button" class="theme-option is-active" data-text-size="normal" onclick="setTextSize('normal')">A Normal</button>
+<button type="button" class="theme-option" data-text-size="large" onclick="setTextSize('large')">A+ Large</button>
+</div>
+<label class="setting-toggle"><span><b>Compact layout</b><small>Less spacing, more content</small></span><input type="checkbox" id="compactSetting" onchange="setCompact(this.checked)"><i></i></label>
+<label class="setting-toggle"><span><b>Reduce motion</b><small>Limit interface animations</small></span><input type="checkbox" id="motionSetting" onchange="setReducedMotion(this.checked)"><i></i></label>
+<button type="button" class="settings-reset" onclick="resetSettings()">↺ Reset all settings</button>
+<div class="settings-foot"><span class="agent-status"></span> LOCAL PREFERENCES / SAVED AUTOMATICALLY</div>
 </aside>
 <main>
 <section class="hero" id="discover">
@@ -362,23 +434,53 @@ function renderMarkdown(text){
 </script>
 <script>
 function toggleAppearance(force){
- const panel=document.getElementById('appearancePanel');
- const trigger=document.getElementById('settingsTrigger');
- const open=typeof force==='boolean'?force:panel.hidden;
- panel.hidden=!open;trigger.setAttribute('aria-expanded',String(open));
- if(open){const colorInput=document.getElementById('customAccent');if(colorInput)colorInput.value=getComputedStyle(document.documentElement).getPropertyValue('--user-accent').trim()||'#6bff9b';}
+ const panel=document.getElementById('appearancePanel'),trigger=document.getElementById('settingsTrigger');
+ const open=typeof force==='boolean'?force:panel.hidden;panel.hidden=!open;trigger.setAttribute('aria-expanded',String(open));
 }
 function setAccent(color,button,save=true){
  if(!/^#[0-9a-f]{6}$/i.test(color))return;
  document.documentElement.style.setProperty('--user-accent',color);
- const hex=color.slice(1);const r=parseInt(hex.slice(0,2),16),g=parseInt(hex.slice(2,4),16),b=parseInt(hex.slice(4,6),16);
- document.documentElement.style.setProperty('--user-accent-rgb',r+','+g+','+b);
  const input=document.getElementById('customAccent');if(input)input.value=color;
  document.querySelectorAll('.accent-option').forEach(el=>el.classList.toggle('is-active',el.dataset.color.toLowerCase()===color.toLowerCase()));
- if(button&&button.classList.contains('accent-option'))button.classList.add('is-active');
- if(save){try{localStorage.setItem('tastepilot-accent',color)}catch(e){}}
+ if(save)try{localStorage.setItem('tastepilot-accent',color)}catch(e){}
 }
-(function(){let saved=null;try{saved=localStorage.getItem('tastepilot-accent')}catch(e){}if(saved&&/^#[0-9a-f]{6}$/i.test(saved))setAccent(saved,null,false);})();
-document.addEventListener('keydown',function(e){if(e.key==='Escape')toggleAppearance(false)});
-document.addEventListener('click',function(e){const panel=document.getElementById('appearancePanel'),trigger=document.getElementById('settingsTrigger');if(panel&&!panel.hidden&&!panel.contains(e.target)&&!trigger.contains(e.target))toggleAppearance(false)});
+function saveAccent(){const input=document.getElementById('customAccent');if(input)setAccent(input.value,null,true)}
+function setTheme(theme,save=true){
+ if(!['dark','light','system'].includes(theme))return;
+ const resolved=theme==='system'?(window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark'):theme;
+ document.documentElement.dataset.theme=resolved;
+ document.documentElement.dataset.themePreference=theme;
+ document.querySelectorAll('[data-theme-choice]').forEach(el=>el.classList.toggle('is-active',el.dataset.themeChoice===theme));
+ if(save)try{localStorage.setItem('tastepilot-theme',theme)}catch(e){}
+}
+function setTextSize(size,save=true){
+ const scales={small:'0.92',normal:'1',large:'1.08'};if(!scales[size])return;
+ document.documentElement.style.setProperty('--user-font-scale',scales[size]);
+ document.querySelectorAll('[data-text-size]').forEach(el=>el.classList.toggle('is-active',el.dataset.textSize===size));
+ if(save)try{localStorage.setItem('tastepilot-text-size',size)}catch(e){}
+}
+function setCompact(value,save=true){
+ document.documentElement.dataset.compact=value?'true':'false';
+ const el=document.getElementById('compactSetting');if(el)el.checked=value;
+ if(save)try{localStorage.setItem('tastepilot-compact',value?'true':'false')}catch(e){}
+}
+function setReducedMotion(value,save=true){
+ document.documentElement.dataset.reduceMotion=value?'true':'false';
+ const el=document.getElementById('motionSetting');if(el)el.checked=value;
+ if(save)try{localStorage.setItem('tastepilot-reduce-motion',value?'true':'false')}catch(e){}
+}
+function resetSettings(){
+ setTheme('dark');setAccent('#6bff9b',null);setTextSize('normal');setCompact(false);setReducedMotion(false);
+}
+(function(){
+ const get=(key)=>{try{return localStorage.getItem(key)}catch(e){return null}};
+ const theme=get('tastepilot-theme')||'dark';setTheme(theme,false);
+ const accent=get('tastepilot-accent');if(accent&&/^#[0-9a-f]{6}$/i.test(accent))setAccent(accent,null,false);
+ setTextSize(get('tastepilot-text-size')||'normal',false);
+ setCompact(get('tastepilot-compact')==='true',false);
+ setReducedMotion(get('tastepilot-reduce-motion')==='true',false);
+ if(window.matchMedia){window.matchMedia('(prefers-color-scheme: light)').addEventListener?.('change',()=>{if(document.documentElement.dataset.themePreference==='system')setTheme('system',false)})}
+})();
+document.addEventListener('keydown',e=>{if(e.key==='Escape')toggleAppearance(false)});
+document.addEventListener('click',e=>{const panel=document.getElementById('appearancePanel'),trigger=document.getElementById('settingsTrigger');if(panel&&!panel.hidden&&!panel.contains(e.target)&&!trigger.contains(e.target))toggleAppearance(false)});
 </script></body></html>
