@@ -308,6 +308,62 @@ nav{box-shadow:0 8px 25px color-mix(in srgb,var(--user-accent) 5%,transparent)!i
 .anime-stage:before,.king-brand-stage:after{background-color:transparent}
 html[data-theme="light"] body:before{background:linear-gradient(90deg,color-mix(in srgb,var(--user-accent) 8%,transparent) 1px,transparent 1px),linear-gradient(0deg,color-mix(in srgb,var(--user-accent) 6%,transparent) 1px,transparent 1px),radial-gradient(ellipse at 80% 0%,color-mix(in srgb,var(--user-accent) 16%,transparent),transparent 42%)!important;background-size:32px 32px,32px 32px,auto!important}
 html[data-theme="light"] .card,html[data-theme="light"] .panel,html[data-theme="light"] .chat,html[data-theme="light"] .search-panel{background:#fff!important}
+</style><style id="tastepilot-accent-complete-override">
+/* Neutral base + selected accent wash: remove leftover green-tinted surfaces. */
+html:not([data-theme="light"]) body{background:#07090b!important;color:#e5eee8}
+html:not([data-theme="light"]) nav{background:#07090bf5!important}
+html:not([data-theme="light"]) body:before{background:
+ linear-gradient(90deg,color-mix(in srgb,var(--user-accent) 5%,transparent) 1px,transparent 1px),
+ linear-gradient(0deg,color-mix(in srgb,var(--user-accent) 4%,transparent) 1px,transparent 1px),
+ radial-gradient(ellipse at 80% 0%,color-mix(in srgb,var(--user-accent) 14%,transparent),transparent 44%),
+ radial-gradient(ellipse at 5% 60%,color-mix(in srgb,var(--user-accent) 5%,transparent),transparent 42%)!important;
+ background-size:32px 32px,32px 32px,auto,auto!important;opacity:.9}
+html:not([data-theme="light"]) .search-panel,
+html:not([data-theme="light"]) .panel,
+html:not([data-theme="light"]) .chat,
+html:not([data-theme="light"]) .card,
+html:not([data-theme="light"]) .chatlog,
+html:not([data-theme="light"]) .msg.bot,
+html:not([data-theme="light"]) .flow-step,
+html:not([data-theme="light"]) .chip,
+html:not([data-theme="light"]) .mini-prompt,
+html:not([data-theme="light"]) .pill,
+html:not([data-theme="light"]) .settings-trigger{background:linear-gradient(145deg,color-mix(in srgb,var(--user-accent) 4%,#101216),#080a0d)!important}
+html:not([data-theme="light"]) .chatinput input,
+html:not([data-theme="light"]) .search-panel input{background:#080a0d!important;color:#e5eee8!important}
+html:not([data-theme="light"]) .bar{background:color-mix(in srgb,var(--user-accent) 8%,#14171a)!important}
+html:not([data-theme="light"]) .sectionhead,
+html:not([data-theme="light"]) .chathead,
+html:not([data-theme="light"]) footer,
+html:not([data-theme="light"]) .custom-accent-row,
+html:not([data-theme="light"]) .settings-foot{border-color:color-mix(in srgb,var(--user-accent) 22%,#24272b)!important}
+html:not([data-theme="light"]) .flow-step,
+html:not([data-theme="light"]) .chip,
+html:not([data-theme="light"]) .mini-prompt{color:color-mix(in srgb,var(--user-accent) 48%,#a5b2a9)!important}
+html:not([data-theme="light"]) .hero p,
+html:not([data-theme="light"]) .muted,
+html:not([data-theme="light"]) .helper-line,
+html:not([data-theme="light"]) .input-hint,
+html:not([data-theme="light"]) .card p,
+html:not([data-theme="light"]) .barrow{color:#91a098!important}
+html:not([data-theme="light"]) .card:hover,
+html:not([data-theme="light"]) .panel:hover{background:linear-gradient(145deg,color-mix(in srgb,var(--user-accent) 8%,#111418),#090b0e)!important}
+html:not([data-theme="light"]) .appearance-panel{background:linear-gradient(145deg,color-mix(in srgb,var(--user-accent) 5%,#101216),#080a0d)!important}
+html:not([data-theme="light"]) .theme-option,
+html:not([data-theme="light"]) .accent-option,
+html:not([data-theme="light"]) .settings-close,
+html:not([data-theme="light"]) .custom-accent-row input{background:#090b0e!important}
+html:not([data-theme="light"]) .setting-toggle i{background:#101216!important}
+html:not([data-theme="light"]) .setting-toggle input:checked+i{background:color-mix(in srgb,var(--user-accent) 16%,#101216)!important}
+html:not([data-theme="light"]) .brandmark{background:color-mix(in srgb,var(--user-accent) 7%,#090b0e)!important}
+html:not([data-theme="light"]) .go,html:not([data-theme="light"]) .send{color:#080b0d!important}
+html[data-theme="light"] .search-panel,
+html[data-theme="light"] .panel,
+html[data-theme="light"] .chat,
+html[data-theme="light"] .card,
+html[data-theme="light"] .chatlog,
+html[data-theme="light"] .msg.bot,
+html[data-theme="light"] .flow-step{border-color:color-mix(in srgb,var(--user-accent) 26%,#d3e0d7)!important}
 </style></head>
 <body>
 <nav><a class="logo" href="#discover" aria-label="TastePilot home"><span class="brandmark" aria-label="TastePilot logo"><svg viewBox="0 0 48 48" role="img"><path d="M24 4 29 15 40 11 34 22 44 28 31 30 30 43 22 34 12 41 14 29 4 23 17 20Z" fill="none" stroke="#75e4e8" stroke-width="1.5"/><circle cx="24" cy="24" r="7" fill="#a99bff"/><circle cx="24" cy="24" r="3" fill="#f1f5fb"/></svg></span><span>TastePilot <b>AI</b></span></a><div class="navlinks"><a href="#discover">Discover</a><a href="#taste">Taste map</a><a href="#chat">AI agent</a></div><div class="nav-right"><div class="pill"><span class="agent-status"></span> CULTURE INTELLIGENCE</div><button class="settings-trigger" id="settingsTrigger" type="button" aria-expanded="false" aria-controls="appearancePanel" onclick="toggleAppearance()">⚙ <span>SETTINGS</span></button></div></nav><aside class="appearance-panel" id="appearancePanel" aria-label="User settings" hidden>
