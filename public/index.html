@@ -157,6 +157,24 @@ footer b{color:#6bff9b}
 @media(max-width:900px){.hero{gap:24px}.anime-stage{min-height:390px}}
 @media(max-width:640px){nav{padding:0 12px}.navlinks{display:none}.pill{font-size:9px;padding:8px}.hero{padding-top:15px}.anime-stage{min-height:360px}.grid{grid-template-columns:1fr}.card{min-height:145px}.sectionhead{gap:10px}.chat{padding:12px}.chatlog{height:320px}.send{padding:0 11px}.flow-steps{grid-template-columns:repeat(2,1fr)}}
 @media(prefers-reduced-motion:reduce){.go,.send,.card,.chip,.mini-prompt{transition:none!important}}
+</style><style id="tastepilot-king-brand-panel">
+.king-brand-stage{min-height:435px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;padding:22px;background:radial-gradient(ellipse at 50% 48%,#11271b 0%,#07100a 56%,#050907 100%);border-color:#2b7145}
+.king-brand-stage:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,transparent 49.8%,#6bff9b12 50%,transparent 50.2%),linear-gradient(0deg,transparent 49.8%,#6bff9b12 50%,transparent 50.2%);background-size:44px 44px;opacity:.5}
+.king-brand-stage .art-top,.king-brand-caption{position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.king-logo-frame{position:absolute;left:8%;right:8%;top:15%;bottom:12%;display:grid;place-items:center;overflow:hidden}
+.king-logo-frame:before{content:"";position:absolute;width:min(70%,270px);aspect-ratio:1;border:1px solid #6bff9b36;border-radius:50%;box-shadow:0 0 0 14px #6bff9b05,0 0 0 35px #6bff9b04,0 0 42px #6bff9b0c}
+.king-logo-frame:after{content:"";position:absolute;inset:5% 0;border-top:1px solid #6bff9b15;border-bottom:1px solid #6bff9b15;pointer-events:none}
+.king-brand-logo{position:relative;z-index:1;width:min(100%,350px);height:auto;max-height:100%;object-fit:contain;filter:drop-shadow(0 0 18px #00ff7b18);border-radius:50%}
+.logo-crosshair{position:absolute;width:20px;height:20px;z-index:2;opacity:.75}
+.logo-crosshair:before,.logo-crosshair:after{content:"";position:absolute;background:#6bff9b}
+.logo-crosshair:before{width:20px;height:1px;top:10px;left:0}.logo-crosshair:after{height:20px;width:1px;top:0;left:10px}
+.crosshair-a{top:8%;left:4%}.crosshair-b{bottom:8%;right:4%}
+.logo-scanline{position:absolute;z-index:2;left:5%;right:5%;top:50%;height:1px;background:linear-gradient(90deg,transparent,#6bff9b66,transparent)}
+.king-brand-caption{align-items:end}
+.king-brand-caption .micro-label{color:#6bff9b}
+.king-brand-caption .art-caption{color:#c1e7cc}
+.king-brand-caption .art-corner{border-radius:3px;border-color:#28633e;background:#06100a;color:#6bff9b;font-size:9px}
+@media(max-width:640px){.king-brand-stage{min-height:365px;padding:16px}.king-logo-frame{left:4%;right:4%;top:17%;bottom:14%}.king-brand-logo{width:min(100%,290px)}}
 </style></head>
 <body>
 <nav><a class="logo" href="#discover" aria-label="TastePilot home"><span class="brandmark" aria-label="TastePilot logo"><svg viewBox="0 0 48 48" role="img"><path d="M24 4 29 15 40 11 34 22 44 28 31 30 30 43 22 34 12 41 14 29 4 23 17 20Z" fill="none" stroke="#75e4e8" stroke-width="1.5"/><circle cx="24" cy="24" r="7" fill="#a99bff"/><circle cx="24" cy="24" r="3" fill="#f1f5fb"/></svg></span><span>TastePilot <b>AI</b></span></a><div class="navlinks"><a href="#discover">Discover</a><a href="#taste">Taste map</a><a href="#chat">AI agent</a></div><div class="pill"><span class="agent-status"></span> CULTURE INTELLIGENCE</div></nav>
@@ -164,31 +182,10 @@ footer b{color:#6bff9b}
 <section class="hero" id="discover">
 <div class="hero-copy"><div class="eyebrow"><span class="eyebrow-dot"></span> ROOT ACCESS TO YOUR NEXT DISCOVERY</div><h1><span style="font-size:.48em;display:block;color:#6bff9b;letter-spacing:.12em;margin-bottom:15px">TASTEPILOT // TERMINAL 01</span>Enter the <br><span class="gradient">unknown.</span></h1><p>A personal discovery intelligence console. Enter a mood, a signal, or a direction — let the agent map your next move through culture.</p>
 <div class="search-panel"><label class="sr-only" for="q" style="position:absolute;left:-9999px">What would you like to discover?</label><input id="q" aria-label="What would you like to discover?" placeholder="A film for a quiet night, music for a drive…"><button class="go" onclick="discover()">Explore <span>↗</span></button></div><div class="helper-line">Start with a mood, a favorite, or a plan. No special prompt needed.</div><div class="chips"><button class="chip" onclick="fill('a memorable movie for a relaxed evening')">01 / Cinema</button><button class="chip" onclick="fill('a relaxed evening playlist')">02 / Music</button><button class="chip" onclick="fill('a stylish place to eat')">03 / Places</button><button class="chip" onclick="fill('something to do when I am bored')">04 / Experiences</button></div><div class="status" id="status"></div></div>
-<div class="hero-art anime-stage" aria-label="Anime-inspired TastePilot scene">
-<div class="anime-sky"></div><div class="anime-moon"></div><div class="anime-sakura sakura-one">✿</div><div class="anime-sakura sakura-two">✿</div><div class="anime-sakura sakura-three">✧</div>
-<div class="art-top"><span class="micro-label">TASTEPILOT / OPERATOR CONSOLE</span><span class="live-label">● SYSTEM READY</span></div>
-<div class="anime-city"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-<svg class="anime-hero" viewBox="0 0 360 390" role="img" aria-label="Original anime-inspired character wearing a dark hoodie, with a glowing crown emblem">
-<defs><linearGradient id="hairA" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f0d9ff"/><stop offset=".48" stop-color="#a7a4ff"/><stop offset="1" stop-color="#474d83"/></linearGradient><linearGradient id="coatA" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#30364c"/><stop offset="1" stop-color="#101521"/></linearGradient></defs>
-<ellipse cx="181" cy="367" rx="122" ry="13" fill="#b9a5ff" opacity=".14"/>
-<path d="M76 390 Q83 294 129 274 L158 258 219 260 253 283 Q290 315 300 390Z" fill="url(#coatA)" stroke="#62688c" stroke-width="2"/>
-<path d="M130 275 Q174 316 222 274 L240 390H112Z" fill="#171b2b"/>
-<path d="M143 279 L179 323 214 278 204 390H151Z" fill="#272d43"/>
-<path d="M158 270 L174 302 193 270 188 292 175 314 161 293Z" fill="#d4d0ff" opacity=".8"/>
-<path d="M138 123 Q129 52 184 47 Q239 52 235 124 L225 191 Q212 229 179 232 Q146 224 135 187Z" fill="#dba8a0"/>
-<path d="M130 137 Q107 89 134 58 L154 44 153 24 175 40 190 16 202 42 229 29 222 55 246 70 238 126 221 93 205 77 190 100 173 81 151 111Z" fill="url(#hairA)" stroke="#252a48" stroke-width="3" stroke-linejoin="round"/>
-<path d="M138 130 Q156 104 172 123 L169 139 154 145Z" fill="#f4f0ff"/><path d="M181 125 Q201 103 221 125 L216 140 195 143Z" fill="#f4f0ff"/>
-<path d="M153 132 L168 132M197 132 L213 132" stroke="#6b6ad3" stroke-width="4" stroke-linecap="round"/>
-<path d="M172 158 Q182 166 193 156" fill="none" stroke="#8d5b72" stroke-width="2" stroke-linecap="round"/>
-<path d="M134 147 Q120 131 113 149 Q111 169 137 172M228 147 Q243 131 250 149 Q250 169 226 172" fill="#dba8a0"/>
-<path d="M132 179 Q146 223 179 233 Q213 224 228 178 L224 209 207 245 177 265 148 244 135 209Z" fill="#b3b6e7"/>
-<path d="M121 273 Q141 249 158 248 L177 278 198 248 Q226 250 247 278 L218 311 179 334 144 310Z" fill="#1b2133" stroke="#62688c" stroke-width="2"/>
-<path d="M157 253 L177 280 198 253 189 284 177 299 165 283Z" fill="#9f9ce5"/>
-<path d="M167 310 L178 300 189 310 184 327 172 327Z" fill="none" stroke="#9eecf1" stroke-width="2"/>
-<path d="M166 308 L172 313 178 305 184 313 190 308" fill="none" stroke="#9eecf1" stroke-width="2"/>
-</svg>
-<div class="anime-title"><span style="font-size:1em;letter-spacing:.08em">ROOT YOUR CURIOSITY</span><span>— CULTURE INTELLIGENCE / 001 —</span></div>
-<div class="art-bottom"><div><div class="micro-label">YOUR SIGNAL. YOUR RULES.</div><div class="art-caption">Run discovery. Find your next obsession.</div></div><div class="art-corner">SYS. 01 / ONLINE</div></div>
+<div class="hero-art anime-stage king-brand-stage" aria-label="KING brand logo integrated into TastePilot hacker interface">
+<div class="art-top"><span class="micro-label">TASTEPILOT / BRAND CORE</span><span class="live-label">● IDENTITY VERIFIED</span></div>
+<div class="king-logo-frame"><div class="logo-crosshair crosshair-a"></div><div class="logo-crosshair crosshair-b"></div><img class="king-brand-logo" src="/king-logo.svg" alt="KING crown logo in blue and red chrome style"><div class="logo-scanline"></div></div>
+<div class="king-brand-caption"><div><div class="micro-label">PERSONAL BRAND / KING</div><div class="art-caption">Your signature. Your universe.</div></div><div class="art-corner">BRAND CORE / 001</div></div>
 </div>
 </section>
 <section class="section"><div class="sectionhead"><div><div class="section-kicker">01 // DISCOVERY MODULE</div><h2>Choose your next signal.</h2><div class="muted">Input a signal. Trace unexpected connections across culture.</div></div><div class="section-note muted">CURATED · CONNECTED · PERSONAL</div></div><div class="grid" id="cards"><div class="card"><div class="icon">◈</div><span class="tag">01 / Cinema</span><h3>Stories that stay with you</h3><p>Find a film or series that matches the feeling you want from tonight.</p></div><div class="card"><div class="icon">♫</div><span class="tag">02 / Sound</span><h3>Build a world through music</h3><p>Explore sounds that fit your mood, your setting, and your personal rhythm.</p></div><div class="card"><div class="icon">⌁</div><span class="tag">03 / Out there</span><h3>Discover your next place</h3><p>Connect your interests to restaurants, places, and experiences worth trying.</p></div></div></section>
