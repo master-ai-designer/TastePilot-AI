@@ -12,6 +12,15 @@ const publicDir=path.join(__dirname,"public");
 app.use(express.static(publicDir));
 app.get("/",(req,res)=>res.sendFile(path.join(publicDir,"index.html")));
 
+// Public Supabase project configuration only. Never expose a service-role key here.
+app.get("/api/auth-config",(req,res)=>{
+ const url=process.env.SUPABASE_URL;
+ const anonKey=process.env.SUPABASE_ANON_KEY;
+ if(!url||!anonKey)return res.status(503).json({configured:false,error:"Authentication is not configured yet."});
+ res.set("Cache-Control","no-store");
+ res.json({configured:true,url,anonKey});
+});
+
 function chatReply(message){
  const q=message.toLowerCase();
  const has=(...words)=>words.some(w=>q.includes(w));
