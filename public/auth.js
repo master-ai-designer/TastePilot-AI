@@ -35,6 +35,10 @@
         openAuthModal();
         setMessage(params.get("error_description") || "Google sign-in could not be completed.", "error");
         window.history.replaceState({}, document.title, window.location.pathname + window.location.hash);
+      } else if (window.location.hash.includes("type=recovery") || params.get("type") === "recovery") {
+        openAuthModal();
+        window.setAuthMode("recovery");
+        setMessage("Choose a new password for your account.");
       } else if (window.location.hash.includes("access_token") || params.has("code")) {
         openAuthModal();
         setMessage("Checking your sign-in…");
@@ -77,15 +81,22 @@
     document.body.style.overflow = "";
   };
   window.setAuthMode = (nextMode) => {
-    mode = nextMode === "signup" ? "signup" : "login";
+    mode = ["signup", "recovery"].includes(nextMode) ? nextMode : "login";
+    const recovery = mode === "recovery";
+    $("authTabs").hidden = recovery;
+    $("authGoogle").hidden = recovery;
+    document.querySelector(".auth-divider").hidden = recovery;
     $("authLoginTab").setAttribute("aria-selected", String(mode === "login"));
     $("authSignupTab").setAttribute("aria-selected", String(mode === "signup"));
-    $("authTitle").textContent = mode === "login" ? "Welcome back." : "Create your account.";
-    $("authSubtitle").textContent = mode === "login"
-      ? "Sign in to your TastePilot account and continue your discovery."
-      : "Create an account to make your TastePilot experience yours.";
-    $("authSubmit").textContent = mode === "login" ? "Sign in securely ↗" : "Create account ↗";
+    $("authTitle").textContent = recovery ? "Reset your password." : mode === "login" ? "Welcome back." : "Create your account.";
+    $("authSubtitle").textContent = recovery
+      ? "Choose a new password to secure your TastePilot account."
+      : mode === "login"
+        ? "Sign in to your TastePilot account and continue your discovery."
+        : "Create an account to make your TastePilot experience yours.";
+    $("authSubmit").textContent = recovery ? "Save new password ↗" : mode === "login" ? "Sign in securely ↗" : "Create account ↗";
     $("authPassword").autocomplete = mode === "login" ? "current-password" : "new-password";
+    $("authPassword").placeholder = recovery ? "Choose a new password" : "At least 8 characters";
     $("authForgot").hidden = mode !== "login";
     setMessage("");
   };
@@ -110,7 +121,12 @@
     submit.textContent = mode === "login" ? "Signing in…" : "Creating account…";
     setMessage("");
     try {
-      if (mode === "signup") {
+      if (mode === "recovery") {
+        const { error } = await client.auth.updateUser({ password });
+        if (error) throw error;
+        setMessage("Password updated. You can now sign in with your new password.", "success");
+        setTimeout(() => { window.closeAuthModal(); window.setAuthMode("login"); }, 900);
+      } else if (mode === "signup") {
         const { data, error } = await client.auth.signUp({
           email, password,
           options: { emailRedirectTo: getRedirectUrl() }
@@ -136,7 +152,7 @@
       else setMessage(message || "Could not complete authentication. Please try again.", "error");
     } finally {
       submit.disabled = false;
-      submit.textContent = mode === "login" ? "Sign in securely ↗" : "Create account ↗";
+      submit.textContent = mode === "recovery" ? "Save new password ↗" : mode === "login" ? "Sign in securely ↗" : "Create account ↗";
     }
   });
   window.signInWithGoogle = async () => {
