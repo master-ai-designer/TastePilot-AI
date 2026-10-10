@@ -17,6 +17,12 @@ footer{border-top:1px solid #ffffff0d;padding:24px clamp(20px,5vw,76px);display:
 @media(max-width:900px){.hero{grid-template-columns:1fr;gap:26px;padding-top:20px}.hero-copy{max-width:760px}.hero-art{min-height:300px}.king-emblem{width:170px;height:170px}.king-emblem svg{width:85px;height:85px}.art-wordmark{top:calc(48% + 62px)}.navlinks{gap:15px}.grid{gap:10px}.card{padding:18px}}
 @media(max-width:640px){nav{height:68px;padding:0 17px}.navlinks{display:none}.logo{font-size:16px}.brandmark{width:37px;height:37px}.pill{padding:9px 10px;font-size:10px}main{padding:28px 16px 55px}.hero{padding-top:10px}h1{font-size:clamp(45px,13vw,65px);margin:20px 0}.hero p{font-size:14px;line-height:1.75}.hero-art{min-height:260px;padding:16px}.search-panel{flex-direction:column;padding:8px}.search-panel input{height:42px;padding:0 10px}.search-panel .go{width:100%}.section{margin-top:55px}.sectionhead{align-items:start;flex-direction:column}.section-note{display:none}.grid,.profile{grid-template-columns:1fr}.card{min-height:165px}.panel{padding:19px}.flow-steps{grid-template-columns:repeat(2,1fr)}.chat{margin-top:55px;padding:15px}.chathead{align-items:flex-start;flex-direction:column}.chatlog{height:340px}.msg{max-width:94%;font-size:12px}.chatinput{gap:7px}.chatinput input{font-size:12px;padding:0 10px}.send{padding:0 13px;font-size:12px}.art-code{font-size:9px}footer{padding:20px 17px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important}}
+
+/* TastePilot account access */
+.nav-right{display:flex;align-items:center;gap:9px}.auth-open-btn{height:38px;padding:0 13px;border:1px solid #75e4e84d;border-radius:8px;background:#75e4e80c;color:#c9fffb;font-size:10px;font-weight:800;letter-spacing:.08em;white-space:nowrap}.auth-open-btn:hover{background:#75e4e81a;border-color:#75e4e8a0}
+.auth-overlay{position:fixed;inset:0;z-index:1000;display:grid;place-items:center;padding:18px;background:#03060bd9;backdrop-filter:blur(14px)}.auth-overlay[hidden]{display:none}.auth-dialog{position:relative;width:min(100%,440px);max-height:min(92vh,760px);overflow:auto;border:1px solid #75e4e833;border-radius:18px;padding:clamp(22px,5vw,34px);background:linear-gradient(145deg,#121b27,#080d15 72%);box-shadow:0 28px 100px #0009}.auth-close{position:absolute;right:15px;top:13px;width:35px;height:35px;border:1px solid #ffffff18;border-radius:9px;background:#ffffff05;color:#b8c6d6;font-size:20px}.auth-mark{width:46px;height:46px;display:grid;place-items:center;border:1px solid #75e4e84a;border-radius:13px;color:#75e4e8;background:#75e4e80c;font-size:21px}.auth-kicker{margin:22px 0 8px;color:#75e4e8;font-size:10px;letter-spacing:.17em;font-weight:800}.auth-title{margin:0;font-size:30px;letter-spacing:-.055em}.auth-subtitle{margin:10px 0 23px;color:#93a1b3;font-size:12px;line-height:1.7}.auth-tabs{display:grid;grid-template-columns:1fr 1fr;gap:7px;padding:5px;border:1px solid #ffffff12;border-radius:10px;background:#050910;margin-bottom:18px}.auth-tab{height:37px;border:0;border-radius:7px;background:transparent;color:#8998aa;font-size:12px}.auth-tab[aria-selected="true"]{background:#75e4e817;color:#dffffd;border:1px solid #75e4e82e}.auth-form{display:grid;gap:13px}.auth-field{display:grid;gap:7px;color:#b7c4d3;font-size:11px}.auth-field input{width:100%;height:45px;border:1px solid #ffffff1d;border-radius:8px;background:#080d14;color:#f1f5fb;padding:0 12px;font-size:13px}.auth-field input:focus{outline:2px solid #75e4e866;outline-offset:1px}.auth-primary,.auth-google{height:45px;width:100%;border-radius:8px;font-size:12px;font-weight:750}.auth-primary{border:1px solid #75e4e8;background:#75e4e8;color:#071316}.auth-primary:disabled{opacity:.65;cursor:wait}.auth-google{display:flex;align-items:center;justify-content:center;gap:10px;border:1px solid #ffffff21;background:#ffffff06;color:#e4eaf2}.auth-google:hover{background:#ffffff0d}.auth-divider{display:flex;align-items:center;gap:12px;margin:15px 0;color:#68778a;font-size:10px}.auth-divider:before,.auth-divider:after{content:"";height:1px;flex:1;background:#ffffff14}.auth-link{border:0;background:transparent;color:#8de9e6;font-size:11px;padding:2px;text-align:left}.auth-link[hidden]{display:none}.auth-message{min-height:18px;margin:12px 0 0;color:#a8b6c7;font-size:11px;line-height:1.6}.auth-message[data-kind="error"]{color:#ff9ba8}.auth-message[data-kind="success"]{color:#8ef0b0}.auth-legal{margin-top:16px;color:#647286;font-size:10px;line-height:1.6}.auth-user-menu{display:none;position:absolute;right:clamp(16px,5vw,76px);top:68px;z-index:40;min-width:230px;padding:14px;border:1px solid #ffffff20;border-radius:12px;background:#0d141f;box-shadow:0 18px 60px #0008}.auth-user-menu[data-open="true"]{display:block}.auth-user-email{overflow-wrap:anywhere;color:#dce6f2;font-size:12px;margin-bottom:12px}.auth-signout{width:100%;padding:10px;border:1px solid #ffffff1a;border-radius:7px;background:#ffffff05;color:#d4e0ed;font-size:11px}
+@media(max-width:640px){.nav-right{gap:6px}.nav-right>.pill{display:none}.auth-open-btn{height:35px;padding:0 10px;font-size:9px}.auth-user-menu{right:12px;top:61px}}
+
 </style>
 
 <style id="tastepilot-signature-future">
@@ -366,7 +372,7 @@ html[data-theme="light"] .msg.bot,
 html[data-theme="light"] .flow-step{border-color:color-mix(in srgb,var(--user-accent) 26%,#d3e0d7)!important}
 </style></head>
 <body>
-<nav><a class="logo" href="#discover" aria-label="TastePilot home"><span class="brandmark" aria-label="TastePilot logo"><svg viewBox="0 0 48 48" role="img"><path d="M24 4 29 15 40 11 34 22 44 28 31 30 30 43 22 34 12 41 14 29 4 23 17 20Z" fill="none" stroke="#75e4e8" stroke-width="1.5"/><circle cx="24" cy="24" r="7" fill="#a99bff"/><circle cx="24" cy="24" r="3" fill="#f1f5fb"/></svg></span><span>TastePilot <b>AI</b></span></a><div class="navlinks"><a href="#discover">Discover</a><a href="#taste">Taste map</a><a href="#chat">AI agent</a></div><div class="nav-right"><div class="pill"><span class="agent-status"></span> CULTURE INTELLIGENCE</div><button class="settings-trigger" id="settingsTrigger" type="button" aria-expanded="false" aria-controls="appearancePanel" onclick="toggleAppearance()">⚙ <span>SETTINGS</span></button></div></nav><aside class="appearance-panel" id="appearancePanel" aria-label="User settings" hidden>
+<nav><a class="logo" href="#discover" aria-label="TastePilot home"><span class="brandmark" aria-label="TastePilot logo"><svg viewBox="0 0 48 48" role="img"><path d="M24 4 29 15 40 11 34 22 44 28 31 30 30 43 22 34 12 41 14 29 4 23 17 20Z" fill="none" stroke="#75e4e8" stroke-width="1.5"/><circle cx="24" cy="24" r="7" fill="#a99bff"/><circle cx="24" cy="24" r="3" fill="#f1f5fb"/></svg></span><span>TastePilot <b>AI</b></span></a><div class="navlinks"><a href="#discover">Discover</a><a href="#taste">Taste map</a><a href="#chat">AI agent</a></div><div class="nav-right"><div class="pill"><span class="agent-status"></span> CULTURE INTELLIGENCE</div><button class="auth-open-btn" id="authOpenBtn" type="button" onclick="openAuthModal()">SIGN IN ↗</button><button class="settings-trigger" id="settingsTrigger" type="button" aria-expanded="false" aria-controls="appearancePanel" onclick="toggleAppearance()">⚙ <span>SETTINGS</span></button></div></nav><aside class="appearance-panel" id="appearancePanel" aria-label="User settings" hidden>
 <div class="settings-head"><div><span class="settings-kicker">USER CONFIGURATION</span><h3>Settings</h3></div><button class="settings-close" type="button" onclick="toggleAppearance(false)" aria-label="Close settings">×</button></div>
 <p>Make TastePilot feel right for you. Preferences are saved on this device.</p>
 <div class="settings-label">THEME</div>
@@ -395,6 +401,35 @@ html[data-theme="light"] .flow-step{border-color:color-mix(in srgb,var(--user-ac
 <button type="button" class="settings-reset" onclick="resetSettings()">↺ Reset all settings</button>
 <div class="settings-foot"><span class="agent-status"></span> LOCAL PREFERENCES / SAVED AUTOMATICALLY</div>
 </aside>
+
+<div class="auth-overlay" id="authOverlay" hidden>
+ <section class="auth-dialog" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+  <button class="auth-close" type="button" aria-label="Close sign-in" onclick="closeAuthModal()">×</button>
+  <div class="auth-mark" aria-hidden="true">✳</div>
+  <div class="auth-kicker">TASTEPILOT // ACCOUNT ACCESS</div>
+  <h2 class="auth-title" id="authTitle">Welcome back.</h2>
+  <p class="auth-subtitle" id="authSubtitle">Sign in to your TastePilot account and continue your discovery.</p>
+  <div class="auth-tabs" role="tablist" aria-label="Account access">
+   <button class="auth-tab" id="authLoginTab" type="button" role="tab" aria-selected="true" onclick="setAuthMode('login')">Sign in</button>
+   <button class="auth-tab" id="authSignupTab" type="button" role="tab" aria-selected="false" onclick="setAuthMode('signup')">Create account</button>
+  </div>
+  <form class="auth-form" id="authForm">
+   <label class="auth-field">Email address<input id="authEmail" name="email" type="email" autocomplete="email" required maxlength="254" placeholder="you@example.com"></label>
+   <label class="auth-field" id="authPasswordField">Password<input id="authPassword" name="password" type="password" autocomplete="current-password" required minlength="8" maxlength="128" placeholder="At least 8 characters"></label>
+   <button class="auth-primary" id="authSubmit" type="submit">Sign in securely ↗</button>
+  </form>
+  <button class="auth-link" id="authForgot" type="button" onclick="sendPasswordReset()">Forgot password?</button>
+  <div class="auth-divider">OR CONTINUE WITH</div>
+  <button class="auth-google" id="authGoogle" type="button" onclick="signInWithGoogle()"><span aria-hidden="true">G</span> Continue with Google</button>
+  <p class="auth-message" id="authMessage" role="status" aria-live="polite"></p>
+  <p class="auth-legal">Your account is secured by Supabase Auth. Never share your password or verification links.</p>
+ </section>
+</div>
+<div class="auth-user-menu" id="authUserMenu" data-open="false">
+ <div class="auth-user-email" id="authUserEmail"></div>
+ <button class="auth-signout" type="button" onclick="signOutTastePilot()">Sign out</button>
+</div>
+
 <main>
 <section class="hero" id="discover">
 <div class="hero-copy"><div class="eyebrow"><span class="eyebrow-dot"></span> ROOT ACCESS TO YOUR NEXT DISCOVERY</div><h1><span style="font-size:.48em;display:block;color:#6bff9b;letter-spacing:.12em;margin-bottom:15px">TASTEPILOT // TERMINAL 01</span>Enter the <br><span class="gradient">unknown.</span></h1><p>A personal discovery intelligence console. Enter a mood, a signal, or a direction — let the agent map your next move through culture.</p>
@@ -568,4 +603,4 @@ function resetSettings(){
 })();
 document.addEventListener('keydown',e=>{if(e.key==='Escape')toggleAppearance(false)});
 document.addEventListener('click',e=>{const panel=document.getElementById('appearancePanel'),trigger=document.getElementById('settingsTrigger');if(panel&&!panel.hidden&&!panel.contains(e.target)&&!trigger.contains(e.target))toggleAppearance(false)});
-</script></body></html>
+</script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script><script src="/auth.js" defer></script></body></html>
