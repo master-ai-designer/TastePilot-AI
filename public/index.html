@@ -386,9 +386,92 @@ html[data-theme="light"] .card,
 html[data-theme="light"] .chatlog,
 html[data-theme="light"] .msg.bot,
 html[data-theme="light"] .flow-step{border-color:color-mix(in srgb,var(--user-accent) 26%,#d3e0d7)!important}
+</style><style id="tastepilot-premium-redesign">
+/* TastePilot premium redesign: mostly static CSS, low GPU cost, no heavy 3D or video */
+:root{
+ --bg:#07111a;--panel:#0d1b27;--panel2:#0a1621;--line:#1c3b4c;
+ --text:#eef7fb;--muted:#9cb1c0;--cyan:#38d9e6;--violet:#8ab8ff;
+ --user-accent:#32dfc1;--user-font-scale:1;--chat-font-scale:1;
+}
+html{background:var(--bg);scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:-.015em}
+body:before{background:radial-gradient(ellipse at 78% 0%,rgba(34,113,139,.15),transparent 38%),radial-gradient(ellipse at 8% 46%,rgba(33,83,111,.11),transparent 34%),linear-gradient(180deg,#07111a,#08131d);opacity:1}
+nav{background:rgba(7,17,26,.97);border-bottom:1px solid #b9e8ff13;backdrop-filter:none;-webkit-backdrop-filter:none}
+.brandmark{background:linear-gradient(145deg,#102c3a,#0b1a25);border:1px solid #39d9e644;border-radius:14px;box-shadow:none;color:#41dce6}
+.brandmark svg{stroke:currentColor}
+.logo{letter-spacing:-.045em}.logo b{color:#3be0d0}
+.navlinks a{color:#9eb4c3}.navlinks a:hover{color:#e7fcff}
+.pill{border-color:#2b5365;background:#0d1e2a;color:#b6d3e0;border-radius:999px}
+.agent-status,.eyebrow-dot{background:#40dec7;box-shadow:none}
+main{max-width:1390px;padding-top:42px}
+.hero{gap:clamp(28px,5vw,68px);padding:22px 0 18px;align-items:center}
+.hero-copy{max-width:710px}
+.eyebrow{color:#5be0d4;letter-spacing:.13em}
+h1{font-size:clamp(46px,6vw,78px);line-height:1.02;letter-spacing:-.07em;font-weight:760}
+.gradient{background:linear-gradient(100deg,#f2fbff 0%,#71e6e0 55%,#91baff 100%);background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero p{color:#a8bdcb;line-height:1.8}
+.hero-art{background:linear-gradient(145deg,#102c3b,#0b1722 64%,#10202c);border-color:#285064;border-radius:22px;box-shadow:none}
+.hero-art:before{background:linear-gradient(145deg,transparent 20%,#6adfe609 20.2%,transparent 20.6%),radial-gradient(ellipse at 50% 42%,#44d8d20b,transparent 60%)}
+.king-emblem{border-color:#45d9dd4c;background:radial-gradient(circle,#2bd4d20b,transparent 68%);box-shadow:none}
+.king-emblem:before,.king-emblem:after{border-color:#61dfe52b}
+.art-wordmark{letter-spacing:.3em;color:#e1f4fa}
+.search-panel{background:#0b1924;border-color:#24495b;border-radius:14px;box-shadow:none}
+.search-panel:focus-within{border-color:#40d7d8;box-shadow:0 0 0 3px #40d7d80c}
+.search-panel input{font-size:14px}
+.go,.send{background:linear-gradient(120deg,#43e2ce,#4acbe5);color:#06202a;border:1px solid #9af3ee;box-shadow:none;border-radius:10px;font-weight:750}
+.go:hover,.send:hover{transform:translateY(-1px);box-shadow:0 5px 18px #37d6d51a;background:#75e9e0}
+.go:active,.send:active{transform:none;box-shadow:none}
+.chip,.mini-prompt{background:#0d1e2b;border-color:#234659;color:#bfd2df;border-radius:999px}
+.chip:hover,.mini-prompt:hover{background:#102a37;border-color:#43d5d9;color:#eaffff}
+.section{margin-top:64px}
+.section-kicker,.tag{color:#5adbcf;letter-spacing:.15em}
+.section h2,.chathead h2{letter-spacing:-.045em}
+.card,.panel,.chat{background:linear-gradient(145deg,#0e1e2a,#0a1620);border:1px solid #1f4253;border-radius:16px;box-shadow:none}
+.card{transition:border-color .18s,background .18s}
+.card:hover{transform:none;border-color:#39869a;background:linear-gradient(145deg,#102533,#0b1721);box-shadow:none}
+.card:after{display:none}
+.card p,.muted{color:#9bb0bf}
+.panel{padding:25px}
+.bar{background:#1a303c}.fill{background:linear-gradient(90deg,#2fbbb8,#53dfce,#80bfff)}
+.flow-step{border-color:#254555;background:#0b1924;border-radius:10px}
+.flow-step b{color:#58ddd4}
+.chat{margin-top:64px;background:linear-gradient(145deg,#0e1d29,#08141e);border-color:#245064;padding:clamp(18px,3vw,30px)}
+.chatlog{scrollbar-color:#285365 transparent}
+.msg{font-size:calc(14px * var(--chat-font-scale))!important;line-height:1.78;border-radius:14px;padding:15px 17px}
+.msg.bot{background:#102330;border-color:#25485a;color:#e0edf4}
+.msg.user{background:#103b3a;border-color:#277f7b;color:#efffff}
+.msg.bot h3{font-size:calc(16px * var(--chat-font-scale))!important}
+.msg.bot code{font-size:calc(13px * var(--chat-font-scale))!important}
+.msg.bot a{color:#6ce8df}
+.chatinput input{background:#07141e;border-color:#244b5d;border-radius:12px;font-size:14px}
+.chatinput input:focus{border-color:#48d9d6;outline:2px solid #48d9d61c}
+.send{min-width:82px}
+.input-hint{color:#829aa9}
+footer{border-top-color:#173442;color:#7f99a9}
+footer b{color:#b5d7e5}
+.local-profile-pill{border-color:#28606a;background:#0b222b;color:#9de8df;border-radius:999px}
+.settings-trigger{border-color:#285267;background:#0c1d29;color:#b8d6e3;border-radius:10px}
+.appearance-panel{background:#0b1924;border-color:#24495a;box-shadow:0 12px 36px #0003}
+.settings-reset{color:#b1d8d0}
+.auth-dialog{backdrop-filter:none;box-shadow:0 18px 55px #0005}
+:root{--chat-font-scale:1}
+.msg{font-size:calc(14px * var(--chat-font-scale))!important}
+@media(min-width:1100px){.hero-art{min-height:380px}}
+@media(max-width:900px){main{padding-top:30px}.hero{gap:28px}.hero-art{min-height:300px}}
+@media(max-width:640px){
+ main{padding:24px 15px 48px}.hero{padding-top:8px}
+ h1{font-size:clamp(43px,12vw,62px)}
+ .hero-art{min-height:250px;border-radius:16px}
+ .section{margin-top:48px}.chat{margin-top:48px}
+ .msg{max-width:96%;padding:12px 13px}
+ .panel{padding:18px}
+}
+@media(prefers-reduced-motion:reduce){
+ *,*:before,*:after{scroll-behavior:auto!important;animation:none!important;transition:none!important}
+}
 </style></head>
 <body>
-<nav><a class="logo" href="#discover" aria-label="TastePilot home"><span class="brandmark" aria-label="TastePilot logo"><svg viewBox="0 0 48 48" role="img"><path d="M24 4 29 15 40 11 34 22 44 28 31 30 30 43 22 34 12 41 14 29 4 23 17 20Z" fill="none" stroke="#75e4e8" stroke-width="1.5"/><circle cx="24" cy="24" r="7" fill="#a99bff"/><circle cx="24" cy="24" r="3" fill="#f1f5fb"/></svg></span><span>TastePilot <b>AI</b></span></a><div class="navlinks"><a href="#discover">Discover</a><a href="#taste">Taste map</a><a href="#chat">AI agent</a></div><div class="nav-right"><div class="pill"><span class="agent-status"></span> CULTURE INTELLIGENCE</div><span class="local-profile-pill" title="Taste preferences are saved only in this browser">✦ LOCAL TASTE PROFILE</span><button class="settings-trigger" id="settingsTrigger" type="button" aria-expanded="false" aria-controls="appearancePanel" onclick="toggleAppearance()">⚙ <span>SETTINGS</span></button></div></nav><aside class="appearance-panel" id="appearancePanel" aria-label="User settings" hidden>
+<nav><a class="logo" href="#discover" aria-label="TastePilot home"><span class="brandmark" aria-label="TastePilot logo"><svg viewBox="0 0 48 48" role="img"><ellipse cx="23" cy="25" rx="19" ry="8" transform="rotate(-28 23 25)" fill="none" stroke="currentColor" stroke-width="2.4"/><circle cx="21" cy="25" r="8" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M20 30 37 9 34 20 44 17 24 39 27 28Z" fill="currentColor"/></svg></span><span>TastePilot <b>AI</b></span></a><div class="navlinks"><a href="#discover">Discover</a><a href="#taste">Taste map</a><a href="#chat">AI agent</a></div><div class="nav-right"><div class="pill"><span class="agent-status"></span> CULTURE INTELLIGENCE</div><span class="local-profile-pill" title="Taste preferences are saved only in this browser">✦ LOCAL TASTE PROFILE</span><button class="settings-trigger" id="settingsTrigger" type="button" aria-expanded="false" aria-controls="appearancePanel" onclick="toggleAppearance()">⚙ <span>SETTINGS</span></button></div></nav><aside class="appearance-panel" id="appearancePanel" aria-label="User settings" hidden>
 <div class="settings-head"><div><span class="settings-kicker">USER CONFIGURATION</span><h3>Settings</h3></div><button class="settings-close" type="button" onclick="toggleAppearance(false)" aria-label="Close settings">×</button></div>
 <p>Make TastePilot feel right for you. Preferences are saved on this device.</p>
 <div class="settings-label">THEME</div>
@@ -455,7 +538,7 @@ html[data-theme="light"] .flow-step{border-color:color-mix(in srgb,var(--user-ac
 
 <main>
 <section class="hero" id="discover">
-<div class="hero-copy"><div class="eyebrow"><span class="eyebrow-dot"></span> ROOT ACCESS TO YOUR NEXT DISCOVERY</div><h1><span style="font-size:.48em;display:block;color:#6bff9b;letter-spacing:.12em;margin-bottom:15px">TASTEPILOT // TERMINAL 01</span>Enter the <br><span class="gradient">unknown.</span></h1><p>A personal discovery intelligence console. Enter a mood, a signal, or a direction — let the agent map your next move through culture.</p>
+<div class="hero-copy"><div class="eyebrow"><span class="eyebrow-dot"></span> YOUR PERSONAL DISCOVERY GUIDE</div><h1><span style="font-size:.38em;display:block;color:var(--user-accent);letter-spacing:.14em;margin-bottom:15px">YOUR WORLD, YOUR TASTE</span>Discover <br><span class="gradient">what you love.</span></h1><p>Your personal guide to movies, music, places, books and new experiences — thoughtfully matched to your interests and mood.</p>
 <div class="search-panel"><label class="sr-only" for="q" style="position:absolute;left:-9999px">What would you like to discover?</label><input id="q" aria-label="What would you like to discover?" placeholder="A film for a quiet night, music for a drive…"><button class="go" onclick="discover()">Explore <span>↗</span></button></div><div class="helper-line">Start with a mood, a favorite, or a plan. No special prompt needed.</div><div class="chips"><button class="chip" onclick="fill('a memorable movie for a relaxed evening')">01 / Cinema</button><button class="chip" onclick="fill('a relaxed evening playlist')">02 / Music</button><button class="chip" onclick="fill('a stylish place to eat')">03 / Places</button><button class="chip" onclick="fill('something to do when I am bored')">04 / Experiences</button></div><div class="status" id="status"></div></div>
 <div class="hero-art king-brand-stage" aria-label="KING brand logo">
 <img class="king-brand-logo" src="/king-logo.svg" alt="KING logo">
@@ -463,7 +546,7 @@ html[data-theme="light"] .flow-step{border-color:color-mix(in srgb,var(--user-ac
 </section>
 <section class="section"><div class="sectionhead"><div><div class="section-kicker">01 // DISCOVERY MODULE</div><h2>Choose your next signal.</h2><div class="muted">Input a signal. Trace unexpected connections across culture.</div></div><div class="section-note muted">CURATED · CONNECTED · PERSONAL</div></div><div class="grid" id="cards"><div class="card"><div class="icon">◈</div><span class="tag">01 / Cinema</span><h3>Stories that stay with you</h3><p>Find a film or series that matches the feeling you want from tonight.</p></div><div class="card"><div class="icon">♫</div><span class="tag">02 / Sound</span><h3>Build a world through music</h3><p>Explore sounds that fit your mood, your setting, and your personal rhythm.</p></div><div class="card"><div class="icon">⌁</div><span class="tag">03 / Out there</span><h3>Discover your next place</h3><p>Connect your interests to restaurants, places, and experiences worth trying.</p></div></div></section>
 <section class="section profile" id="taste"><div class="panel"><div class="section-kicker">02 // SIGNAL MONITOR</div><h2>Taste signal monitor.</h2><div class="muted" id="tasteHint">Try a discovery above to infer signals from your request.</div><div class="bars" id="tasteBars"><div class="barrow"><span>Curiosity</span><div class="bar"><div class="fill" style="width:72%"></div></div><b>72</b></div><div class="barrow"><span>Atmosphere</span><div class="bar"><div class="fill" style="width:64%"></div></div><b>64</b></div><div class="barrow"><span>Story</span><div class="bar"><div class="fill" style="width:81%"></div></div><b>81</b></div><div class="barrow"><span>Novelty</span><div class="bar"><div class="fill" style="width:67%"></div></div><b>67</b></div></div></div><div class="panel"><div class="section-kicker">03 // AGENT PIPELINE</div><h2>From input to intelligence.</h2><div class="flow-steps"><div class="flow-step"><b>01</b>Your intent</div><div class="flow-step"><b>02</b>Taste signals</div><div class="flow-step"><b>03</b>Cultural graph</div><div class="flow-step"><b>04</b>Discovery</div></div><p class="flow-note">TastePilot is designed to connect preferences across categories — not just return a generic list. Live cultural results activate when the Qloo API is configured.</p></div></section>
-<section class="chat" id="chat"><div class="chathead"><div><div class="section-kicker">04 // OPERATOR TERMINAL</div><h2>Initialize a conversation.</h2><div class="muted">Talk to the agent. Refine signals. Follow the trail.</div></div><div class="pill"><span class="agent-status"></span> AGENT ONLINE</div></div><div class="chatlog" id="chatlog"><div class="msg bot welcome-msg"><strong>Welcome to TastePilot.</strong><p>Tell me how you feel, what you enjoy, or what kind of day you want. We’ll find a direction worth exploring.</p><div class="welcome-examples"><button class="mini-prompt" onclick="setChatPrompt('I am bored. Suggest something that fits my mood.')">I’m bored</button><button class="mini-prompt" onclick="setChatPrompt('Help me choose a movie for tonight.')">Pick a movie</button><button class="mini-prompt" onclick="setChatPrompt('Suggest somewhere to go with a friend.')">Plan with a friend</button></div></div></div><div class="chatinput"><input id="chatq" aria-label="Message TastePilot" placeholder="Tell me what you’re in the mood for…" onkeydown="if(event.key==='Enter')sendChat()"><button class="send" onclick="sendChat()">Send ↗</button></div><div class="input-hint">ENTER TO SEND <span>·</span> FOLLOW-UP QUESTIONS WELCOME</div><div class="status" id="voiceStatus" style="text-align:left"></div></section>
+<section class="chat" id="chat"><div class="chathead"><div><div class="section-kicker">04 // YOUR AI ASSISTANT</div><h2>What would you like to discover?</h2><div class="muted">Tell TastePilot what you enjoy or what you’re looking for. We’ll explore it together.</div></div><div class="pill"><span class="agent-status"></span> AGENT ONLINE</div></div><div class="chatlog" id="chatlog"><div class="msg bot welcome-msg"><strong>Welcome to TastePilot.</strong><p>Tell me how you feel, what you enjoy, or what kind of day you want. We’ll find a direction worth exploring.</p><div class="welcome-examples"><button class="mini-prompt" onclick="setChatPrompt('I am bored. Suggest something that fits my mood.')">I’m bored</button><button class="mini-prompt" onclick="setChatPrompt('Help me choose a movie for tonight.')">Pick a movie</button><button class="mini-prompt" onclick="setChatPrompt('Suggest somewhere to go with a friend.')">Plan with a friend</button></div></div></div><div class="chatinput"><input id="chatq" aria-label="Message TastePilot" placeholder="Tell me what you’re in the mood for…" onkeydown="if(event.key==='Enter')sendChat()"><button class="send" onclick="sendChat()">Send ↗</button></div><div class="input-hint">ENTER TO SEND <span>·</span> FOLLOW-UP QUESTIONS WELCOME</div><div class="status" id="voiceStatus" style="text-align:left"></div></section>
 </main><footer><span><b>TastePilot AI</b> · Personal culture intelligence</span><span>Built for the Qloo Agentic Hackathon</span></footer>
 <script>
 // Local-first memory: stored per browser profile; never sent to another user's browser.
