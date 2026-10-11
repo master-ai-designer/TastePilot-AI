@@ -9,7 +9,15 @@
     el.textContent = text;
     el.dataset.kind = kind;
   };
-  const getRedirectUrl = () => window.location.origin + window.location.pathname;
+  const getRedirectUrl = () => {
+    const { origin, pathname, hostname } = window.location;
+    // Password-reset and confirmation emails should return to the deployed app,
+    // not to localhost when the user initiated the request during local testing.
+    if (hostname === "localhost" || hostname === "127.0.0.1") {
+      return "https://taste-pilot-ai.vercel.app/";
+    }
+    return origin + pathname;
+  };
   async function initAuth() {
     try {
       const response = await fetch("/api/auth-config", { headers: { "Accept": "application/json" }, cache: "no-store" });
