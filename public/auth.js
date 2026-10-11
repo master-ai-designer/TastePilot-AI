@@ -93,6 +93,9 @@
   window.setAuthMode = (nextMode) => {
     mode = ["signup", "recovery"].includes(nextMode) ? nextMode : "login";
     const recovery = mode === "recovery";
+    const emailField = $("authEmail")?.closest(".auth-field");
+    if (emailField) emailField.hidden = recovery;
+    if ($("authEmail")) $("authEmail").required = !recovery;
     $("authTabs").hidden = recovery;
     $("authGoogle").hidden = recovery;
     document.querySelector(".auth-divider").hidden = recovery;
@@ -135,7 +138,7 @@
     const password = $("authPassword").value;
     const submit = $("authSubmit");
     submit.disabled = true;
-    submit.textContent = mode === "login" ? "Signing in…" : "Creating account…";
+    submit.textContent = mode === "recovery" ? "Saving password…" : mode === "login" ? "Signing in…" : "Creating account…";
     setMessage("");
     try {
       if (mode === "recovery") {
@@ -183,12 +186,22 @@
   };
   window.sendPasswordReset = async () => {
     if (!client) { setMessage(configError || "Authentication is not configured yet.", "error"); return; }
-    const email = $("authEmail").value.trim();
-    if (!email) { setMessage("Enter your email address first.", "error"); $("authEmail").focus(); return; }
+    const emailInput = $("authEmail");
+    const email = emailInput.value.trim();
+    if (!email) { setMessage("Enter your email address first.", "error"); emailInput.focus(); return; }
     setMessage("Sending password reset email…");
-    const { error } = await client.auth.resetPasswordForEmail(email, { redirectTo: getRedirectUrl() });
-    if (error) setMessage(error.message || "Could not send reset email.", "error");
-    else setMessage("If an account exists for that email, a password reset link will arrive shortly.", "success");
+    try {
+      const { error } = await client.auth.resetPasswordForEmail(email, { redirectTo: getRedirectUrl() });
+      if (error) {
+        setMessage(/redirect.*allow|url.*not allowed/i.test(error.message || "")
+          ? "Password reset redirect is not allowed in Supabase. Add https://taste-pilot-ai.vercel.app to Authentication → URL Configuration → Redirect URLs."
+          : (error.message || "Could not send reset email."), "error");
+      } else {
+        setMessage("If an account exists for this email, a password reset link will arrive shortly. Check your inbox and spam folder.", "success");
+      }
+    } catch (_error) {
+      setMessage("Could not contact the authentication service. Please check your connection and try again.", "error");
+    }
   };
   window.signOutTastePilot = async () => {
     if (!client) return;
