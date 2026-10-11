@@ -238,7 +238,13 @@ footer b{color:#6bff9b}
 @media(max-width:640px){.nav-right{gap:6px}.nav-right .pill{display:none}.settings-trigger{padding:0 8px}.appearance-panel{top:74px;right:12px}.accent-options{gap:4px}.accent-option{font-size:9px}}
 @media(prefers-reduced-motion:reduce){.settings-trigger,.accent-option{transition:none}}
 </style><style id="tastepilot-full-settings">
-:root{--user-accent:#6bff9b;--user-font-scale:1}
+:root{--user-accent:#6bff9b;--user-font-scale:1;--chat-font-scale:1}
+.msg{font-size:calc(13px * var(--chat-font-scale))!important}
+.msg.bot h3{font-size:calc(15px * var(--chat-font-scale))!important}
+.msg.bot code{font-size:calc(12px * var(--chat-font-scale))!important}
+.chat-text-options{grid-template-columns:repeat(4,minmax(0,1fr))}
+.chat-text-options .theme-option{padding-inline:2px}
+
 html{font-size:calc(16px * var(--user-font-scale))}
 .settings-space{margin-top:19px}
 .theme-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
@@ -405,6 +411,13 @@ html[data-theme="light"] .flow-step{border-color:color-mix(in srgb,var(--user-ac
 <button type="button" class="theme-option" data-text-size="small" onclick="setTextSize('small')">A− Small</button>
 <button type="button" class="theme-option is-active" data-text-size="normal" onclick="setTextSize('normal')">A Normal</button>
 <button type="button" class="theme-option" data-text-size="large" onclick="setTextSize('large')">A+ Large</button>
+</div>
+<div class="settings-label settings-space">CHAT MESSAGE SIZE</div>
+<div class="theme-options chat-text-options" role="group" aria-label="Chat message text size">
+<button type="button" class="theme-option" data-chat-size="small" onclick="setChatTextSize('small')">A− Small</button>
+<button type="button" class="theme-option is-active" data-chat-size="normal" onclick="setChatTextSize('normal')">A Normal</button>
+<button type="button" class="theme-option" data-chat-size="large" onclick="setChatTextSize('large')">A+ Large</button>
+<button type="button" class="theme-option" data-chat-size="xlarge" onclick="setChatTextSize('xlarge')">A++ XL</button>
 </div>
 <label class="setting-toggle"><span><b>Compact layout</b><small>Less spacing, more content</small></span><input type="checkbox" id="compactSetting" onchange="setCompact(this.checked)"><i></i></label>
 <label class="setting-toggle"><span><b>Reduce motion</b><small>Limit interface animations</small></span><input type="checkbox" id="motionSetting" onchange="setReducedMotion(this.checked)"><i></i></label>
@@ -620,6 +633,13 @@ function setTextSize(size,save=true){
  document.querySelectorAll('[data-text-size]').forEach(el=>el.classList.toggle('is-active',el.dataset.textSize===size));
  if(save)try{localStorage.setItem('tastepilot-text-size',size)}catch(e){}
 }
+function setChatTextSize(size,save=true){
+ const scales={small:'0.92',normal:'1',large:'1.16',xlarge:'1.32'};
+ if(!scales[size])return;
+ document.documentElement.style.setProperty('--chat-font-scale',scales[size]);
+ document.querySelectorAll('[data-chat-size]').forEach(el=>el.classList.toggle('is-active',el.dataset.chatSize===size));
+ if(save)try{localStorage.setItem('tastepilot-chat-text-size',size)}catch(e){}
+}
 function setCompact(value,save=true){
  document.documentElement.dataset.compact=value?'true':'false';
  const el=document.getElementById('compactSetting');if(el)el.checked=value;
@@ -631,13 +651,14 @@ function setReducedMotion(value,save=true){
  if(save)try{localStorage.setItem('tastepilot-reduce-motion',value?'true':'false')}catch(e){}
 }
 function resetSettings(){
- setTheme('dark');setAccent('#6bff9b',null);setTextSize('normal');setCompact(false);setReducedMotion(false);
+ setTheme('dark');setAccent('#6bff9b',null);setTextSize('normal');setChatTextSize('normal');setCompact(false);setReducedMotion(false);
 }
 (function(){
  const get=(key)=>{try{return localStorage.getItem(key)}catch(e){return null}};
  const theme=get('tastepilot-theme')||'dark';setTheme(theme,false);
  const accent=get('tastepilot-accent');if(accent&&/^#[0-9a-f]{6}$/i.test(accent))setAccent(accent,null,false);
  setTextSize(get('tastepilot-text-size')||'normal',false);
+ setChatTextSize(get('tastepilot-chat-text-size')||'normal',false);
  setCompact(get('tastepilot-compact')==='true',false);
  setReducedMotion(get('tastepilot-reduce-motion')==='true',false);
  if(window.matchMedia){window.matchMedia('(prefers-color-scheme: light)').addEventListener?.('change',()=>{if(document.documentElement.dataset.themePreference==='system')setTheme('system',false)})}
