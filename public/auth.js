@@ -67,6 +67,16 @@
       if (menu) menu.dataset.open = "false";
     }
   }
+  window.toggleAuthPassword = () => {
+    const input = $("authPassword");
+    const button = $("authPasswordToggle");
+    if (!input || !button) return;
+    const reveal = input.type === "password";
+    input.type = reveal ? "text" : "password";
+    button.textContent = reveal ? "Hide" : "Show";
+    button.setAttribute("aria-label", reveal ? "Hide password" : "Show password");
+    button.setAttribute("aria-pressed", String(reveal));
+  };
   window.openAuthModal = () => {
     const overlay = $("authOverlay");
     if (!overlay) return;
@@ -97,6 +107,13 @@
     $("authSubmit").textContent = recovery ? "Save new password ↗" : mode === "login" ? "Sign in securely ↗" : "Create account ↗";
     $("authPassword").autocomplete = mode === "login" ? "current-password" : "new-password";
     $("authPassword").placeholder = recovery ? "Choose a new password" : "At least 8 characters";
+    $("authPassword").type = "password";
+    const passwordToggle = $("authPasswordToggle");
+    if (passwordToggle) {
+      passwordToggle.textContent = "Show";
+      passwordToggle.setAttribute("aria-label", "Show password");
+      passwordToggle.setAttribute("aria-pressed", "false");
+    }
     $("authForgot").hidden = mode !== "login";
     setMessage("");
   };
