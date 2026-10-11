@@ -530,7 +530,7 @@ async function sendChat(){
   const data=await r.json(); document.querySelector('[data-typing="true"]')?.remove();
   if(!r.ok){addChat(data.error||'The AI agent is temporarily unavailable. Please try again shortly.','bot');return;}
   const reply=data.reply||'I could not understand that yet. Try describing what you want to watch, listen to, eat, or discover.';
-  window.tastePilotChatHistory.push({role:'model',text:reply}); updateTPMemory(reply); persistTPHistory();
+  window.tastePilotChatHistory.push({role:'model',text:reply}); persistTPHistory();
   if(window.tastePilotChatHistory.length>12)window.tastePilotChatHistory.splice(0,window.tastePilotChatHistory.length-12);
   typeChatMessage(reply);
 }
