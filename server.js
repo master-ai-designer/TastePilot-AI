@@ -161,17 +161,18 @@ app.post("/api/media-search",async(req,res)=>{
    }
   }else errors.push("Archive search unavailable");
  }catch(e){errors.push("Archive search unavailable");}
- if(kind==="music"){
+ if(kind==="music"||kind==="movie"){
   try{
    const url=new URL("https://itunes.apple.com/search");
-   url.searchParams.set("term",query);url.searchParams.set("entity","song");url.searchParams.set("limit","8");
+   url.searchParams.set("term",query);url.searchParams.set("entity",kind==="music"?"song":"movie");url.searchParams.set("limit","8");
    const r=await fetch(url,{headers:{"Accept":"application/json"}});
    if(r.ok){
     const data=await r.json();
     for(const x of (data.results||[])){
      const trackUrl=typeof x.trackViewUrl==="string"&&x.trackViewUrl.startsWith("https://")?x.trackViewUrl:null;
      if(!trackUrl)continue;
-     results.push({title:String(x.trackName||"Unknown track"),creator:String(x.artistName||""),year:x.releaseDate?String(x.releaseDate).slice(0,4):null,url:trackUrl,previewUrl:typeof x.previewUrl==="string"&&x.previewUrl.startsWith("https://")?x.previewUrl:null,source:"Apple Music / iTunes",accessStatus:x.previewUrl?"A free short preview is available; full-track access and price are not verified.":"Full-track access and price are not verified.",freeClaim:"preview_only"});
+     const previewUrl=typeof x.previewUrl==="string"&&x.previewUrl.startsWith("https://")?x.previewUrl:null;
+     results.push({title:String(x.trackName||x.collectionName||"Unknown title"),creator:String(x.artistName||""),year:x.releaseDate?String(x.releaseDate).slice(0,4):null,url:trackUrl,previewUrl:kind==="music"?previewUrl:null,source:kind==="music"?"Apple Music / iTunes":"Apple TV / iTunes",accessStatus:kind==="music"?(previewUrl?"A free short preview is available; full-track access and price are not verified.":"Full-track access and price are not verified."):"Title page found; streaming availability, rental/purchase price, and regional access are not verified.",freeClaim:kind==="music"?"preview_only":"availability_unverified"});
     }
    }else errors.push("Music catalogue unavailable");
   }catch(e){errors.push("Music catalogue unavailable");}
