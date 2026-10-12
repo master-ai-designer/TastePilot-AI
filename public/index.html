@@ -572,14 +572,21 @@ function mediaRequestFromChat(message){
  const lower=message.toLowerCase();
  const wantsLink=/(link|havola|qayerdan|qayerda.*(ko'r|kor|tomosha|tingla)|watch|listen|stream|bepul|free|where can i|find.*(song|movie|film)|open.*(song|movie|film))/i.test(message);
  if(!wantsLink)return null;
- const context=history.slice(-8).map(x=>String(x.text||"")).join("\n")+"\n"+message;
+ const lastModel=history.slice().reverse().find(x=>x.role==="model"&&typeof x.text==="string");
+ const context=String(lastModel?.text||"")+"\n"+message;
  const cl=context.toLowerCase();
  const movie=/(film|movie|kino|serial|series|episode|tomosha|watch)/i.test(cl);
  const music=/(musiqa|music|qo'shiq|qo‘shiq|song|playlist|tingla|listen|artist|album|track)/i.test(cl);
  const kind=movie&&!music?"movie":"music";
+ const selection=message.match(/\b(1|2|3|4|5)\s*[- ]?(?:chi|chisini|tasini|variant(?:ni)?|sini)\b/i);
  let query=message
   .replace(/(menga|iltimos|please|link(ini|ni)?|havola(si|sini)?|qayerdan|qayerda|bepul|free|topib ber|topib berchi|tanladim|tanlagandim|ni tanladim|watch|listen|stream|tomosha qilish|tinglash mumkin|ber|tashlab ber)/ig," ")
   .replace(/\s+/g," ").trim();
+ if(selection&&lastModel){
+  const lines=lastModel.text.split(/\r?\n/).filter(line=>/^\s*\d+\.\s+/.test(line));
+  const chosen=lines[Number(selection[1])-1];
+  if(chosen)query=chosen.replace(/^\s*\d+\.\s+/,"").replace(/\*\*/g,"").replace(/["“”]/g,"").slice(0,160);
+ }
  if(query.length<2){
   const recent=history.slice(-6).reverse().find(x=>x.role==="model"&&typeof x.text==="string"&&/(1\.|2\.|3\.|•|- )/.test(x.text));
   if(recent)query=recent.text.replace(/https?:\/\/\S+/g," ").replace(/\s+/g," ").slice(0,160);
