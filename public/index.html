@@ -626,9 +626,9 @@ function renderMarkdown(text){
  s=s.replace(/(?<!\*)\*([^*\n]+)\*(?!\*)/g,'<em>$1</em>').replace(/(?<!_)_([^_\n]+)_(?!_)/g,'<em>$1</em>');
  s=s.replace(/\x60([^\x60\n]+)\x60/g,'<code>$1</code>');
  s=s.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g,'<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
- var lines=s.split('\n'),out=[],list=null,numberedHeading=0;
+ var lines=s.split('\n'),out=[],list=null,numberedHeading=0,orderedItemCount=0;
  lines.forEach(function(line){
-  if(/^\s*\d+\.\s+<strong>[^<]*:<\/strong>/.test(line)){numberedHeading++;out.push('<p><strong>'+numberedHeading+'. '+line.replace(/^\s*\d+\.\s+/,'')+'</strong></p>');return;}
+  if(/^\s*\d+\.\s+/.test(line)){if(list){out.push('</'+list+'>');list=null;}orderedItemCount++;out.push('<p class="numbered-response-item"><strong>'+orderedItemCount+'. '+line.replace(/^\s*\d+\.\s+/,'')+'</strong></p>');return;}
   if(/^\s*[-*]\s+/.test(line)){if(list!=='ul'){if(list)out.push('</'+list+'>');out.push('<ul>');list='ul';}out.push('<li>'+line.replace(/^\s*[-*]\s+/,'')+'</li>');return;}
   if(/^\s*\d+\.\s+/.test(line)){if(list!=='ol'){if(list)out.push('</'+list+'>');out.push('<ol>');list='ol';}out.push('<li>'+line.replace(/^\s*\d+\.\s+/,'')+'</li>');return;}
   if(!line.trim()){if(list)return;return;} if(list){out.push('</'+list+'>');list=null;}
