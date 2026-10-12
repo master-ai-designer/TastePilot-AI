@@ -567,6 +567,46 @@ async function discover(){
    '<div class="card"><div class="icon">🔗</div><span class="tag">Agentic flow</span><h3>Beyond one category</h3><p>The agent can use the same taste signal to connect movies, music, dining and places.</p></div>';
  }catch(e){status.textContent='Could not reach the backend. Run npm start and try again.'}
 }
+function mediaRequestFromChat(message){
+ const history=window.tastePilotChatHistory||[];
+ const lower=message.toLowerCase();
+ const wantsLink=/(link|havola|qayerdan|qayerda.*(ko'r|kor|tomosha|tingla)|watch|listen|stream|bepul|free|where can i|find.*(song|movie|film)|open.*(song|movie|film))/i.test(message);
+ if(!wantsLink)return null;
+ const context=history.slice(-8).map(x=>String(x.text||"")).join("\n")+"\n"+message;
+ const cl=context.toLowerCase();
+ const movie=/(film|movie|kino|serial|series|episode|tomosha|watch)/i.test(cl);
+ const music=/(musiqa|music|qo'shiq|qo‘shiq|song|playlist|tingla|listen|artist|album|track)/i.test(cl);
+ const kind=movie&&!music?"movie":"music";
+ let query=message
+  .replace(/(menga|iltimos|please|link(ini|ni)?|havola(si|sini)?|qayerdan|qayerda|bepul|free|topib ber|topib berchi|tanladim|tanlagandim|ni tanladim|watch|listen|stream|tomosha qilish|tinglash mumkin|ber|tashlab ber)/ig," ")
+  .replace(/\s+/g," ").trim();
+ if(query.length<2){
+  const recent=history.slice(-6).reverse().find(x=>x.role==="model"&&typeof x.text==="string"&&/(1\.|2\.|3\.|•|- )/.test(x.text));
+  if(recent)query=recent.text.replace(/https?:\/\/\S+/g," ").replace(/\s+/g," ").slice(0,160);
+ }
+ if(query.length<2)return null;
+ return {query:query.slice(0,160),kind};
+}
+async function appendMediaSources(message){
+ const req=mediaRequestFromChat(message);if(!req)return;
+ try{
+  const r=await fetch("/api/media-search",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(req)});
+  const data=await r.json();if(!r.ok)throw new Error(data.error||"Search failed");
+  let out="**Internetdan topilgan manbalar**\n\n";
+  if(data.results?.length){
+   out+=data.results.slice(0,6).map((x,i)=>{
+    const title=String(x.title||"Untitled").replace(/[\[\]]/g,"");
+    const creator=x.creator?" — "+String(x.creator).replace(/[\[\]]/g,""):"";
+    let line=(i+1)+". **"+title+"**"+creator+"\n   Manba: "+x.source+"\n   Holati: "+x.accessStatus+"\n   [Manbani ochish]("+x.url+")";
+    if(x.previewUrl)line+=" · [Bepul qisqa preview]("+x.previewUrl+")";
+    return line;
+   }).join("\n\n");
+  }else out+="Mos keladigan tasdiqlangan natija topilmadi. Bu qonuniy bepul manba umuman yo‘q degani emas.\n\n";
+  out+="\n\n_Eslatma: bepul preview to‘liq asar bepul degani emas. Hududingizdagi mavjudlik va litsenziya shartlarini manbaning o‘zida tekshiring._";
+  addChat(out,"bot");
+ }catch(e){addChat("Internet manbalarini hozir tekshira olmadim. Birozdan keyin qayta urinib ko‘ring.","bot");}
+}
+
 async function sendChat(){
  const input=document.getElementById('chatq'); const q=input.value.trim(); if(!q)return;
  addChat(q,'user'); updateTPMemory(q); persistTPHistory(); input.value='';
@@ -579,6 +619,7 @@ async function sendChat(){
   window.tastePilotChatHistory.push({role:'model',text:reply}); persistTPHistory();
   if(window.tastePilotChatHistory.length>12)window.tastePilotChatHistory.splice(0,window.tastePilotChatHistory.length-12);
   typeChatMessage(reply);
+  await appendMediaSources(q);
 }
 catch(e){document.querySelector('[data-typing="true"]')?.remove();addChat('I could not reach the agent right now. Please try again.','bot')}
 }
