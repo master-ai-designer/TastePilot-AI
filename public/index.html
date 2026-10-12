@@ -795,13 +795,8 @@ function resetSettings(){
 }
 (function(){
  const get=(key)=>{try{return localStorage.getItem(key)}catch(e){return null}};
- const theme=get('tastepilot-theme')||'dark';setTheme(theme,false);
- const accent=get('tastepilot-accent');if(accent&&/^#[0-9a-f]{6}$/i.test(accent))setAccent(accent,null,false);
- setTextSize(get('tastepilot-text-size')||'normal',false);
- setChatTextSize(get('tastepilot-chat-text-size')||'normal',false);
- setCompact(get('tastepilot-compact')==='true',false);
- setReducedMotion(get('tastepilot-reduce-motion')==='true',false);
- if(window.matchMedia){window.matchMedia('(prefers-color-scheme: light)').addEventListener?.('change',()=>{if(document.documentElement.dataset.themePreference==='system')setTheme('system',false)})}
+ const theme=get('tastepilot-theme')==='light'?'light':'dark';setTheme(theme,false);
+ setLanguage(get('tastepilot-language')||'en',false);
 })();
 document.addEventListener('keydown',e=>{if(e.key==='Escape')toggleAppearance(false)});
 document.addEventListener('click',e=>{const panel=document.getElementById('appearancePanel'),trigger=document.getElementById('settingsTrigger');if(panel&&!panel.hidden&&!panel.contains(e.target)&&!trigger.contains(e.target))toggleAppearance(false)});
