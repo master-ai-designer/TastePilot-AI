@@ -386,160 +386,43 @@ html[data-theme="light"] .card,
 html[data-theme="light"] .chatlog,
 html[data-theme="light"] .msg.bot,
 html[data-theme="light"] .flow-step{border-color:color-mix(in srgb,var(--user-accent) 26%,#d3e0d7)!important}
-</style><style id="tastepilot-premium-redesign">
-/* TastePilot premium redesign: mostly static CSS, low GPU cost, no heavy 3D or video */
-:root{
- --bg:#07111a;--panel:#0d1b27;--panel2:#0a1621;--line:#1c3b4c;
- --text:#eef7fb;--muted:#9cb1c0;--cyan:#38d9e6;--violet:#8ab8ff;
- --user-accent:#32dfc1;--user-font-scale:1;--chat-font-scale:1;
-}
-html{background:var(--bg);scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:-.015em}
-body:before{background:radial-gradient(ellipse at 78% 0%,rgba(34,113,139,.15),transparent 38%),radial-gradient(ellipse at 8% 46%,rgba(33,83,111,.11),transparent 34%),linear-gradient(180deg,#07111a,#08131d);opacity:1}
-nav{background:rgba(7,17,26,.97);border-bottom:1px solid #b9e8ff13;backdrop-filter:none;-webkit-backdrop-filter:none}
-.brandmark{background:linear-gradient(145deg,#102c3a,#0b1a25);border:1px solid #39d9e644;border-radius:14px;box-shadow:none;color:#41dce6}
-.brandmark svg{stroke:currentColor}
-.logo{letter-spacing:-.045em}.logo b{color:#3be0d0}
-.navlinks a{color:#9eb4c3}.navlinks a:hover{color:#e7fcff}
-.pill{border-color:#2b5365;background:#0d1e2a;color:#b6d3e0;border-radius:999px}
-.agent-status,.eyebrow-dot{background:#40dec7;box-shadow:none}
-main{max-width:1390px;padding-top:42px}
-.hero{gap:clamp(28px,5vw,68px);padding:22px 0 18px;align-items:center}
-.hero-copy{max-width:710px}
-.eyebrow{color:#5be0d4;letter-spacing:.13em}
-h1{font-size:clamp(46px,6vw,78px);line-height:1.02;letter-spacing:-.07em;font-weight:760}
-.gradient{background:linear-gradient(100deg,#f2fbff 0%,#71e6e0 55%,#91baff 100%);background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.hero p{color:#a8bdcb;line-height:1.8}
-.hero-art{background:linear-gradient(145deg,#102c3b,#0b1722 64%,#10202c);border-color:#285064;border-radius:22px;box-shadow:none}
-.hero-art:before{background:linear-gradient(145deg,transparent 20%,#6adfe609 20.2%,transparent 20.6%),radial-gradient(ellipse at 50% 42%,#44d8d20b,transparent 60%)}
-.king-emblem{border-color:#45d9dd4c;background:radial-gradient(circle,#2bd4d20b,transparent 68%);box-shadow:none}
-.king-emblem:before,.king-emblem:after{border-color:#61dfe52b}
-.art-wordmark{letter-spacing:.3em;color:#e1f4fa}
-.search-panel{background:#0b1924;border-color:#24495b;border-radius:14px;box-shadow:none}
-.search-panel:focus-within{border-color:#40d7d8;box-shadow:0 0 0 3px #40d7d80c}
-.search-panel input{font-size:14px}
-.go,.send{background:linear-gradient(120deg,#43e2ce,#4acbe5);color:#06202a;border:1px solid #9af3ee;box-shadow:none;border-radius:10px;font-weight:750}
-.go:hover,.send:hover{transform:translateY(-1px);box-shadow:0 5px 18px #37d6d51a;background:#75e9e0}
-.go:active,.send:active{transform:none;box-shadow:none}
-.chip,.mini-prompt{background:#0d1e2b;border-color:#234659;color:#bfd2df;border-radius:999px}
-.chip:hover,.mini-prompt:hover{background:#102a37;border-color:#43d5d9;color:#eaffff}
-.section{margin-top:64px}
-.section-kicker,.tag{color:#5adbcf;letter-spacing:.15em}
-.section h2,.chathead h2{letter-spacing:-.045em}
-.card,.panel,.chat{background:linear-gradient(145deg,#0e1e2a,#0a1620);border:1px solid #1f4253;border-radius:16px;box-shadow:none}
-.card{transition:border-color .18s,background .18s}
-.card:hover{transform:none;border-color:#39869a;background:linear-gradient(145deg,#102533,#0b1721);box-shadow:none}
-.card:after{display:none}
-.card p,.muted{color:#9bb0bf}
-.panel{padding:25px}
-.bar{background:#1a303c}.fill{background:linear-gradient(90deg,#2fbbb8,#53dfce,#80bfff)}
-.flow-step{border-color:#254555;background:#0b1924;border-radius:10px}
-.flow-step b{color:#58ddd4}
-.chat{margin-top:64px;background:linear-gradient(145deg,#0e1d29,#08141e);border-color:#245064;padding:clamp(18px,3vw,30px)}
-.chatlog{scrollbar-color:#285365 transparent}
-.msg{font-size:calc(14px * var(--chat-font-scale))!important;line-height:1.78;border-radius:14px;padding:15px 17px}
-.msg.bot{background:#102330;border-color:#25485a;color:#e0edf4}
-.msg.user{background:#103b3a;border-color:#277f7b;color:#efffff}
-.msg.bot h3{font-size:calc(16px * var(--chat-font-scale))!important}
-.msg.bot code{font-size:calc(13px * var(--chat-font-scale))!important}
-.msg.bot a{color:#6ce8df}
-.chatinput input{background:#07141e;border-color:#244b5d;border-radius:12px;font-size:14px}
-.chatinput input:focus{border-color:#48d9d6;outline:2px solid #48d9d61c}
-.send{min-width:82px}
-.input-hint{color:#829aa9}
-footer{border-top-color:#173442;color:#7f99a9}
-footer b{color:#b5d7e5}
-.local-profile-pill{border-color:#28606a;background:#0b222b;color:#9de8df;border-radius:999px}
-.settings-trigger{border-color:#285267;background:#0c1d29;color:#b8d6e3;border-radius:10px}
-.appearance-panel{background:#0b1924;border-color:#24495a;box-shadow:0 12px 36px #0003}
-.settings-reset{color:#b1d8d0}
-.auth-dialog{backdrop-filter:none;box-shadow:0 18px 55px #0005}
-:root{--chat-font-scale:1}
-.msg{font-size:calc(14px * var(--chat-font-scale))!important}
-@media(min-width:1100px){.hero-art{min-height:380px}}
-@media(max-width:900px){main{padding-top:30px}.hero{gap:28px}.hero-art{min-height:300px}}
-@media(max-width:640px){
- main{padding:24px 15px 48px}.hero{padding-top:8px}
- h1{font-size:clamp(43px,12vw,62px)}
- .hero-art{min-height:250px;border-radius:16px}
- .section{margin-top:48px}.chat{margin-top:48px}
- .msg{max-width:96%;padding:12px 13px}
- .panel{padding:18px}
-}
-@media(prefers-reduced-motion:reduce){
- *,*:before,*:after{scroll-behavior:auto!important;animation:none!important;transition:none!important}
-}
-</style><style id="tastepilot-total-dashboard">
-:root{--tp-bg:#06121b;--tp-panel:#0b1a25;--tp-panel2:#0a1721;--tp-border:#1b3c4c;--tp-text:#eef7fb;--tp-muted:#9bb3c2;--tp-cyan:#42d9e6;--tp-green:#38e0c3;--user-accent:#38e0c3;--user-font-scale:1;--chat-font-scale:1}
-*{box-sizing:border-box}
-html{background:var(--tp-bg);scroll-behavior:smooth}
-body{margin:0;background:radial-gradient(ellipse at 64% 0%,#12384a35,transparent 34%),linear-gradient(180deg,#06121b,#07131d 70%,#06111a);color:var(--tp-text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;letter-spacing:-.015em;min-height:100vh}
-body:before{display:none}
-.tp-sidebar{position:fixed;inset:0 auto 0 0;width:292px;z-index:60;padding:26px 20px 22px;background:linear-gradient(180deg,#06151e,#07131c);border-right:1px solid #a6eaff13;display:flex;flex-direction:column}
-.tp-brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:#f3fbff;margin:3px 7px 40px}
-.tp-logo{width:49px;height:49px;display:grid;place-items:center;color:#39e0d4;flex-shrink:0}
-.tp-logo svg{width:100%;height:100%;filter:drop-shadow(0 0 9px #28d8d533)}
-.tp-brand b{display:block;font-size:21px;letter-spacing:-.06em;font-weight:760}.tp-brand i{font-style:normal;color:#40e0d3}.tp-brand small{display:block;margin-top:3px;color:#8ba7b7;font-size:11px;letter-spacing:.01em}
-.tp-newchat{height:59px;border-radius:13px;border:1px solid #2bbfb677;background:linear-gradient(105deg,#0b3837,#0a2029);color:#efffff;display:flex;align-items:center;gap:12px;padding:0 15px;font-weight:700;font-size:14px;cursor:pointer}
-.tp-newchat>span{width:24px;height:24px;display:grid;place-items:center;border-radius:50%;background:#36ddc2;color:#05232a;font-size:20px}.tp-newchat kbd{margin-left:auto;font-size:10px;color:#b0d1dc;background:#102e39;padding:5px 7px;border-radius:6px}
-.tp-side-links{display:grid;gap:6px;margin-top:18px}.tp-side-links a,.tp-side-links button{position:relative;min-height:64px;display:grid;grid-template-columns:38px 1fr;grid-template-rows:23px 20px;align-content:center;align-items:center;column-gap:9px;padding:7px 10px;border:1px solid transparent;border-radius:10px;background:transparent;text-decoration:none;color:#dcebf2;text-align:left;cursor:pointer;font:inherit}
-.tp-side-links a>span,.tp-side-links button>span{grid-row:1/3;grid-column:1;font-size:26px;color:#89aeca;text-align:center}.tp-side-links b{font-size:14px;font-weight:620}.tp-side-links small{font-size:11px;color:#8da8b9}.tp-side-links a:hover,.tp-side-links button:hover{background:#102733;border-color:#1d4657}
-.tp-sidebar-bottom{margin-top:auto;border:1px solid #29566b;border-radius:15px;padding:17px 15px;background:linear-gradient(145deg,#102733,#0a1a25);color:#eaf8ff}.tp-crown{float:left;width:41px;height:41px;border-radius:50%;display:grid;place-items:center;margin-right:10px;background:#5b54291c;border:1px solid #a79b4c77;color:#e6c76b;font-size:24px}.tp-sidebar-bottom b{font-size:13px}.tp-sidebar-bottom p{margin:7px 0 4px;color:#bad0dc;font-size:12px}.tp-sidebar-bottom>span{font-size:10px;color:#819eaf}
-.tp-topbar{position:fixed;z-index:50;top:0;left:292px;right:0;height:88px;padding:17px clamp(22px,3vw,50px);display:flex;align-items:center;gap:18px;justify-content:center;background:linear-gradient(180deg,#06121beF,#06121b99 78%,transparent)}
-.tp-top-search{width:min(570px,64%);height:50px;display:flex;align-items:center;gap:12px;padding:0 15px;border:1px solid #2b4e65;border-radius:28px;background:#0d2130e8;color:#9cb9ca}.tp-top-search>span{font-size:24px}.tp-top-search input{width:100%;border:0;outline:0;background:transparent;color:#eefaff;font:inherit;font-size:13px;min-width:0}.tp-top-search input::placeholder{color:#8ea9bb}.tp-top-search kbd{white-space:nowrap;background:#183244;color:#b2cad8;padding:5px 7px;border-radius:5px;font-size:10px}
-.tp-top-actions{position:absolute;right:clamp(22px,3vw,50px);display:flex;align-items:center;gap:12px}.tp-top-actions button{width:43px;height:43px;border:1px solid #29485b;border-radius:50%;background:#0b1c29;color:#c2dbe8;font-size:20px;cursor:pointer}.tp-avatar{width:47px;height:47px;margin-left:9px;border-radius:50%;display:grid;place-items:center;position:relative;background:linear-gradient(145deg,#174358,#0b202d);font-size:23px;color:#dffaff}.tp-avatar span{position:absolute;right:0;bottom:0;width:11px;height:11px;border-radius:50%;background:#3de0bf;border:2px solid #07131d}
-nav{display:none!important}
-main{margin-left:292px!important;margin-right:320px!important;width:auto!important;max-width:none!important;padding:104px 24px 55px!important;min-height:100vh}
-.hero{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(260px,.92fr);align-items:center;gap:28px;padding:22px 0 28px}
-.hero-copy{min-width:0}.eyebrow{font-size:10px;color:#57ded5;letter-spacing:.14em}.eyebrow-dot{background:#41ddc7;box-shadow:0 0 10px #41ddc733}
-h1{font-size:clamp(42px,4.3vw,65px);line-height:1.02;letter-spacing:-.07em;font-weight:760;margin:20px 0 18px}
-.gradient{background:linear-gradient(100deg,#f5fcff,#67e7dd 60%,#93b9ff);background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.hero p{max-width:600px;color:#a8bfce;font-size:15px;line-height:1.8}
-.search-panel{display:flex;gap:8px;padding:6px;background:#0b1a25;border:1px solid #25495b;border-radius:13px;box-shadow:none}.search-panel input{min-width:0;width:100%;background:transparent;color:#e9f8ff;font-size:13px}.search-panel input::placeholder{color:#7995a7}.search-panel:focus-within{border-color:#43d9d6;box-shadow:0 0 0 3px #43d9d60d}
-.go,.send{background:linear-gradient(120deg,#43e2ce,#4acbe5);color:#06202a;border:1px solid #9af3ee;box-shadow:none;border-radius:9px;font-weight:750}.go:hover,.send:hover{transform:translateY(-1px);box-shadow:0 5px 18px #37d6d51a;background:#75e9e0}
-.helper-line{font-size:11px;color:#819eaf;margin-top:11px}.chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:17px}.chip,.mini-prompt{background:#0d1e2b;border-color:#234659;color:#bfd2df;border-radius:999px;font-size:10px}.chip:hover,.mini-prompt:hover{background:#102a37;border-color:#43d5d9;color:#eaffff}
-.tp-scenic-art{position:relative;isolation:isolate;min-height:355px;overflow:hidden;border:1px solid #28566b;border-radius:22px;background:linear-gradient(180deg,#061929 0%,#16364b 42%,#101f2a 70%,#06131c 100%);box-shadow:none}
-.tp-scenic-art:before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(ellipse at 50% 36%,#8fc8dc27,transparent 39%),linear-gradient(180deg,transparent 48%,#06131a 96%)}
-.tp-sky-orbit{position:absolute;left:-12%;right:-12%;top:18%;height:33%;border-top:1px solid #50dfd45c;border-radius:50%;transform:rotate(-12deg);box-shadow:0 -8px 22px #2cd7cf0a}
-.tp-mountain{position:absolute;left:-5%;right:-5%;bottom:20%;height:47%;clip-path:polygon(0 90%,11% 49%,20% 66%,35% 19%,49% 64%,61% 27%,73% 58%,84% 13%,100% 70%,100% 100%,0 100%);background:linear-gradient(145deg,#27465b,#0b202e 70%);opacity:.9}
-.tp-mountain-back{bottom:28%;height:42%;opacity:.75;background:linear-gradient(150deg,#3c6075,#132e40 68%)}
-.tp-mountain-front{background:linear-gradient(145deg,#132e3d,#071923 72%);transform:scaleX(1.08)}
-.tp-lake{position:absolute;bottom:0;left:0;right:0;height:30%;background:linear-gradient(180deg,#102e3c,#06151e);border-top:1px solid #4dd8dc25}
-.tp-scenic-glow{position:absolute;left:22%;right:20%;bottom:17%;height:2px;background:linear-gradient(90deg,transparent,#48ddd6aa,#b2dff555,transparent);filter:none}
-.tp-center-mark{position:absolute;left:50%;top:40%;transform:translate(-50%,-50%);width:100px;height:100px;display:grid;place-items:center;color:#46e4d7}.tp-center-mark svg{width:100%;height:100%}
-.tp-art-caption{position:absolute;bottom:19px;left:0;right:0;text-align:center;color:#c2e4ed;font-size:9px;letter-spacing:.24em}
-.section{margin-top:34px}.sectionhead{display:flex;justify-content:space-between;gap:15px;align-items:end;margin-bottom:18px}.section h2,.chathead h2{font-size:clamp(22px,2.1vw,29px);letter-spacing:-.045em;color:#f0f9fd}.section-kicker,.tag{color:#5adbcf;letter-spacing:.14em;font-size:10px}.sectionhead .muted,.muted{color:#92aab9;font-size:12px;line-height:1.6}
-.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}.card,.panel,.chat{background:linear-gradient(145deg,#0e1e2a,#0a1620);border:1px solid #1f4253;border-radius:15px;box-shadow:none}.card{padding:18px;transition:border-color .18s,background .18s}.card:hover{transform:none;border-color:#39869a;background:linear-gradient(145deg,#102533,#0b1721);box-shadow:none}.card:after{display:none}.card p,.muted{color:#9bb0bf}.card h3{font-size:15px;color:#eaf6fb}.icon{color:#49ddd5}
-.profile{position:fixed!important;top:105px;right:20px;width:280px;margin:0!important;display:flex;flex-direction:column;gap:17px;max-height:calc(100vh - 125px);overflow:auto;scrollbar-width:thin;z-index:10}.profile .panel{padding:18px;background:linear-gradient(145deg,#0d1c27,#091721);border-radius:15px}.profile .panel h2{font-size:17px;margin:9px 0}.bars{gap:13px}.barrow{font-size:11px;grid-template-columns:74px 1fr 23px}.bar{background:#1a303c}.fill{background:linear-gradient(90deg,#2fbbb8,#53dfce,#80bfff)}.flow-steps{display:grid;gap:8px}.flow-step{border-color:#254555;background:#0b1924;border-radius:8px}.flow-note{font-size:11px;line-height:1.7;color:#8ca5b4}
-.chat{margin-top:40px;background:linear-gradient(145deg,#0e1d29,#08141e);border-color:#245064;padding:clamp(18px,3vw,26px)}.chathead{gap:12px;margin-bottom:16px}.chatlog{height:300px;scrollbar-color:#285365 transparent}.msg{font-size:calc(14px * var(--chat-font-scale))!important;line-height:1.78;border-radius:14px;padding:15px 17px}.msg.bot{background:#102330;border-color:#25485a;color:#e0edf4}.msg.user{background:#103b3a;border-color:#277f7b;color:#efffff}.msg.bot h3{font-size:calc(16px * var(--chat-font-scale))!important}.msg.bot code{font-size:calc(13px * var(--chat-font-scale))!important}.msg.bot a{color:#6ce8df}.chatinput input{background:#07141e;border-color:#244b5d;border-radius:12px;font-size:14px}.chatinput input:focus{border-color:#48d9d6;outline:2px solid #48d9d61c}.send{min-width:82px}.input-hint{color:#829aa9}
-.tp-topbar~.appearance-panel{z-index:80}.appearance-panel{background:#0b1924;border-color:#24495a;box-shadow:0 12px 36px #0003}.settings-trigger{border-color:#285267;background:#0c1d29;color:#b8d6e3;border-radius:10px}.settings-reset{color:#b1d8d0}
-footer{margin-left:292px;padding:22px 28px;border-top-color:#173442;color:#7f99a9}footer b{color:#b5d7e5}
-.local-profile-pill{display:none}
-@media(max-width:1320px){.tp-sidebar{width:245px;padding:22px 14px}.tp-topbar{left:245px}main{margin-left:245px!important;margin-right:0!important;padding:100px 22px 40px!important}.profile{position:static!important;width:auto;max-height:none;overflow:visible;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));margin:30px 0 0!important}.profile .panel{min-width:0}.tp-topbar{justify-content:flex-start;padding-left:24px}.tp-top-search{margin-left:0}.tp-top-actions{right:22px}}
-@media(max-width:900px){.tp-sidebar{width:76px;padding:18px 9px}.tp-brand{margin:0 0 30px;justify-content:center}.tp-brand>span:last-child,.tp-newchat{font-size:0}.tp-newchat{justify-content:center;padding:0}.tp-newchat>span{font-size:22px}.tp-newchat kbd,.tp-side-links b,.tp-side-links small,.tp-sidebar-bottom{display:none}.tp-side-links a,.tp-side-links button{display:flex;justify-content:center;padding:8px;min-height:53px}.tp-side-links a>span,.tp-side-links button>span{font-size:24px}.tp-topbar{left:76px}main{margin-left:76px!important;padding:95px 18px 36px!important}.hero{grid-template-columns:1fr 1fr;gap:17px}.tp-scenic-art{min-height:290px}.profile{grid-template-columns:repeat(2,minmax(0,1fr))}footer{margin-left:76px}}
-@media(max-width:640px){.tp-sidebar{position:fixed;inset:auto 0 0;width:auto;height:63px;padding:5px 10px;border-right:0;border-top:1px solid #1c3c4b;flex-direction:row;justify-content:space-around;background:#07141e}.tp-brand,.tp-newchat,.tp-sidebar-bottom{display:none}.tp-side-links{display:flex;justify-content:space-around;align-items:center;width:100%;margin:0;gap:3px}.tp-side-links a,.tp-side-links button{min-height:48px;flex:1;padding:3px;border-radius:8px}.tp-side-links a>span,.tp-side-links button>span{font-size:21px}.tp-topbar{left:0;right:0;height:69px;padding:10px 12px;background:#06121bf2;justify-content:flex-start}.tp-top-search{width:100%;height:44px}.tp-top-search kbd,.tp-top-actions{display:none}main{margin:0!important;padding:82px 14px 90px!important}.hero{grid-template-columns:1fr;padding-top:14px;gap:18px}.hero-copy{order:1}.tp-scenic-art{order:0;min-height:200px}.hero h1{font-size:clamp(42px,12vw,58px);margin:14px 0}.hero p{font-size:13px}.section{margin-top:32px}.sectionhead{align-items:start;flex-direction:column}.grid{grid-template-columns:1fr}.card{padding:16px}.profile{grid-template-columns:1fr;margin-top:26px!important}.chat{margin-top:32px;padding:15px}.chathead{align-items:flex-start}.chathead .pill{display:none}.chatlog{height:280px}.msg{max-width:98%;padding:12px}.chatinput{gap:6px}.send{min-width:64px}.input-hint{font-size:9px}footer{margin:0 0 63px;padding:17px;flex-direction:column;gap:6px;font-size:10px}}
-@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
 </style></head>
 <body>
-<aside class="tp-sidebar">
-<a class="tp-brand" href="#discover"><span class="tp-logo"><svg viewBox="0 0 48 48" aria-hidden="true"><ellipse cx="23" cy="25" rx="19" ry="8" transform="rotate(-28 23 25)" fill="none" stroke="currentColor" stroke-width="2.4"/><circle cx="21" cy="25" r="8" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M20 30 37 9 34 20 44 17 24 39 27 28Z" fill="currentColor"/></svg></span><span><b>TastePilot <i>AI</i></b><small>Discover What You Love</small></span></a>
-<button class="tp-newchat" onclick="document.getElementById('chatq').focus();document.getElementById('chat').scrollIntoView({behavior:'smooth'})"><span>＋</span> New Chat <kbd>Ctrl K</kbd></button>
-<div class="tp-side-links"><a href="#discover"><span>⌕</span><b>Discover</b><small>Explore new recommendations</small></a><a href="#cards"><span>▣</span><b>Library</b><small>Your saved items</small></a><a href="#taste"><span>◎</span><b>Taste Profile</b><small>Personalize your experience</small></a><a href="#chat"><span>◷</span><b>History</b><small>Your past conversations</small></a><button onclick="toggleAppearance()"><span>⚙</span><b>Settings</b><small>Customize appearance</small></button></div>
-<div class="tp-sidebar-bottom"><div class="tp-crown">✧</div><b>TastePilot AI</b><p>Discover more of what you love.</p><span>Personal discovery intelligence</span></div>
-</aside>
-<div class="tp-topbar"><div class="tp-top-search"><span>⌕</span><input id="tpGlobalSearch" aria-label="Search TastePilot" placeholder="Search movies, music, places, books…"><kbd>Ctrl /</kbd></div><div class="tp-top-actions"><button aria-label="Open appearance settings" onclick="toggleAppearance()">☼</button><button aria-label="Language options" onclick="document.getElementById('tpGlobalSearch').focus()">◎</button><div class="tp-avatar" title="Local profile">A<span></span></div></div></div><aside class="appearance-panel" id="appearancePanel" aria-label="User settings" hidden>
-<div class="settings-head"><div><span class="settings-kicker" data-i18n="settingsKicker">PREFERENCES</span><h3 data-i18n="settingsTitle">Settings</h3></div><button class="settings-close" type="button" onclick="toggleAppearance(false)" aria-label="Close settings">×</button></div>
-<p data-i18n="settingsIntro">Choose your language and appearance. Your choices are saved on this device.</p>
-<div class="settings-label" data-i18n="languageLabel">LANGUAGE</div>
-<select id="languageSelect" aria-label="Language" onchange="setLanguage(this.value)" style="width:100%;padding:11px 12px;border:1px solid #24432e;background:#07100a;color:#dfffe9;border-radius:8px;margin-bottom:22px;font:inherit">
-<option value="en">English</option><option value="uz">O‘zbekcha</option><option value="ru">Русский</option>
-</select>
-<div class="settings-label" data-i18n="themeLabel">APPEARANCE</div>
+<nav><a class="logo" href="#discover" aria-label="TastePilot home"><span class="brandmark" aria-label="TastePilot logo"><svg viewBox="0 0 48 48" role="img"><path d="M24 4 29 15 40 11 34 22 44 28 31 30 30 43 22 34 12 41 14 29 4 23 17 20Z" fill="none" stroke="#75e4e8" stroke-width="1.5"/><circle cx="24" cy="24" r="7" fill="#a99bff"/><circle cx="24" cy="24" r="3" fill="#f1f5fb"/></svg></span><span>TastePilot <b>AI</b></span></a><div class="navlinks"><a href="#discover">Discover</a><a href="#taste">Taste map</a><a href="#chat">AI agent</a></div><div class="nav-right"><div class="pill"><span class="agent-status"></span> CULTURE INTELLIGENCE</div><span class="local-profile-pill" title="Taste preferences are saved only in this browser">✦ LOCAL TASTE PROFILE</span><button class="settings-trigger" id="settingsTrigger" type="button" aria-expanded="false" aria-controls="appearancePanel" onclick="toggleAppearance()">⚙ <span>SETTINGS</span></button></div></nav><aside class="appearance-panel" id="appearancePanel" aria-label="User settings" hidden>
+<div class="settings-head"><div><span class="settings-kicker">USER CONFIGURATION</span><h3>Settings</h3></div><button class="settings-close" type="button" onclick="toggleAppearance(false)" aria-label="Close settings">×</button></div>
+<p>Make TastePilot feel right for you. Preferences are saved on this device.</p>
+<div class="settings-label">THEME</div>
 <div class="theme-options" role="group" aria-label="Color theme">
-<button type="button" class="theme-option is-active" data-theme-choice="dark" onclick="setTheme('dark')"><span>◐</span> <span data-i18n="darkMode">Dark mode</span></button>
-<button type="button" class="theme-option" data-theme-choice="light" onclick="setTheme('light')"><span>☼</span> <span data-i18n="lightMode">Light mode</span></button>
+<button type="button" class="theme-option is-active" data-theme-choice="dark" onclick="setTheme('dark')"><span>◐</span> Dark</button>
+<button type="button" class="theme-option" data-theme-choice="light" onclick="setTheme('light')"><span>☼</span> Light</button>
+<button type="button" class="theme-option" data-theme-choice="system" onclick="setTheme('system')"><span>◑</span> System</button>
 </div>
-<div class="settings-foot"><span class="agent-status"></span> <span data-i18n="savedLocally">SAVED ON THIS DEVICE</span></div>
+<div class="settings-label settings-space">ACCENT COLOR</div>
+<div class="accent-options">
+<button type="button" class="accent-option is-active" data-color="#6bff9b" style="--swatch:#6bff9b" onclick="setAccent('#6bff9b',this)" aria-label="Neon green"><span></span>Neon</button>
+<button type="button" class="accent-option" data-color="#59d9ff" style="--swatch:#59d9ff" onclick="setAccent('#59d9ff',this)" aria-label="Cyber cyan"><span></span>Cyan</button>
+<button type="button" class="accent-option" data-color="#b69cff" style="--swatch:#b69cff" onclick="setAccent('#b69cff',this)" aria-label="Violet"><span></span>Violet</button>
+<button type="button" class="accent-option" data-color="#ffc36b" style="--swatch:#ffc36b" onclick="setAccent('#ffc36b',this)" aria-label="Amber"><span></span>Amber</button>
+<button type="button" class="accent-option" data-color="#ff718b" style="--swatch:#ff718b" onclick="setAccent('#ff718b',this)" aria-label="Red"><span></span>Red</button>
+</div>
+<div class="custom-accent-row"><label for="customAccent">CUSTOM COLOR</label><input id="customAccent" type="color" value="#6bff9b" aria-label="Choose custom accent color" oninput="setAccent(this.value,null,false)" onchange="saveAccent()"></div>
+<div class="settings-label settings-space">TEXT SIZE</div>
+<div class="theme-options text-options" role="group" aria-label="Text size">
+<button type="button" class="theme-option" data-text-size="small" onclick="setTextSize('small')">A− Small</button>
+<button type="button" class="theme-option is-active" data-text-size="normal" onclick="setTextSize('normal')">A Normal</button>
+<button type="button" class="theme-option" data-text-size="large" onclick="setTextSize('large')">A+ Large</button>
+</div>
+<div class="settings-label settings-space">CHAT MESSAGE SIZE</div>
+<div class="theme-options chat-text-options" role="group" aria-label="Chat message text size">
+<button type="button" class="theme-option" data-chat-size="small" onclick="setChatTextSize('small')">A− Small</button>
+<button type="button" class="theme-option is-active" data-chat-size="normal" onclick="setChatTextSize('normal')">A Normal</button>
+<button type="button" class="theme-option" data-chat-size="large" onclick="setChatTextSize('large')">A+ Large</button>
+<button type="button" class="theme-option" data-chat-size="xlarge" onclick="setChatTextSize('xlarge')">A++ XL</button>
+</div>
+<label class="setting-toggle"><span><b>Compact layout</b><small>Less spacing, more content</small></span><input type="checkbox" id="compactSetting" onchange="setCompact(this.checked)"><i></i></label>
+<label class="setting-toggle"><span><b>Reduce motion</b><small>Limit interface animations</small></span><input type="checkbox" id="motionSetting" onchange="setReducedMotion(this.checked)"><i></i></label>
+<button type="button" class="settings-reset" onclick="resetSettings()">↺ Reset all settings</button>
+<div class="settings-foot"><span class="agent-status"></span> LOCAL PREFERENCES / SAVED AUTOMATICALLY</div>
 </aside>
 
 <div class="auth-overlay" id="authOverlay" hidden>
@@ -572,13 +455,15 @@ footer{margin-left:292px;padding:22px 28px;border-top-color:#173442;color:#7f99a
 
 <main>
 <section class="hero" id="discover">
-<div class="hero-copy"><div class="eyebrow"><span class="eyebrow-dot"></span> YOUR PERSONAL DISCOVERY GUIDE</div><h1><span style="font-size:.38em;display:block;color:var(--user-accent);letter-spacing:.14em;margin-bottom:15px">YOUR WORLD, YOUR TASTE</span>Discover <br><span class="gradient">what you love.</span></h1><p>Your personal guide to movies, music, places, books and new experiences — thoughtfully matched to your interests and mood.</p>
+<div class="hero-copy"><div class="eyebrow"><span class="eyebrow-dot"></span> ROOT ACCESS TO YOUR NEXT DISCOVERY</div><h1><span style="font-size:.48em;display:block;color:#6bff9b;letter-spacing:.12em;margin-bottom:15px">TASTEPILOT // TERMINAL 01</span>Enter the <br><span class="gradient">unknown.</span></h1><p>A personal discovery intelligence console. Enter a mood, a signal, or a direction — let the agent map your next move through culture.</p>
 <div class="search-panel"><label class="sr-only" for="q" style="position:absolute;left:-9999px">What would you like to discover?</label><input id="q" aria-label="What would you like to discover?" placeholder="A film for a quiet night, music for a drive…"><button class="go" onclick="discover()">Explore <span>↗</span></button></div><div class="helper-line">Start with a mood, a favorite, or a plan. No special prompt needed.</div><div class="chips"><button class="chip" onclick="fill('a memorable movie for a relaxed evening')">01 / Cinema</button><button class="chip" onclick="fill('a relaxed evening playlist')">02 / Music</button><button class="chip" onclick="fill('a stylish place to eat')">03 / Places</button><button class="chip" onclick="fill('something to do when I am bored')">04 / Experiences</button></div><div class="status" id="status"></div></div>
-<div class="hero-art tp-scenic-art" aria-label="TastePilot scenic discovery visual"><div class="tp-sky-orbit"></div><div class="tp-mountain tp-mountain-back"></div><div class="tp-mountain tp-mountain-front"></div><div class="tp-lake"></div><div class="tp-scenic-glow"></div><div class="tp-center-mark"><svg viewBox="0 0 48 48" aria-hidden="true"><ellipse cx="23" cy="25" rx="19" ry="8" transform="rotate(-28 23 25)" fill="none" stroke="currentColor" stroke-width="2.4"/><circle cx="21" cy="25" r="8" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M20 30 37 9 34 20 44 17 24 39 27 28Z" fill="currentColor"/></svg></div><div class="tp-art-caption">DISCOVER WHAT YOU LOVE</div></div>
+<div class="hero-art king-brand-stage" aria-label="KING brand logo">
+<img class="king-brand-logo" src="/king-logo.svg" alt="KING logo">
+</div>
 </section>
-<section class="section"><div class="sectionhead"><div><div class="section-kicker">01 // DISCOVERY MODULE</div><h2>Choose your next signal.</h2><div class="muted">Input a signal. Trace unexpected connections across culture.</div></div><div class="section-note muted">PERSONAL · THOUGHTFUL · CONNECTED</div></div><div class="grid" id="cards"><div class="card"><div class="icon">◈</div><span class="tag">01 / Cinema</span><h3>Stories that stay with you</h3><p>Find a film or series that matches the feeling you want from tonight.</p></div><div class="card"><div class="icon">♫</div><span class="tag">02 / Sound</span><h3>Build a world through music</h3><p>Explore sounds that fit your mood, your setting, and your personal rhythm.</p></div><div class="card"><div class="icon">⌁</div><span class="tag">03 / Out there</span><h3>Discover your next place</h3><p>Connect your interests to restaurants, places, and experiences worth trying.</p></div></div></section>
-<section class="section profile" id="taste"><div class="panel"><div class="section-kicker">02 // SIGNAL MONITOR</div><h2>Your Taste Profile</h2><div class="muted" id="tasteHint">Try a discovery above to infer signals from your request.</div><div class="bars" id="tasteBars"><div class="barrow"><span>Curiosity</span><div class="bar"><div class="fill" style="width:72%"></div></div><b>72</b></div><div class="barrow"><span>Atmosphere</span><div class="bar"><div class="fill" style="width:64%"></div></div><b>64</b></div><div class="barrow"><span>Story</span><div class="bar"><div class="fill" style="width:81%"></div></div><b>81</b></div><div class="barrow"><span>Novelty</span><div class="bar"><div class="fill" style="width:67%"></div></div><b>67</b></div></div></div><div class="panel"><div class="section-kicker">03 // AGENT PIPELINE</div><h2>How TastePilot works</h2><div class="flow-steps"><div class="flow-step"><b>01</b>Your intent</div><div class="flow-step"><b>02</b>Taste signals</div><div class="flow-step"><b>03</b>Cultural graph</div><div class="flow-step"><b>04</b>Discovery</div></div><p class="flow-note">TastePilot is designed to connect preferences across categories — not just return a generic list. Live cultural results activate when the Qloo API is configured.</p></div></section>
-<section class="chat" id="chat"><div class="chathead"><div><div class="section-kicker">04 // YOUR AI ASSISTANT</div><h2>What would you like to discover?</h2><div class="muted">Tell TastePilot what you enjoy or what you’re looking for. We’ll explore it together.</div></div><div class="pill"><span class="agent-status"></span> AGENT ONLINE</div></div><div class="chatlog" id="chatlog"><div class="msg bot welcome-msg"><strong>Welcome to TastePilot.</strong><p>Tell me how you feel, what you enjoy, or what kind of day you want. We’ll find a direction worth exploring.</p><div class="welcome-examples"><button class="mini-prompt" onclick="setChatPrompt('I am bored. Suggest something that fits my mood.')">I’m bored</button><button class="mini-prompt" onclick="setChatPrompt('Help me choose a movie for tonight.')">Pick a movie</button><button class="mini-prompt" onclick="setChatPrompt('Suggest somewhere to go with a friend.')">Plan with a friend</button></div></div></div><div class="chatinput"><input id="chatq" aria-label="Message TastePilot" placeholder="Tell me what you’re in the mood for…" onkeydown="if(event.key==='Enter')sendChat()"><button class="send" onclick="sendChat()">Send ↗</button></div><div class="input-hint">ENTER TO SEND <span>·</span> FOLLOW-UP QUESTIONS WELCOME <span>·</span> FOLLOW-UP QUESTIONS WELCOME</div><div class="status" id="voiceStatus" style="text-align:left"></div></section>
+<section class="section"><div class="sectionhead"><div><div class="section-kicker">01 // DISCOVERY MODULE</div><h2>Choose your next signal.</h2><div class="muted">Input a signal. Trace unexpected connections across culture.</div></div><div class="section-note muted">CURATED · CONNECTED · PERSONAL</div></div><div class="grid" id="cards"><div class="card"><div class="icon">◈</div><span class="tag">01 / Cinema</span><h3>Stories that stay with you</h3><p>Find a film or series that matches the feeling you want from tonight.</p></div><div class="card"><div class="icon">♫</div><span class="tag">02 / Sound</span><h3>Build a world through music</h3><p>Explore sounds that fit your mood, your setting, and your personal rhythm.</p></div><div class="card"><div class="icon">⌁</div><span class="tag">03 / Out there</span><h3>Discover your next place</h3><p>Connect your interests to restaurants, places, and experiences worth trying.</p></div></div></section>
+<section class="section profile" id="taste"><div class="panel"><div class="section-kicker">02 // SIGNAL MONITOR</div><h2>Taste signal monitor.</h2><div class="muted" id="tasteHint">Try a discovery above to infer signals from your request.</div><div class="bars" id="tasteBars"><div class="barrow"><span>Curiosity</span><div class="bar"><div class="fill" style="width:72%"></div></div><b>72</b></div><div class="barrow"><span>Atmosphere</span><div class="bar"><div class="fill" style="width:64%"></div></div><b>64</b></div><div class="barrow"><span>Story</span><div class="bar"><div class="fill" style="width:81%"></div></div><b>81</b></div><div class="barrow"><span>Novelty</span><div class="bar"><div class="fill" style="width:67%"></div></div><b>67</b></div></div></div><div class="panel"><div class="section-kicker">03 // AGENT PIPELINE</div><h2>From input to intelligence.</h2><div class="flow-steps"><div class="flow-step"><b>01</b>Your intent</div><div class="flow-step"><b>02</b>Taste signals</div><div class="flow-step"><b>03</b>Cultural graph</div><div class="flow-step"><b>04</b>Discovery</div></div><p class="flow-note">TastePilot is designed to connect preferences across categories — not just return a generic list. Live cultural results activate when the Qloo API is configured.</p></div></section>
+<section class="chat" id="chat"><div class="chathead"><div><div class="section-kicker">04 // OPERATOR TERMINAL</div><h2>Initialize a conversation.</h2><div class="muted">Talk to the agent. Refine signals. Follow the trail.</div></div><div class="pill"><span class="agent-status"></span> AGENT ONLINE</div></div><div class="chatlog" id="chatlog"><div class="msg bot welcome-msg"><strong>Welcome to TastePilot.</strong><p>Tell me how you feel, what you enjoy, or what kind of day you want. We’ll find a direction worth exploring.</p><div class="welcome-examples"><button class="mini-prompt" onclick="setChatPrompt('I am bored. Suggest something that fits my mood.')">I’m bored</button><button class="mini-prompt" onclick="setChatPrompt('Help me choose a movie for tonight.')">Pick a movie</button><button class="mini-prompt" onclick="setChatPrompt('Suggest somewhere to go with a friend.')">Plan with a friend</button></div></div></div><div class="chatinput"><input id="chatq" aria-label="Message TastePilot" placeholder="Tell me what you’re in the mood for…" onkeydown="if(event.key==='Enter')sendChat()"><button class="send" onclick="sendChat()">Send ↗</button></div><div class="input-hint">ENTER TO SEND <span>·</span> FOLLOW-UP QUESTIONS WELCOME</div><div class="status" id="voiceStatus" style="text-align:left"></div></section>
 </main><footer><span><b>TastePilot AI</b> · Personal culture intelligence</span><span>Built for the Qloo Agentic Hackathon</span></footer>
 <script>
 // Local-first memory: stored per browser profile; never sent to another user's browser.
@@ -722,31 +607,6 @@ function renderMarkdown(text){
 
 </script>
 <script>
-const TP_LANG={
-en:{settingsKicker:"PREFERENCES",settingsTitle:"Settings",settingsIntro:"Choose your language and appearance. Your choices are saved on this device.",languageLabel:"LANGUAGE",themeLabel:"APPEARANCE",darkMode:"Dark mode",lightMode:"Light mode",savedLocally:"SAVED ON THIS DEVICE",newChat:"New Chat",discover:"Discover",library:"Library",tasteProfile:"Taste Profile",history:"History",settings:"Settings",discoverSub:"Explore new recommendations",librarySub:"Your saved items",profileSub:"Personalize your experience",historySub:"Your past conversations",heroEyebrow:"YOUR PERSONAL DISCOVERY GUIDE",heroLead:"YOUR WORLD, YOUR TASTE",heroTitle:"Discover",heroTitle2:"what you love.",heroDescription:"Your personal guide to movies, music, places, books and new experiences — thoughtfully matched to your interests and mood.",explore:"Explore",chatTitle:"What would you like to discover?",chatDescription:"Tell TastePilot what you enjoy or what you’re looking for. We’ll explore it together.",welcomeTitle:"Welcome to TastePilot.",welcomeText:"Tell me how you feel, what you enjoy, or what kind of day you want. We’ll find a direction worth exploring.",inputPlaceholder:"Tell me what you’re in the mood for…",send:"Send ↗"},
-uz:{settingsKicker:"SOZLAMALAR",settingsTitle:"Sozlamalar",settingsIntro:"Til va ko‘rinishni tanlang. Tanlovlaringiz ushbu qurilmada saqlanadi.",languageLabel:"TIL",themeLabel:"KO‘RINISH",darkMode:"Qorong‘i rejim",lightMode:"Yorug‘ rejim",savedLocally:"USHBU QURILMADA SAQLANDI",newChat:"Yangi suhbat",discover:"Kashfiyot",library:"Kutubxona",tasteProfile:"Did profili",history:"Tarix",settings:"Sozlamalar",discoverSub:"Yangi tavsiyalarni ko‘ring",librarySub:"Saqlangan narsalar",profileSub:"Tajribangizni moslang",historySub:"Oldingi suhbatlar",heroEyebrow:"SIZNING SHAXSIY KASHFIYOT YO‘LBOSHCHINGIZ",heroLead:"SIZNING DILINGIZ, SIZNING OLAMINGIZ",heroTitle:"O‘zingizga",heroTitle2:"mosini kashf eting.",heroDescription:"Film, musiqa, joylar, kitoblar va yangi tajribalarni didingiz hamda kayfiyatingizga mos holda kashf eting.",explore:"Kashf etish",chatTitle:"Bugun nimani kashf qilamiz?",chatDescription:"Nimalarni yoqtirishingizni yoki nimani izlayotganingizni ayting.",welcomeTitle:"TastePilot’ga xush kelibsiz!",welcomeText:"Kayfiyatingiz, qiziqishlaringiz yoki bugun qanday kun istayotganingizni ayting. Birgalikda mos yo‘nalishni topamiz.",inputPlaceholder:"Kayfiyatingizni yoki istagingizni yozing…",send:"Yuborish ↗"},
-ru:{settingsKicker:"НАСТРОЙКИ",settingsTitle:"Настройки",settingsIntro:"Выберите язык и оформление. Выбор сохранится на этом устройстве.",languageLabel:"ЯЗЫК",themeLabel:"ОФОРМЛЕНИЕ",darkMode:"Тёмная тема",lightMode:"Светлая тема",savedLocally:"СОХРАНЕНО НА ЭТОМ УСТРОЙСТВЕ",newChat:"Новый чат",discover:"Открытия",library:"Библиотека",tasteProfile:"Ваши вкусы",history:"История",settings:"Настройки",discoverSub:"Новые рекомендации",librarySub:"Сохранённое",profileSub:"Настройте рекомендации",historySub:"Ваши прошлые разговоры",heroEyebrow:"ВАШ ЛИЧНЫЙ ГИД ПО ОТКРЫТИЯМ",heroLead:"ВАШ МИР. ВАШИ ВКУСЫ.",heroTitle:"Откройте",heroTitle2:"то, что вам нравится.",heroDescription:"Фильмы, музыка, места, книги и новые впечатления с учётом ваших интересов и настроения.",explore:"Найти",chatTitle:"Что хотите открыть сегодня?",chatDescription:"Расскажите, что вам нравится или что вы ищете.",welcomeTitle:"Добро пожаловать в TastePilot.",welcomeText:"Расскажите о своём настроении и интересах — вместе найдём то, что вам подойдёт.",inputPlaceholder:"Расскажите, что вам сейчас хочется…",send:"Отправить ↗"}
-};
-function setLanguage(lang,save=true){
- if(!TP_LANG[lang])lang="en";
- const t=TP_LANG[lang];document.documentElement.lang=lang;
- document.querySelectorAll("[data-i18n]").forEach(el=>{const k=el.dataset.i18n;if(t[k])el.textContent=t[k]});
- const set=(sel,val)=>{const el=document.querySelector(sel);if(el&&val)el.textContent=val};
- const setHtml=(sel,val)=>{const el=document.querySelector(sel);if(el&&val)el.innerHTML=val};
- const links=document.querySelectorAll(".tp-side-links a,.tp-side-links button");
- const names=[t.discover,t.library,t.tasteProfile,t.history,t.settings],subs=[t.discoverSub,t.librarySub,t.profileSub,t.historySub];
- links.forEach((el,i)=>{const b=el.querySelector("b"),sm=el.querySelector("small");if(b&&names[i])b.textContent=names[i];if(sm&&subs[i])sm.textContent=subs[i]});
- const newChat=document.querySelector(".tp-newchat");if(newChat)newChat.innerHTML='<span>＋</span>'+t.newChat+' <kbd>Ctrl K</kbd>';set(".hero-copy .eyebrow",t.heroEyebrow);
- setHtml(".hero-copy h1",'<span style="font-size:.38em;display:block;color:var(--user-accent);letter-spacing:.14em;margin-bottom:15px">'+t.heroLead+'</span>'+t.heroTitle+' <br><span class="gradient">'+t.heroTitle2+'</span>');
- set(".hero-copy>p",t.heroDescription);set(".go",t.explore);
- set(".chathead h2",t.chatTitle);set(".chathead .muted",t.chatDescription);
- const welcome=document.querySelector(".welcome-msg");if(welcome){const strong=welcome.querySelector("strong"),p=welcome.querySelector("p");if(strong)strong.textContent=t.welcomeTitle;if(p)p.textContent=t.welcomeText}
- const q=document.getElementById("chatq");if(q)q.placeholder=t.inputPlaceholder;
- const send=document.querySelector(".chatinput .send");if(send){send.textContent=t.send;send.style.fontSize=""}
- const global=document.getElementById("tpGlobalSearch");if(global)global.placeholder=lang==="uz"?"Film, musiqa, joylar, kitoblarni qidiring…":lang==="ru"?"Поиск фильмов, музыки, мест, книг…":"Search movies, music, places, books…";
- const sel=document.getElementById("languageSelect");if(sel)sel.value=lang;
- if(save)try{localStorage.setItem("tastepilot-language",lang)}catch(e){}
-}
 function toggleAppearance(force){
  const panel=document.getElementById('appearancePanel'),trigger=document.getElementById('settingsTrigger');
  const open=typeof force==='boolean'?force:panel.hidden;panel.hidden=!open;trigger.setAttribute('aria-expanded',String(open));
@@ -760,8 +620,8 @@ function setAccent(color,button,save=true){
 }
 function saveAccent(){const input=document.getElementById('customAccent');if(input)setAccent(input.value,null,true)}
 function setTheme(theme,save=true){
- if(!['dark','light'].includes(theme))return;
- const resolved=theme;
+ if(!['dark','light','system'].includes(theme))return;
+ const resolved=theme==='system'?(window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark'):theme;
  document.documentElement.dataset.theme=resolved;
  document.documentElement.dataset.themePreference=theme;
  document.querySelectorAll('[data-theme-choice]').forEach(el=>el.classList.toggle('is-active',el.dataset.themeChoice===theme));
@@ -795,8 +655,13 @@ function resetSettings(){
 }
 (function(){
  const get=(key)=>{try{return localStorage.getItem(key)}catch(e){return null}};
- const theme=get('tastepilot-theme')==='light'?'light':'dark';setTheme(theme,false);
- setLanguage(get('tastepilot-language')||'en',false);
+ const theme=get('tastepilot-theme')||'dark';setTheme(theme,false);
+ const accent=get('tastepilot-accent');if(accent&&/^#[0-9a-f]{6}$/i.test(accent))setAccent(accent,null,false);
+ setTextSize(get('tastepilot-text-size')||'normal',false);
+ setChatTextSize(get('tastepilot-chat-text-size')||'normal',false);
+ setCompact(get('tastepilot-compact')==='true',false);
+ setReducedMotion(get('tastepilot-reduce-motion')==='true',false);
+ if(window.matchMedia){window.matchMedia('(prefers-color-scheme: light)').addEventListener?.('change',()=>{if(document.documentElement.dataset.themePreference==='system')setTheme('system',false)})}
 })();
 document.addEventListener('keydown',e=>{if(e.key==='Escape')toggleAppearance(false)});
 document.addEventListener('click',e=>{const panel=document.getElementById('appearancePanel'),trigger=document.getElementById('settingsTrigger');if(panel&&!panel.hidden&&!panel.contains(e.target)&&!trigger.contains(e.target))toggleAppearance(false)});
