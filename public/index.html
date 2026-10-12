@@ -630,7 +630,7 @@ function renderMarkdown(text){
  lines.forEach(function(line){
   if(/^\s*[-*]\s+/.test(line)){if(list!=='ul'){if(list)out.push('</'+list+'>');out.push('<ul>');list='ul';}out.push('<li>'+line.replace(/^\s*[-*]\s+/,'')+'</li>');return;}
   if(/^\s*\d+\.\s+/.test(line)){if(list!=='ol'){if(list)out.push('</'+list+'>');out.push('<ol>');list='ol';}out.push('<li>'+line.replace(/^\s*\d+\.\s+/,'')+'</li>');return;}
-  if(list){out.push('</'+list+'>');list=null;} if(!line.trim())return;
+  if(!line.trim()){if(list)return;return;} if(list){out.push('</'+list+'>');list=null;}
   if(/^<h3>/.test(line)||/^__CODEBLOCK_\d+__$/.test(line))out.push(line);else out.push('<p>'+line+'</p>');
  });
  if(list)out.push('</'+list+'>');
