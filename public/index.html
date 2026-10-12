@@ -386,11 +386,34 @@ html[data-theme="light"] .card,
 html[data-theme="light"] .chatlog,
 html[data-theme="light"] .msg.bot,
 html[data-theme="light"] .flow-step{border-color:color-mix(in srgb,var(--user-accent) 26%,#d3e0d7)!important}
+</style><style id="tastepilot-comfort-preferences">
+:root{--tp-radius:16px;--tp-font:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+body{font-family:var(--tp-font);letter-spacing:-.012em}
+nav,.pill,.brandmark,.search-panel,.go,.send,.chip,.card,.panel,.chat,.chatlog,.msg,.chatinput input,.settings-trigger,.appearance-panel,.theme-option,.accent-option,.auth-dialog,.auth-field input,.auth-primary,.auth-google{border-radius:var(--tp-radius)}
+.brandmark{border-radius:12px}.pill,.chip{border-radius:999px}.go,.send{border-radius:12px}.search-panel{border-radius:16px}.card,.panel,.chat{border-radius:18px}.chatlog{border-radius:14px}.msg{border-radius:16px}.msg.user{border-top-right-radius:5px}.msg.bot{border-top-left-radius:5px}
+.tp-setting-select{width:100%;margin-top:7px;padding:11px 12px;border:1px solid var(--line);border-radius:12px;background:var(--panel2);color:var(--text);font:inherit;font-size:12px;outline-offset:2px}
+.tp-setting-select:focus{border-color:var(--user-accent)}
+:root[data-theme="light"]{color-scheme:light;--bg:#f5f7fa;--panel:#ffffff;--panel2:#edf1f5;--line:#d5dce5;--muted:#586779;--text:#17202c}
+:root[data-theme="light"] body{background:#f5f7fa;color:#17202c}
+:root[data-theme="light"] nav{background:rgba(245,247,250,.96);border-color:#d9e0e8}
+:root[data-theme="light"] .hero-art,:root[data-theme="light"] .card,:root[data-theme="light"] .panel,:root[data-theme="light"] .chat,:root[data-theme="light"] .chatlog,:root[data-theme="light"] .search-panel,:root[data-theme="light"] .appearance-panel{background:#fff;color:#17202c;border-color:#d5dce5}
+:root[data-theme="light"] .hero p,:root[data-theme="light"] .muted,:root[data-theme="light"] .section-note,:root[data-theme="light"] .navlinks,:root[data-theme="light"] .helper-line{color:#596879}
+:root[data-theme="light"] .search-panel input,:root[data-theme="light"] .chatinput input{color:#17202c}
+:root[data-theme="light"] .chatinput input,:root[data-theme="light"] .msg.bot,:root[data-theme="light"] .msg.user{background:#f1f4f8;color:#17202c;border-color:#d5dce5}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
 </style></head>
 <body>
 <nav><a class="logo" href="#discover" aria-label="TastePilot home"><span class="brandmark" aria-label="TastePilot logo"><svg viewBox="0 0 48 48" role="img"><path d="M24 4 29 15 40 11 34 22 44 28 31 30 30 43 22 34 12 41 14 29 4 23 17 20Z" fill="none" stroke="#75e4e8" stroke-width="1.5"/><circle cx="24" cy="24" r="7" fill="#a99bff"/><circle cx="24" cy="24" r="3" fill="#f1f5fb"/></svg></span><span>TastePilot <b>AI</b></span></a><div class="navlinks"><a href="#discover">Discover</a><a href="#taste">Taste map</a><a href="#chat">AI agent</a></div><div class="nav-right"><div class="pill"><span class="agent-status"></span> CULTURE INTELLIGENCE</div><span class="local-profile-pill" title="Taste preferences are saved only in this browser">✦ LOCAL TASTE PROFILE</span><button class="settings-trigger" id="settingsTrigger" type="button" aria-expanded="false" aria-controls="appearancePanel" onclick="toggleAppearance()">⚙ <span>SETTINGS</span></button></div></nav><aside class="appearance-panel" id="appearancePanel" aria-label="User settings" hidden>
 <div class="settings-head"><div><span class="settings-kicker">USER CONFIGURATION</span><h3>Settings</h3></div><button class="settings-close" type="button" onclick="toggleAppearance(false)" aria-label="Close settings">×</button></div>
 <p>Make TastePilot feel right for you. Preferences are saved on this device.</p>
+<div class="settings-label settings-space">LANGUAGE / TIL / ЯЗЫК</div>
+<select id="uiLanguage" class="tp-setting-select" aria-label="Interface language" onchange="setInterfaceLanguage(this.value)">
+<option value="en">English</option><option value="uz">O‘zbekcha</option><option value="ru">Русский</option><option value="es">Español</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="pt">Português</option><option value="it">Italiano</option><option value="tr">Türkçe</option><option value="ar">العربية</option><option value="hi">हिन्दी</option><option value="zh">中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="id">Bahasa Indonesia</option><option value="bn">বাংলা</option><option value="ur">اردو</option><option value="fa">فارسی</option><option value="kk">Қазақша</option><option value="ky">Кыргызча</option><option value="uk">Українська</option><option value="pl">Polski</option><option value="nl">Nederlands</option><option value="sv">Svenska</option><option value="th">ไทย</option><option value="vi">Tiếng Việt</option><option value="he">עברית</option><option value="el">Ελληνικά</option><option value="sw">Kiswahili</option>
+</select>
+<div class="settings-label settings-space">FONT / SHRIFT</div>
+<select id="fontChoice" class="tp-setting-select" aria-label="Font style" onchange="setFontFamily(this.value)">
+<option value="system">System default</option><option value="inter">Inter — modern</option><option value="rounded">Nunito — rounded</option><option value="readable">Atkinson Hyperlegible — readable</option><option value="serif">Georgia — classic</option><option value="mono">Monospace — technical</option>
+</select>
 <div class="settings-label">THEME</div>
 <div class="theme-options" role="group" aria-label="Color theme">
 <button type="button" class="theme-option is-active" data-theme-choice="dark" onclick="setTheme('dark')"><span>◐</span> Dark</button>
@@ -607,6 +630,21 @@ function renderMarkdown(text){
 
 </script>
 <script>
+function setFontFamily(choice,save=true){
+ const fonts={system:'ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif',inter:'Inter,ui-sans-serif,system-ui,sans-serif',rounded:'"Nunito",ui-rounded,system-ui,sans-serif',readable:'"Atkinson Hyperlegible",Arial,sans-serif',serif:'Georgia,"Times New Roman",serif',mono:'"SFMono-Regular",Consolas,monospace'};
+ if(!fonts[choice])choice="system";
+ document.documentElement.style.setProperty('--tp-font',fonts[choice]);
+ const el=document.getElementById('fontChoice');if(el)el.value=choice;
+ if(save)try{localStorage.setItem('tastepilot-font',choice)}catch(e){}
+}
+function setInterfaceLanguage(lang,save=true){
+ const supported=['en','uz','ru','es','fr','de','pt','it','tr','ar','hi','zh','ja','ko','id','bn','ur','fa','kk','ky','uk','pl','nl','sv','th','vi','he','el','sw'];
+ if(!supported.includes(lang))lang='en';
+ document.documentElement.lang=lang;
+ document.documentElement.dir=['ar','ur','fa','he'].includes(lang)?'rtl':'ltr';
+ const el=document.getElementById('uiLanguage');if(el)el.value=lang;
+ if(save)try{localStorage.setItem('tastepilot-language',lang)}catch(e){}
+}
 function toggleAppearance(force){
  const panel=document.getElementById('appearancePanel'),trigger=document.getElementById('settingsTrigger');
  const open=typeof force==='boolean'?force:panel.hidden;panel.hidden=!open;trigger.setAttribute('aria-expanded',String(open));
@@ -659,6 +697,8 @@ function resetSettings(){
 (function(){
  const get=(key)=>{try{return localStorage.getItem(key)}catch(e){return null}};
  const theme=get('tastepilot-theme')||'dark';setTheme(theme,false);
+ setFontFamily(get('tastepilot-font')||'system',false);
+ setInterfaceLanguage(get('tastepilot-language')||'en',false);
  const accent=get('tastepilot-accent');if(accent&&/^#[0-9a-f]{6}$/i.test(accent))setAccent(accent,null,false);
  setTextSize(get('tastepilot-text-size')||'normal',false);
  setChatTextSize(get('tastepilot-chat-text-size')||'normal',false);
