@@ -121,6 +121,66 @@ app.post("/api/chat",async(req,res)=>{
  }
 });
 
+
+// Search public catalogues and clearly distinguish a free preview from free full access.
+const mediaSearchLog=new Map();
+function allowMediaSearch(req){
+ const ip=String(req.headers["x-forwarded-for"]||req.socket?.remoteAddress||"unknown").split(",")[0].trim();
+ const now=Date.now(), recent=(mediaSearchLog.get(ip)||[]).filter(t=>now-t<60000);
+ if(recent.length>=12)return false;
+ recent.push(now);mediaSearchLog.set(ip,recent);return true;
+}
+app.post("/api/media-search",async(req,res)=>{
+ const query=String(req.body?.query||"").trim().slice(0,180);
+ const kind=req.body?.kind==="movie"?"movie":"music";
+ if(!query)return res.status(400).json({error:"A title or search query is required."});
+ if(!allowMediaSearch(req))return res.status(429).json({error:"Too many media searches. Please wait a moment."});
+ res.set("Cache-Control","no-store");
+ const results=[],errors=[];
+ try{
+  const safeTerms=query.replace(/[+\-!(){}\[\]^"~*?:\\/]/g," ").trim().split(/\s+/).filter(Boolean).map(x=>'"'+x.replace(/"/g,"")+'"').join(" AND ");
+  const mediaType=kind==="music"?"mediatype:audio":"mediatype:movies";
+  const archiveQuery=mediaType+" AND (licenseurl:*creativecommons.org* OR licenseurl:*publicdomain*) AND title:("+safeTerms+")";
+  const archiveUrl=new URL("https://archive.org/advancedsearch.php");
+  archiveUrl.searchParams.set("q",archiveQuery);
+  archiveUrl.searchParams.append("fl[]","identifier");
+  archiveUrl.searchParams.append("fl[]","title");
+  archiveUrl.searchParams.append("fl[]","creator");
+  archiveUrl.searchParams.append("fl[]","licenseurl");
+  archiveUrl.searchParams.append("fl[]","year");
+  archiveUrl.searchParams.set("rows","6");archiveUrl.searchParams.set("page","1");archiveUrl.searchParams.set("output","json");
+  const ar=await fetch(archiveUrl,{headers:{"Accept":"application/json","User-Agent":"TastePilotAI/1.0"}});
+  if(ar.ok){
+   const ad=await ar.json();
+   for(const item of (ad?.response?.docs||[])){
+    const license=String(item.licenseurl||"");
+    if(!/creativecommons\.org|publicdomain/i.test(license))continue;
+    const id=String(item.identifier||"").replace(/[^a-zA-Z0-9._-]/g,"");
+    if(!id)continue;
+    results.push({title:String(item.title||id),creator:String(item.creator||""),year:item.year||null,url:"https://archive.org/details/"+encodeURIComponent(id),source:"Internet Archive",accessStatus:"Catalogue metadata lists a public-domain/Creative Commons license. Check the item page for exact terms and permitted uses.",freeClaim:"license_metadata_found"});
+   }
+  }else errors.push("Archive search unavailable");
+ }catch(e){errors.push("Archive search unavailable");}
+ if(kind==="music"){
+  try{
+   const url=new URL("https://itunes.apple.com/search");
+   url.searchParams.set("term",query);url.searchParams.set("entity","song");url.searchParams.set("limit","8");
+   const r=await fetch(url,{headers:{"Accept":"application/json"}});
+   if(r.ok){
+    const data=await r.json();
+    for(const x of (data.results||[])){
+     const trackUrl=typeof x.trackViewUrl==="string"&&x.trackViewUrl.startsWith("https://")?x.trackViewUrl:null;
+     if(!trackUrl)continue;
+     results.push({title:String(x.trackName||"Unknown track"),creator:String(x.artistName||""),year:x.releaseDate?String(x.releaseDate).slice(0,4):null,url:trackUrl,previewUrl:typeof x.previewUrl==="string"&&x.previewUrl.startsWith("https://")?x.previewUrl:null,source:"Apple Music / iTunes",accessStatus:x.previewUrl?"A free short preview is available; full-track access and price are not verified.":"Full-track access and price are not verified.",freeClaim:"preview_only"});
+    }
+   }else errors.push("Music catalogue unavailable");
+  }catch(e){errors.push("Music catalogue unavailable");}
+ }
+ const seen=new Set();
+ const unique=results.filter(x=>{if(seen.has(x.url))return false;seen.add(x.url);return true;}).slice(0,10);
+ return res.json({query,kind,results:unique,freeFullAccessVerified:false,notice:unique.length?"Free/legal catalogue matches are prioritized. A free preview is not the same as free full access; check each source's terms and regional availability.":"No matching source could be verified from the connected public catalogues. This does not prove that no legal free source exists.",errors});
+});
+
 app.post("/api/voice-token",async(req,res)=>{
  const key=process.env.GEMINI_API_KEY;
  if(!key)return res.status(503).json({error:"Voice AI is not configured yet."});
