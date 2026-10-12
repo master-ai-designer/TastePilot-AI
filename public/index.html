@@ -401,7 +401,10 @@ nav,.pill,.brandmark,.search-panel,.go,.send,.chip,.card,.panel,.chat,.chatlog,.
 :root[data-theme="light"] .search-panel input,:root[data-theme="light"] .chatinput input{color:#17202c}
 :root[data-theme="light"] .chatinput input,:root[data-theme="light"] .msg.bot,:root[data-theme="light"] .msg.user{background:#f1f4f8;color:#17202c;border-color:#d5dce5}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
-</style></head>
+</style><style id="tastepilot-translated-headline">
+.hero-terminal-kicker{font-size:.48em;display:block;color:var(--user-accent);letter-spacing:.12em;margin-bottom:15px}
+</style>
+</head>
 <body>
 <nav><a class="logo" href="#discover" aria-label="TastePilot home"><span class="brandmark" aria-label="TastePilot logo"><svg viewBox="0 0 48 48" role="img"><path d="M24 4 29 15 40 11 34 22 44 28 31 30 30 43 22 34 12 41 14 29 4 23 17 20Z" fill="none" stroke="#75e4e8" stroke-width="1.5"/><circle cx="24" cy="24" r="7" fill="#a99bff"/><circle cx="24" cy="24" r="3" fill="#f1f5fb"/></svg></span><span>TastePilot <b>AI</b></span></a><div class="navlinks"><a href="#discover">Discover</a><a href="#taste">Taste map</a><a href="#chat">AI agent</a></div><div class="nav-right"><div class="pill"><span class="agent-status"></span> CULTURE INTELLIGENCE</div><span class="local-profile-pill" title="Taste preferences are saved only in this browser">✦ LOCAL TASTE PROFILE</span><button class="settings-trigger" id="settingsTrigger" type="button" aria-expanded="false" aria-controls="appearancePanel" onclick="toggleAppearance()">⚙ <span>SETTINGS</span></button></div></nav><aside class="appearance-panel" id="appearancePanel" aria-label="User settings" hidden>
 <div class="settings-head"><div><span class="settings-kicker">USER CONFIGURATION</span><h3>Settings</h3></div><button class="settings-close" type="button" onclick="toggleAppearance(false)" aria-label="Close settings">×</button></div>
@@ -666,6 +669,21 @@ function setInterfaceLanguage(lang,save=true){
   if(lang==='en')node.nodeValue=leading+original+trailing;
   else if(Object.prototype.hasOwnProperty.call(dict,original))node.nodeValue=leading+dict[original]+trailing;
  });
+ const heroTitle=document.querySelector('.hero-copy h1');
+ if(heroTitle){
+  const titles={
+   en:['TASTEPILOT // TERMINAL 01','Enter the','unknown.'],
+   uz:['TASTEPILOT // TERMINAL 01','Noma’lum olamni','kashf eting.'],
+   ru:['TASTEPILOT // TERMINAL 01','Откройте','неизведанное.'],
+   ja:['TASTEPILOT // TERMINAL 01','未知の世界を','発見しよう。'],
+   es:['TASTEPILOT // TERMINAL 01','Entra en lo','desconocido.'],
+   fr:['TASTEPILOT // TERMINAL 01','Explorez l’','inconnu.'],
+   de:['TASTEPILOT // TERMINAL 01','Entdecke das','Unbekannte.'],
+   tr:['TASTEPILOT // TERMINAL 01','Bilinmeyeni','keşfet.']
+  };
+  const v=titles[lang]||titles.en;
+  heroTitle.innerHTML='<span class="hero-terminal-kicker">'+v[0]+'</span>'+v[1]+' <br><span class="gradient">'+v[2]+'</span>';
+ }
  const attrs=[['q','placeholder','A film for a quiet night, music for a drive…'],['q','aria-label','What would you like to discover?'],['chatq','placeholder','Tell me what you’re in the mood for…'],['chatq','aria-label','Message TastePilot']];
  attrs.forEach(([id,attr,base])=>{const el=document.getElementById(id);if(el)el.setAttribute(attr,lang==='en'?base:(dict[base]||base))});
  const settingsTitle=document.querySelector('.settings-head h3');if(settingsTitle)settingsTitle.textContent=lang==='en'?'Settings':(dict['Settings']||'Settings');
