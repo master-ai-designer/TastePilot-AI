@@ -736,7 +736,7 @@ function setLanguage(lang,save=true){
  const links=document.querySelectorAll(".tp-side-links a,.tp-side-links button");
  const names=[t.discover,t.library,t.tasteProfile,t.history,t.settings],subs=[t.discoverSub,t.librarySub,t.profileSub,t.historySub];
  links.forEach((el,i)=>{const b=el.querySelector("b"),sm=el.querySelector("small");if(b&&names[i])b.textContent=names[i];if(sm&&subs[i])sm.textContent=subs[i]});
- set(".tp-newchat",t.newChat);set(".hero-copy .eyebrow",t.heroEyebrow);
+ const newChat=document.querySelector(".tp-newchat");if(newChat)newChat.innerHTML='<span>＋</span>'+t.newChat+' <kbd>Ctrl K</kbd>';set(".hero-copy .eyebrow",t.heroEyebrow);
  setHtml(".hero-copy h1",'<span style="font-size:.38em;display:block;color:var(--user-accent);letter-spacing:.14em;margin-bottom:15px">'+t.heroLead+'</span>'+t.heroTitle+' <br><span class="gradient">'+t.heroTitle2+'</span>');
  set(".hero-copy>p",t.heroDescription);set(".go",t.explore);
  set(".chathead h2",t.chatTitle);set(".chathead .muted",t.chatDescription);
