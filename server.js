@@ -98,10 +98,10 @@ HONESTY: Never claim perfect accuracy, perfect fluency, or capabilities that hav
  const prior=cleanHistory(history);
  const last=prior[prior.length-1];
  const contents=(last?.role==="user" && last?.parts?.[0]?.text===message) ? prior : [...prior,{role:"user",parts:[{text:message}]}];
- const payload={systemInstruction:{parts:[{text:systemText}]},contents,generationConfig:{maxOutputTokens:1600}};
+ const payload={systemInstruction:{parts:[{text:systemText}]},contents,generationConfig:{maxOutputTokens:2200,temperature:0.75}};
  async function call(model,body){
   const response=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(key)}`,{
-   method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)
+   method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body),signal:AbortSignal.timeout(25000)
   });
   const raw=await response.text();
   if(!response.ok){
@@ -118,7 +118,7 @@ HONESTY: Never claim perfect accuracy, perfect fluency, or capabilities that hav
  try{return await call(primary,payload)}
  catch(firstError){
   console.error("Primary Gemini failed:",firstError.status,firstError.raw||firstError.message);
-  if(firstError.status!==429 || fallback===primary)throw firstError;
+  if(![undefined,404,429,500,502,503,504].includes(firstError.status) || fallback===primary)throw firstError;
   try{return await call(fallback,payload)}
   catch(secondError){
    console.error("Fallback Gemini failed:",secondError.status,secondError.raw||secondError.message);
