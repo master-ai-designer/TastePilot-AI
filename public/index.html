@@ -404,7 +404,15 @@ nav,.pill,.brandmark,.search-panel,.go,.send,.chip,.card,.panel,.chat,.chatlog,.
 </style><style id="tastepilot-translated-headline">
 .hero-terminal-kicker{font-size:.48em;display:block;color:var(--user-accent);letter-spacing:.12em;margin-bottom:15px}
 </style><style id="tastepilot-arabic-support">
-html[lang="ar"] body{font-family:Tahoma,Arial,sans-serif;letter-spacing:0;}
+html[lang="ar"] body{font-family:Tahoma,Arial,sans-serif;letter-spacing:0;overflow-x:hidden;max-width:100%;}
+html[lang="ar"]{overflow-x:hidden;}
+html[lang="ar"] *,html[lang="ar"] *::before,html[lang="ar"] *::after{box-sizing:border-box;}
+html[lang="ar"] main,html[lang="ar"] section,html[lang="ar"] header,html[lang="ar"] footer,html[lang="ar"] .container,html[lang="ar"] .wrap{max-width:100%;}
+html[lang="ar"] img,html[lang="ar"] video,html[lang="ar"] canvas,html[lang="ar"] svg{max-width:100%;}
+html[lang="ar"] input,html[lang="ar"] textarea{max-width:100%;min-width:0;}
+html[lang="ar"] .hero-copy,html[lang="ar"] .sectionhead,html[lang="ar"] .panel,html[lang="ar"] .chathead{min-width:0;overflow-wrap:anywhere;}
+html[lang="ar"] .hero-actions,html[lang="ar"] .nav-right{direction:rtl;flex-wrap:wrap;}
+html[lang="ar"] .hero,html[lang="ar"] .hero-inner,html[lang="ar"] .hero-content{min-width:0;max-width:100%;}
 html[lang="ar"] .hero-copy,html[lang="ar"] .sectionhead,html[lang="ar"] .panel,html[lang="ar"] .chathead{text-align:right}
 html[lang="ar"] .hero-actions,html[lang="ar"] .nav-right{direction:rtl}
 html[lang="ar"] .msg.bot ul,html[lang="ar"] .msg.bot ol{margin-right:22px;margin-left:0}
