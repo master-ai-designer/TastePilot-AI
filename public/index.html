@@ -524,22 +524,37 @@ function loadTPMemory(){
 function saveTPMemory(profile){try{localStorage.setItem(TP_MEMORY_KEY,JSON.stringify(profile))}catch{}}
 function updateTPMemory(text){
  const profile=loadTPMemory(), lower=String(text||'').toLowerCase();
+ if(!Array.isArray(profile.preferences))profile.preferences=[];
+ if(!Array.isArray(profile.avoid))profile.avoid=[];
  const signals=[
-  ['romantika',['romantik','romance','romantic','love story','sevgi']],
-  ['komediya',['komediya','comedy','kulgili','funny']],
-  ['jangari',['jangari','action','fight','urush','battle']],
-  ['fantastika',['fantastika','fantasy','isekai','magic','sehr']],
-  ['school life',['school life','maktab hayoti','school romance']],
-  ['baxtli yakun',['baxtli yakun','happy ending','happy end']],
-  ['qayg‘uli yakun yoqmaydi',['sad ending yoqmaydi','qayg‘uli yakun yoqmaydi','no sad ending']],
-  ['anime',['anime','animelar','animeni']],
-  ['film',['film','kino','movie']],
-  ['musiqa',['musiqa','music','playlist']],
-  ['sayohat',['sayohat','travel','trip']],
-  ['sokin muhit',['sokin','calm','quiet','peaceful']]
+  ['romantika',['romantik','romance','romantic','love story','sevgi','رومانسي','رومانسية','романтик','романтика']],
+  ['komediya',['komediya','comedy','kulgili','funny','كوميديا','كوميدي','комедия']],
+  ['jangari',['jangari','action','fight','urush','battle','أكشن','قتال','боевик','экшен']],
+  ['fantastika',['fantastika','fantasy','isekai','magic','sehr','خيال','فانتازيا','фэнтези','исэкай']],
+  ['school life',['school life','maktab hayoti','school romance','حياة مدرسية','مدرسي','школьная жизнь']],
+  ['baxtli yakun',['baxtli yakun','happy ending','happy end','نهاية سعيدة','счастливый конец']],
+  ['anime',['anime','animelar','animeni','أنمي','انمي']],
+  ['film',['film','kino','movie','فيلم','أفلام','кино','фильм']],
+  ['musiqa',['musiqa','music','playlist','موسيقى','أغاني','музыка','плейлист']],
+  ['sayohat',['sayohat','travel','trip','سفر','رحلة','путешествие']],
+  ['sokin muhit',['sokin','calm','quiet','peaceful','هادئ','هدوء','спокойный','тихий']]
  ];
- for(const [label,keys] of signals){if(keys.some(k=>lower.includes(k))&&!profile.preferences.includes(label))profile.preferences.push(label)}
- profile.preferences=profile.preferences.slice(-30); profile.updatedAt=new Date().toISOString(); saveTPMemory(profile);
+ const negation=/(don't like|do not like|dislike|hate|not into|yoqmaydi|yoqmay|yoqtirmayman|yoqtirmay|yomon ko‘raman|yomon koraman|не люблю|не нравится|не нравятся|ненавижу|لا أحب|لا احب|لا يعجبني|لا تعجبني|أكره)/i;
+ for(const [label,keys] of signals){
+  let positive=false,negative=false;
+  for(const key of keys){
+   let from=0,at;
+   while((at=lower.indexOf(key,from))!==-1){
+    const context=lower.slice(Math.max(0,at-34),Math.min(lower.length,at+key.length+34));
+    if(negation.test(context))negative=true;else positive=true;
+    from=at+key.length;
+   }
+  }
+  if(negative){profile.avoid=profile.avoid.filter(x=>x!==label);if(!profile.avoid.includes(label))profile.avoid.push(label);}
+  else if(positive){profile.preferences=profile.preferences.filter(x=>x!==label);if(!profile.preferences.includes(label))profile.preferences.push(label);profile.avoid=profile.avoid.filter(x=>x!==label);}
+ }
+ profile.preferences=profile.preferences.slice(-30);profile.avoid=profile.avoid.slice(-20);
+ profile.updatedAt=new Date().toISOString();saveTPMemory(profile);
 }
 try{
  const saved=JSON.parse(localStorage.getItem(TP_HISTORY_KEY)||'[]');
