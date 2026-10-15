@@ -452,9 +452,26 @@ html[lang="ar"] .msg.bot{border-top-left-radius:16px;border-top-right-radius:5px
 .king-brand-caption .art-corner{border-radius:7px;border-color:#285d3b;background:#07100a;color:#e7bd6a}
 @keyframes tpCompassFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
 @media(max-width:640px){.tastepilot-hero-emblem{width:min(55%,190px)}.tastepilot-hero-wordmark{top:calc(50% + 75px);font-size:22px}.tastepilot-hero-subtitle{top:calc(50% + 104px)}.king-brand-stage{min-height:365px}}
+
+/* New agent-first identity: neural network, not a compass */
+.brandmark{width:36px;height:36px;border-radius:12px;overflow:hidden;box-shadow:0 0 22px #8b7bff18}
+.brandmark svg{width:100%;height:100%;display:block}
+.king-brand-stage{background:radial-gradient(ellipse at 50% 42%,#17182f 0%,#0a0d17 49%,#07090f 100%);border-color:#45436f;box-shadow:0 24px 80px #0007,inset 0 0 70px #8b7bff09}
+.king-brand-stage:after{background-image:linear-gradient(90deg,transparent 49.8%,#8b7bff12 50%,transparent 50.2%),linear-gradient(0deg,transparent 49.8%,#72f1d212 50%,transparent 50.2%);opacity:.4}
+.king-logo-frame:before{border-color:#8b7bff3d;box-shadow:0 0 0 15px #8b7bff07,0 0 0 38px #72f1d207,0 0 65px #8b7bff0c}
+.king-logo-frame:after{border-color:#72f1d21a}
+.tastepilot-hero-emblem{width:min(66%,270px);filter:drop-shadow(0 0 30px #8b7bff24);animation:tpAgentPulse 7s ease-in-out infinite}
+.tastepilot-hero-wordmark span{color:#9e94ff}
+.tastepilot-hero-subtitle{color:#75f0d0;letter-spacing:.2em}
+.logo-crosshair:before,.logo-crosshair:after{background:#75f0d0}
+.logo-scanline{background:linear-gradient(90deg,transparent,#9e94ff66,transparent)}
+.king-brand-caption .micro-label{color:#75f0d0}
+.king-brand-caption .art-caption{color:#c2c6e4}
+.king-brand-caption .art-corner{border-color:#45436f;background:#0b1020;color:#b9b1ff}
+@keyframes tpAgentPulse{0%,100%{transform:translateY(0) scale(1);filter:drop-shadow(0 0 20px #8b7bff18)}50%{transform:translateY(-4px) scale(1.025);filter:drop-shadow(0 0 32px #72f1d230)}}
 </style></head>
 <body>
-<nav><a class="logo" href="#discover" aria-label="TastePilot home"><span class="brandmark" aria-label="TastePilot discovery compass logo"><svg viewBox="0 0 48 48" role="img" aria-label="Compass symbol for discovery"><circle cx="24" cy="24" r="18.5" fill="#090b10" stroke="#e7a83c" stroke-width="1.4"/><circle cx="24" cy="24" r="13.2" fill="none" stroke="#6c4a1f" stroke-width="1"/><path d="M24 5.5 28.3 19.7 42.5 24 28.3 28.3 24 42.5 19.7 28.3 5.5 24 19.7 19.7Z" fill="#f5c15e" stroke="#fff0c6" stroke-width=".7" stroke-linejoin="round"/><path d="M24 10 26.5 21.5 38 24 26.5 26.5 24 38 21.5 26.5 10 24 21.5 21.5Z" fill="#fff0c6"/><circle cx="24" cy="24" r="4.2" fill="#0a0c10" stroke="#e7a83c" stroke-width="1.2"/><path d="M10.5 35.2C17 40.5 29.8 39.4 36.2 29.4" fill="none" stroke="#ffcf69" stroke-width="1.7" stroke-linecap="round"/><circle cx="10.5" cy="35.2" r="2.5" fill="#ffcf69" stroke="#090b10" stroke-width="1"/><circle cx="36.2" cy="29.4" r="2.1" fill="#fff0c6" stroke="#090b10" stroke-width="1"/></svg></span><span>TastePilot <b>AI</b></span></a><div class="navlinks"><a href="#discover">Discover</a><a href="#taste">Taste map</a><a href="#chat">AI agent</a></div><div class="nav-right"><div class="pill"><span class="agent-status"></span> CULTURE INTELLIGENCE</div><span class="local-profile-pill" title="Taste preferences are saved only in this browser">✦ LOCAL TASTE PROFILE</span><button class="settings-trigger" id="settingsTrigger" type="button" aria-expanded="false" aria-controls="appearancePanel" onclick="toggleAppearance()">⚙ <span>SETTINGS</span></button></div></nav><aside class="appearance-panel" id="appearancePanel" aria-label="User settings" hidden>
+<nav><a class="logo" href="#discover" aria-label="TastePilot home"><span class="brandmark" aria-label="TastePilot AI agent mark"><svg viewBox="0 0 48 48" role="img" aria-label="AI intelligence network"><defs><linearGradient id="markGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#75f0d0"/><stop offset="1" stop-color="#8b7bff"/></linearGradient></defs><rect x="2" y="2" width="44" height="44" rx="14" fill="#101322" stroke="#44466f" stroke-width="1"/><path d="M13 16 23.8 10 35 16 35 30 24 37 13 30Z" fill="none" stroke="url(#markGrad)" stroke-width="1.5"/><path d="M13 16 24 24 35 16M24 24 24 37M13 30 24 24 35 30" fill="none" stroke="url(#markGrad)" stroke-width="1.4"/><circle cx="24" cy="24" r="5.8" fill="#17192b" stroke="#b8a8ff" stroke-width="1.5"/><circle cx="24" cy="24" r="2.3" fill="#e8e6ff"/><circle cx="13" cy="16" r="2.3" fill="#75f0d0"/><circle cx="35" cy="16" r="2.3" fill="#8b7bff"/><circle cx="13" cy="30" r="2.3" fill="#8b7bff"/><circle cx="35" cy="30" r="2.3" fill="#75f0d0"/><circle cx="24" cy="10" r="2.3" fill="#e8e6ff"/><circle cx="24" cy="37" r="2.3" fill="#75f0d0"/></svg></span><span>TastePilot <b>AI</b></span></a><div class="navlinks"><a href="#discover">Discover</a><a href="#taste">Taste map</a><a href="#chat">AI agent</a></div><div class="nav-right"><div class="pill"><span class="agent-status"></span> CULTURE INTELLIGENCE</div><span class="local-profile-pill" title="Taste preferences are saved only in this browser">✦ LOCAL TASTE PROFILE</span><button class="settings-trigger" id="settingsTrigger" type="button" aria-expanded="false" aria-controls="appearancePanel" onclick="toggleAppearance()">⚙ <span>SETTINGS</span></button></div></nav><aside class="appearance-panel" id="appearancePanel" aria-label="User settings" hidden>
 <div class="settings-head"><div><span class="settings-kicker">USER CONFIGURATION</span><h3>Settings</h3></div><button class="settings-close" type="button" onclick="toggleAppearance(false)" aria-label="Close settings">×</button></div>
 <p>Make TastePilot feel right for you. Preferences are saved on this device.</p>
 <div class="settings-label settings-space">LANGUAGE / TIL / ЯЗЫК</div>
@@ -539,28 +556,30 @@ html[lang="ar"] .msg.bot{border-top-left-radius:16px;border-top-right-radius:5px
 <section class="hero" id="discover">
 <div class="hero-copy"><div class="eyebrow"><span class="eyebrow-dot"></span> ROOT ACCESS TO YOUR NEXT DISCOVERY</div><h1><span style="font-size:.48em;display:block;color:#6bff9b;letter-spacing:.12em;margin-bottom:15px">TASTEPILOT // TERMINAL 01</span>Enter the <br><span class="gradient">unknown.</span></h1><p>A personal discovery intelligence console. Enter a mood, a signal, or a direction — let the agent map your next move through culture.</p>
 <div class="discovery-controls"><label class="discovery-category-label" for="discoveryCategory">Nimani kashf qilamiz?</label><select id="discoveryCategory" aria-label="Discovery kategoriyasi"><option value="auto" selected>Avtomatik — barcha mos yo‘nalishlar</option><option value="music">Musiqa va ijrochilar</option><option value="anime">Anime va seriallar</option><option value="movie">Filmlar</option><option value="places">Joylar</option><option value="books">Kitoblar</option><option value="games">Videoo‘yinlar</option></select></div><div class="search-panel"><label class="sr-only" for="q" style="position:absolute;left:-9999px">Nimani topmoqchisiz?</label><input id="q" aria-label="Nimani topmoqchisiz?" placeholder="O‘zbekcha yozing: Kayfiyatim yomon, nima maslahat berasan?…"><button class="go" onclick="discover()">Kashf et <span>↗</span></button></div><div class="helper-line">O‘zbekcha, ruscha yoki inglizcha yozing. Avtomatik rejim bir nechta yo‘nalishni tekshiradi; aniq kategoriya tanlasangiz, faqat shu yo‘nalish qidiriladi.</div><div class="chips"><button class="chip" onclick="setDiscovery('movie','Bugun kechqurun ko‘rishga yaxshi film top')">01 / Film</button><button class="chip" onclick="setDiscovery('music','Kayfiyatimni ko‘taradigan romantik musiqa top')">02 / Musiqa</button><button class="chip" onclick="setDiscovery('places','Shinam va chiroyli ovqatlanish joyi top')">03 / Joylar</button><button class="chip" onclick="setDiscovery('anime','Kulgili va romantik anime top')">04 / Anime</button></div><div class="status" id="status" role="status" aria-live="polite"></div></div>
-<div class="hero-art king-brand-stage" aria-label="TastePilot AI discovery compass">
- <div class="art-top"><span class="micro-label">TASTEPILOT / DISCOVERY ENGINE</span><span class="live-label"><span class="agent-status"></span> READY TO EXPLORE</span></div>
+<div class="hero-art king-brand-stage" aria-label="TastePilot AI autonomous discovery agent">
+ <div class="art-top"><span class="micro-label">TASTEPILOT / INTELLIGENCE CORE</span><span class="live-label"><span class="agent-status"></span> AGENT ONLINE</span></div>
  <div class="king-logo-frame">
   <span class="logo-crosshair crosshair-a"></span><span class="logo-crosshair crosshair-b"></span><span class="logo-scanline"></span>
-  <svg class="tastepilot-hero-emblem" viewBox="0 0 220 220" role="img" aria-label="TastePilot oltin kompas logotipi">
-   <defs><radialGradient id="tpGlow"><stop offset="0" stop-color="#f5c15e" stop-opacity=".2"/><stop offset="1" stop-color="#f5c15e" stop-opacity="0"/></radialGradient><linearGradient id="tpGold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff0b2"/><stop offset=".48" stop-color="#f4bd53"/><stop offset="1" stop-color="#b87521"/></linearGradient></defs>
-   <circle cx="110" cy="110" r="98" fill="url(#tpGlow)"/>
-   <circle cx="110" cy="110" r="77" fill="#080d0a" stroke="#d99c3b" stroke-opacity=".55" stroke-width="1.5"/>
-   <circle cx="110" cy="110" r="62" fill="none" stroke="#f5c15e" stroke-opacity=".35" stroke-width="1"/>
-   <circle cx="110" cy="110" r="48" fill="none" stroke="#f5c15e" stroke-opacity=".18" stroke-dasharray="2 6"/>
-   <path d="M110 35 127 92 185 110 127 127 110 185 93 127 35 110 93 92Z" fill="url(#tpGold)" stroke="#fff1c6" stroke-width="1.2" stroke-linejoin="round"/>
-   <path d="M110 54 120 100 166 110 120 120 110 166 100 120 54 110 100 100Z" fill="#fff0c6"/>
-   <circle cx="110" cy="110" r="17" fill="#07100a" stroke="#f5c15e" stroke-width="2"/>
-   <circle cx="110" cy="110" r="6" fill="#f5c15e"/>
-   <path d="M45 151A76 76 0 0 0 169 145" fill="none" stroke="#78e6a0" stroke-width="2" stroke-linecap="round"/>
-   <circle cx="45" cy="151" r="5" fill="#78e6a0" stroke="#07100a" stroke-width="2"/>
-   <circle cx="169" cy="145" r="4" fill="#f5c15e" stroke="#07100a" stroke-width="2"/>
-  </svg>
+  <svg class="tastepilot-hero-emblem" viewBox="0 0 260 240" role="img" aria-label="TastePilot AI agent intelligence network">
+ <defs><radialGradient id="tpCore"><stop offset="0" stop-color="#e7e5ff" stop-opacity=".95"/><stop offset=".32" stop-color="#9a8cff" stop-opacity=".6"/><stop offset="1" stop-color="#5de8d0" stop-opacity="0"/></radialGradient><linearGradient id="tpLine" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#72f1d2"/><stop offset=".55" stop-color="#a397ff"/><stop offset="1" stop-color="#5de8d0"/></linearGradient></defs>
+ <circle cx="130" cy="112" r="105" fill="url(#tpCore)" opacity=".25"/>
+ <circle cx="130" cy="112" r="82" fill="none" stroke="#8b8dce" stroke-opacity=".28" stroke-width="1" stroke-dasharray="3 7"/>
+ <ellipse cx="130" cy="112" rx="104" ry="43" transform="rotate(-28 130 112)" fill="none" stroke="#6be8d0" stroke-opacity=".35" stroke-width="1.3"/>
+ <ellipse cx="130" cy="112" rx="104" ry="43" transform="rotate(34 130 112)" fill="none" stroke="#a397ff" stroke-opacity=".38" stroke-width="1.3"/>
+ <path d="M130 32 184 64 202 122 163 181 96 190 52 142 63 77Z" fill="#101322" fill-opacity=".6" stroke="url(#tpLine)" stroke-opacity=".9" stroke-width="1.5"/>
+ <path d="M130 32 130 112 184 64M184 64 130 112 202 122M202 122 130 112 163 181M163 181 130 112 96 190M96 190 130 112 52 142M52 142 130 112 63 77M63 77 130 112 130 32" fill="none" stroke="url(#tpLine)" stroke-opacity=".7" stroke-width="1.5"/>
+ <circle cx="130" cy="112" r="39" fill="url(#tpCore)"/>
+ <circle cx="130" cy="112" r="25" fill="#14162a" stroke="#b8a8ff" stroke-width="1.7"/>
+ <circle cx="130" cy="112" r="16" fill="none" stroke="#72f1d2" stroke-width="1.3"/>
+ <path d="M119 112 127 120 143 102" fill="none" stroke="#e9fff9" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+ <g fill="#78f0d4" stroke="#0a1118" stroke-width="3"><circle cx="130" cy="32" r="7"/><circle cx="202" cy="122" r="7"/><circle cx="96" cy="190" r="7"/></g>
+ <g fill="#b8a8ff" stroke="#0a1118" stroke-width="3"><circle cx="184" cy="64" r="6"/><circle cx="163" cy="181" r="6"/><circle cx="52" cy="142" r="6"/><circle cx="63" cy="77" r="6"/></g>
+ <circle cx="130" cy="112" r="4" fill="#fff"/>
+</svg>
   <div class="tastepilot-hero-wordmark">TastePilot <span>AI</span></div>
-  <div class="tastepilot-hero-subtitle">FIND YOUR NEXT FAVOURITE</div>
+  <div class="tastepilot-hero-subtitle">UNDERSTAND · CONNECT · DISCOVER</div>
  </div>
- <div class="king-brand-caption"><div><div class="micro-label">YOUR TASTE. CONNECTED.</div><div class="art-caption">One signal can lead to a whole new world.</div></div><div class="art-corner">DISCOVERY SYSTEM <strong>01</strong></div></div>
+ <div class="king-brand-caption"><div><div class="micro-label">YOUR SIGNAL. OUR INTELLIGENCE.</div><div class="art-caption">An AI agent connecting your mood to what fits you.</div></div><div class="art-corner">AGENT CORE <strong>01</strong></div></div>
 </div>
 </section>
 <section class="section"><div class="sectionhead"><div><div class="section-kicker">01 // DISCOVERY MODULE</div><h2>Choose your next signal.</h2><div class="muted">Input a signal. Trace unexpected connections across culture.</div></div><div class="section-note muted">CURATED · CONNECTED · PERSONAL</div></div><div class="grid" id="cards"><div class="card"><div class="icon">◈</div><span class="tag">01 / Cinema</span><h3>Stories that stay with you</h3><p>Find a film or series that matches the feeling you want from tonight.</p></div><div class="card"><div class="icon">♫</div><span class="tag">02 / Sound</span><h3>Build a world through music</h3><p>Explore sounds that fit your mood, your setting, and your personal rhythm.</p></div><div class="card"><div class="icon">⌁</div><span class="tag">03 / Out there</span><h3>Discover your next place</h3><p>Connect your interests to restaurants, places, and experiences worth trying.</p></div></div></section>
