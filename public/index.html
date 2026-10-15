@@ -419,6 +419,21 @@ html[lang="ar"] .msg.bot ul,html[lang="ar"] .msg.bot ol{margin-right:22px;margin
 html[lang="ar"] .msg.user{border-top-right-radius:16px;border-top-left-radius:5px}
 html[lang="ar"] .msg.bot{border-top-left-radius:16px;border-top-right-radius:5px}
 </style>
+<style id="tastepilot-live-qloo-dashboard">
+.discovery-results-section[hidden]{display:none}
+.discovery-results-head{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:20px}
+.discovery-result-meta{font-size:11px;color:var(--user-accent);border:1px solid var(--accent-border);background:var(--accent-soft);border-radius:999px;padding:9px 12px;white-space:nowrap}
+.discovery-result-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.discovery-result{display:flex;gap:13px;min-width:0;padding:15px;border:1px solid var(--accent-border);border-radius:14px;background:color-mix(in srgb,var(--user-accent) 3%,#080a0d)}
+.discovery-result-number{font:700 12px ui-monospace,monospace;color:var(--user-accent);padding-top:3px}
+.discovery-result-copy{min-width:0}
+.discovery-result h3{font-size:14px;margin:0 0 6px;overflow-wrap:anywhere}
+.discovery-result p{font-size:11px;line-height:1.65;color:#91a098;margin:0 0 8px;overflow-wrap:anywhere}
+.discovery-result-copy span{font-size:9px;color:var(--user-accent);letter-spacing:.06em;text-transform:uppercase}
+.discovery-empty{padding:20px;border:1px dashed var(--accent-border);border-radius:12px;color:#91a098;font-size:12px;line-height:1.7;grid-column:1/-1}
+.discovery-error{color:#ff9ba8}
+@media(max-width:640px){.discovery-results-head{flex-direction:column}.discovery-result-list{grid-template-columns:1fr}.discovery-result-meta{white-space:normal}}
+</style>
 </head>
 <body>
 <nav><a class="logo" href="#discover" aria-label="TastePilot home"><span class="brandmark" aria-label="TastePilot logo"><svg viewBox="0 0 48 48" role="img"><path d="M24 4 29 15 40 11 34 22 44 28 31 30 30 43 22 34 12 41 14 29 4 23 17 20Z" fill="none" stroke="#75e4e8" stroke-width="1.5"/><circle cx="24" cy="24" r="7" fill="#a99bff"/><circle cx="24" cy="24" r="3" fill="#f1f5fb"/></svg></span><span>TastePilot <b>AI</b></span></a><div class="navlinks"><a href="#discover">Discover</a><a href="#taste">Taste map</a><a href="#chat">AI agent</a></div><div class="nav-right"><div class="pill"><span class="agent-status"></span> CULTURE INTELLIGENCE</div><span class="local-profile-pill" title="Taste preferences are saved only in this browser">✦ LOCAL TASTE PROFILE</span><button class="settings-trigger" id="settingsTrigger" type="button" aria-expanded="false" aria-controls="appearancePanel" onclick="toggleAppearance()">⚙ <span>SETTINGS</span></button></div></nav><aside class="appearance-panel" id="appearancePanel" aria-label="User settings" hidden>
@@ -505,12 +520,13 @@ html[lang="ar"] .msg.bot{border-top-left-radius:16px;border-top-right-radius:5px
 <main>
 <section class="hero" id="discover">
 <div class="hero-copy"><div class="eyebrow"><span class="eyebrow-dot"></span> ROOT ACCESS TO YOUR NEXT DISCOVERY</div><h1><span style="font-size:.48em;display:block;color:#6bff9b;letter-spacing:.12em;margin-bottom:15px">TASTEPILOT // TERMINAL 01</span>Enter the <br><span class="gradient">unknown.</span></h1><p>A personal discovery intelligence console. Enter a mood, a signal, or a direction — let the agent map your next move through culture.</p>
-<div class="search-panel"><label class="sr-only" for="q" style="position:absolute;left:-9999px">What would you like to discover?</label><input id="q" aria-label="What would you like to discover?" placeholder="A film for a quiet night, music for a drive…"><button class="go" onclick="discover()">Explore <span>↗</span></button></div><div class="helper-line">Start with a mood, a favorite, or a plan. No special prompt needed.</div><div class="chips"><button class="chip" onclick="fill('a memorable movie for a relaxed evening')">01 / Cinema</button><button class="chip" onclick="fill('a relaxed evening playlist')">02 / Music</button><button class="chip" onclick="fill('a stylish place to eat')">03 / Places</button><button class="chip" onclick="fill('something to do when I am bored')">04 / Experiences</button></div><div class="status" id="status"></div></div>
+<div class="search-panel"><label class="sr-only" for="q" style="position:absolute;left:-9999px">What would you like to discover?</label><input id="q" aria-label="What would you like to discover?" placeholder="O‘zbekcha yozing: Bugun kechqurun ko‘rishga romantik komediya top…"><button class="go" onclick="discover()">Explore <span>↗</span></button></div><div class="helper-line">Start with a mood, a favorite, or a plan. No special prompt needed.</div><div class="chips"><button class="chip" onclick="fill('a memorable movie for a relaxed evening')">01 / Cinema</button><button class="chip" onclick="fill('a relaxed evening playlist')">02 / Music</button><button class="chip" onclick="fill('a stylish place to eat')">03 / Places</button><button class="chip" onclick="fill('something to do when I am bored')">04 / Experiences</button></div><div class="status" id="status"></div></div>
 <div class="hero-art king-brand-stage" aria-label="KING brand logo">
 <img class="king-brand-logo" src="/king-logo.svg" alt="KING logo">
 </div>
 </section>
 <section class="section"><div class="sectionhead"><div><div class="section-kicker">01 // DISCOVERY MODULE</div><h2>Choose your next signal.</h2><div class="muted">Input a signal. Trace unexpected connections across culture.</div></div><div class="section-note muted">CURATED · CONNECTED · PERSONAL</div></div><div class="grid" id="cards"><div class="card"><div class="icon">◈</div><span class="tag">01 / Cinema</span><h3>Stories that stay with you</h3><p>Find a film or series that matches the feeling you want from tonight.</p></div><div class="card"><div class="icon">♫</div><span class="tag">02 / Sound</span><h3>Build a world through music</h3><p>Explore sounds that fit your mood, your setting, and your personal rhythm.</p></div><div class="card"><div class="icon">⌁</div><span class="tag">03 / Out there</span><h3>Discover your next place</h3><p>Connect your interests to restaurants, places, and experiences worth trying.</p></div></div></section>
+<section class="section discovery-results-section" id="discovery-results" hidden><div class="panel"><div class="discovery-results-head"><div><div class="section-kicker">LIVE CATALOGUE CHECK</div><h2>Topilgan natijalar</h2><div class="muted">Bu yerda Qloo API qaytargan haqiqiy katalog natijalari ko‘rsatiladi.</div></div><div class="discovery-result-meta" id="discovery-result-meta">Tekshirilmoqda…</div></div><div id="discovery-result-list" class="discovery-result-list"><div class="discovery-empty">So‘rov yuborilgandan keyin natijalar shu yerda chiqadi.</div></div></div></section>
 <section class="section profile" id="taste"><div class="panel"><div class="section-kicker">02 // SIGNAL MONITOR</div><h2>Taste signal monitor.</h2><div class="muted" id="tasteHint">Try a discovery above to infer signals from your request.</div><div class="bars" id="tasteBars"><div class="barrow"><span>Curiosity</span><div class="bar"><div class="fill" style="width:72%"></div></div><b>72</b></div><div class="barrow"><span>Atmosphere</span><div class="bar"><div class="fill" style="width:64%"></div></div><b>64</b></div><div class="barrow"><span>Story</span><div class="bar"><div class="fill" style="width:81%"></div></div><b>81</b></div><div class="barrow"><span>Novelty</span><div class="bar"><div class="fill" style="width:67%"></div></div><b>67</b></div></div></div><div class="panel"><div class="section-kicker">03 // AGENT PIPELINE</div><h2>From input to intelligence.</h2><div class="flow-steps"><div class="flow-step"><b>01</b>Your intent</div><div class="flow-step"><b>02</b>Taste signals</div><div class="flow-step"><b>03</b>Cultural graph</div><div class="flow-step"><b>04</b>Discovery</div></div><p class="flow-note">TastePilot is designed to connect preferences across categories — not just return a generic list. Live cultural results activate when the Qloo API is configured.</p></div></section>
 <section class="chat" id="chat"><div class="chathead"><div><div class="section-kicker">04 // OPERATOR TERMINAL</div><h2>Initialize a conversation.</h2><div class="muted">Talk to the agent. Refine signals. Follow the trail.</div></div><div class="pill"><span class="agent-status"></span> AGENT ONLINE</div></div><div class="chatlog" id="chatlog"><div class="msg bot welcome-msg"><strong>Welcome to TastePilot.</strong><p>Tell me how you feel, what you enjoy, or what kind of day you want. We’ll find a direction worth exploring.</p><div class="welcome-examples"><button class="mini-prompt" onclick="setChatPrompt('I am bored. Suggest something that fits my mood.')">I’m bored</button><button class="mini-prompt" onclick="setChatPrompt('Help me choose a movie for tonight.')">Pick a movie</button><button class="mini-prompt" onclick="setChatPrompt('Suggest somewhere to go with a friend.')">Plan with a friend</button></div></div></div><div class="chatinput"><input id="chatq" aria-label="Message TastePilot" placeholder="Tell me what you’re in the mood for…" onkeydown="if(event.key==='Enter')sendChat()"><button class="send" onclick="sendChat()">Send ↗</button></div><div class="input-hint">ENTER TO SEND <span>·</span> FOLLOW-UP QUESTIONS WELCOME</div><div class="status" id="voiceStatus" style="text-align:left"></div></section>
 </main><footer><span><b>TastePilot AI</b> · Personal culture intelligence</span><span>Built for the Qloo Agentic Hackathon</span></footer>
@@ -587,16 +603,50 @@ function analyzeTaste(query){
 async function discover(){
  const q=document.getElementById('q').value.trim(); if(!q){document.getElementById('q').focus();return}
  analyzeTaste(q);
- const status=document.getElementById('status'); status.textContent='✦ TastePilot is thinking…';
+ const status=document.getElementById('status'); status.textContent='✦ So‘rov tahlil qilinmoqda…';
+ const cards=document.getElementById('cards');
+ const resultsPanel=document.getElementById('discovery-results');
+ const resultsList=document.getElementById('discovery-result-list');
+ const resultsMeta=document.getElementById('discovery-result-meta');
+ resultsPanel.hidden=false;
+ resultsMeta.textContent='Qloo bilan aloqa tekshirilmoqda…';
+ resultsList.innerHTML='<div class="discovery-empty">Haqiqiy natijalar kutilmoqda…</div>';
  try{
    const r=await fetch('/api/discover',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query:q})});
    const data=await r.json();
-   status.textContent=data.demo?'Demo mode — taste signal updated locally; add QLOO_API_KEY for live Qloo results.':'✦ Live Qloo response received.';
-   document.getElementById('cards').innerHTML=
-   '<div class="card"><div class="icon">✦</div><span class="tag">Your request</span><h3>'+escapeHtml(q)+'</h3><p>TastePilot converted your intent into a recommendation request.</p></div>'+
-   '<div class="card"><div class="icon">🎯</div><span class="tag">Cultural grounding</span><h3>'+ (data.demo?'Ready for Qloo':'Qloo connected') +'</h3><p>'+ (data.demo?'Your taste signal is already adapting; the API key activates live cultural data.':'Qloo returned data for this request.') +'</p></div>'+
-   '<div class="card"><div class="icon">🔗</div><span class="tag">Agentic flow</span><h3>Beyond one category</h3><p>The agent can use the same taste signal to connect movies, music, dining and places.</p></div>';
- }catch(e){status.textContent='Could not reach the backend. Run npm start and try again.'}
+   if(!r.ok||data.status==='error'){
+    status.textContent='⚠ Qloo API xatosi — batafsil holat natijalar panelida.';
+    resultsMeta.textContent='API xatosi';
+    resultsList.innerHTML='<div class="discovery-empty discovery-error">'+escapeHtml(data.error||'Qloo so‘rovi bajarilmadi.')+'</div>';
+    cards.innerHTML='<div class="card"><div class="icon">✦</div><span class="tag">Sizning so‘rovingiz</span><h3>'+escapeHtml(q)+'</h3><p>So‘rov qabul qilindi.</p></div><div class="card"><div class="icon">⚠</div><span class="tag">Qloo holati</span><h3>Tekshirish kerak</h3><p>'+escapeHtml(data.error||'API javob bermadi.')+'</p></div><div class="card"><div class="icon">↻</div><span class="tag">Keyingi qadam</span><h3>Qayta urinib ko‘ring</h3><p>API kaliti, so‘rov parametrlari va Vercel loglarini tekshiring.</p></div>';
+    return;
+   }
+   if(data.demo){
+    status.textContent='Demo rejimi — Qloo API kaliti sozlanmagan.';
+    resultsMeta.textContent='Live Qloo ulanmagan';
+    resultsList.innerHTML='<div class="discovery-empty">Hozircha haqiqiy Qloo natijasi yo‘q. Vercel muhitidagi QLOO_API_KEY sozlamasini tekshiring.</div>';
+   }else{
+    const entities=Array.isArray(data.entities)?data.entities:[];
+    status.textContent=entities.length?'✓ Qloo javob berdi — '+entities.length+' ta natija topildi.':'Qloo API javob berdi, lekin mos natija topilmadi.';
+    resultsMeta.textContent=entities.length?'Qloo API · '+entities.length+' ta haqiqiy natija':'Qloo API ishladi · 0 ta natija';
+    if(entities.length){
+      resultsList.innerHTML=entities.map((item,index)=>{
+       const title=item.name||item.title||item.entity?.name||item.properties?.name||item.id||('Natija '+(index+1));
+       const subtype=item.type||item.entity_type||item.category||'Qloo katalogi';
+       const description=item.short_description||item.description||item.properties?.description||'Qloo qidiruv katalogidan topilgan obyekt.';
+       return '<article class="discovery-result"><div class="discovery-result-number">'+String(index+1).padStart(2,'0')+'</div><div class="discovery-result-copy"><h3>'+escapeHtml(String(title))+'</h3><p>'+escapeHtml(String(description))+'</p><span>'+escapeHtml(String(subtype))+'</span></div></article>';
+      }).join('');
+    }else{
+      resultsList.innerHTML='<div class="discovery-empty">Qloo API muvaffaqiyatli javob berdi, ammo bu so‘rov uchun natija topilmadi. Boshqacha yoki qisqaroq so‘rovni sinab ko‘ring.</div>';
+    }
+   }
+   const count=Number(data.resultCount||0);
+   cards.innerHTML='<div class="card"><div class="icon">✦</div><span class="tag">Sizning so‘rovingiz</span><h3>'+escapeHtml(q)+'</h3><p>So‘rov qabul qilindi va did signallari tahlil qilindi.</p></div><div class="card"><div class="icon">🎯</div><span class="tag">Qloo holati</span><h3>'+ (data.demo?'Sozlanmagan':(count?'Natijalar topildi':'Ulandi, natija yo‘q')) +'</h3><p>'+ (data.demo?'Serverda QLOO_API_KEY kerak.':(count?'Qloo katalogidan '+count+' ta obyekt qaytdi.':'API javob berdi, ammo mos obyekt qaytmadi.')) +'</p></div><div class="card"><div class="icon">🔎</div><span class="tag">Qidiruv tafsiloti</span><h3>'+escapeHtml(data.searchQuery||q)+'</h3><p>Qidiruv so‘rovi inglizcha kalit so‘zlarga aylantirilishi mumkin. Bu bosqich film katalogini qidiradi.</p></div>';
+ }catch(e){
+   status.textContent='⚠ Server bilan aloqa yo‘q.';
+   resultsMeta.textContent='Ulanish xatosi';
+   resultsList.innerHTML='<div class="discovery-empty discovery-error">TastePilot serveriga ulanib bo‘lmadi. Sahifani yangilang va qayta urinib ko‘ring.</div>';
+ }
 }
 function mediaRequestFromChat(message){
  const history=window.tastePilotChatHistory||[];
