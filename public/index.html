@@ -434,7 +434,25 @@ html[lang="ar"] .msg.bot{border-top-left-radius:16px;border-top-right-radius:5px
 .discovery-error{color:#ff9ba8}
 @media(max-width:640px){.discovery-results-head{flex-direction:column}.discovery-result-list{grid-template-columns:1fr}.discovery-result-meta{white-space:normal}}
 </style>
-<style id="discovery-category-styles">.discovery-controls{display:flex;align-items:center;gap:12px;margin:20px 0 10px;flex-wrap:wrap}.discovery-category-label{font-size:11px;color:#a9b5c4}#discoveryCategory{max-width:100%;min-width:190px;padding:11px 35px 11px 12px;border:1px solid #ffffff20;border-radius:9px;background:#0a1016;color:#e7f2ec;font:inherit;font-size:12px}#discoveryCategory:focus-visible,#q:focus-visible{outline:2px solid var(--user-accent,#75e4e8);outline-offset:2px}.discovery-match-reason{margin-top:7px!important;color:#b3c7ba!important;font-size:10px!important}</style></head>
+<style id="discovery-category-styles">.discovery-controls{display:flex;align-items:center;gap:12px;margin:20px 0 10px;flex-wrap:wrap}.discovery-category-label{font-size:11px;color:#a9b5c4}#discoveryCategory{max-width:100%;min-width:190px;padding:11px 35px 11px 12px;border:1px solid #ffffff20;border-radius:9px;background:#0a1016;color:#e7f2ec;font:inherit;font-size:12px}#discoveryCategory:focus-visible,#q:focus-visible{outline:2px solid var(--user-accent,#75e4e8);outline-offset:2px}.discovery-match-reason{margin-top:7px!important;color:#b3c7ba!important;font-size:10px!important}
+.tastepilot-hero-emblem{position:relative;z-index:1;width:min(57%,230px);height:auto;filter:drop-shadow(0 0 24px #f5c15e1a);animation:tpCompassFloat 6s ease-in-out infinite}
+.tastepilot-hero-wordmark{position:absolute;z-index:3;left:0;right:0;top:calc(50% + 88px);text-align:center;font-size:clamp(20px,2.1vw,27px);font-weight:780;letter-spacing:-.055em;color:#edf5ef;text-shadow:0 3px 18px #000}
+.tastepilot-hero-wordmark span{color:#f5c15e}
+.tastepilot-hero-subtitle{position:absolute;z-index:3;left:0;right:0;top:calc(50% + 122px);text-align:center;font-size:8px;letter-spacing:.28em;color:#83b997}
+.king-brand-stage{min-height:435px;position:relative;border:1px solid #285d3b;border-radius:20px;background:radial-gradient(ellipse at 50% 42%,#14291b 0%,#09110b 48%,#060907 100%);box-shadow:0 24px 80px #0005,inset 0 0 60px #f5c15e06}
+.king-brand-stage:after{opacity:.28;background-size:38px 38px}
+.king-brand-stage .art-top,.king-brand-caption{position:relative;z-index:4}
+.king-logo-frame{position:absolute;left:7%;right:7%;top:15%;bottom:16%;display:grid;place-items:center;overflow:visible}
+.king-logo-frame:before{content:"";position:absolute;width:min(74%,275px);aspect-ratio:1;border:1px solid #f5c15e2a;border-radius:50%;box-shadow:0 0 0 15px #f5c15e05,0 0 0 38px #78e6a006,0 0 55px #f5c15e08}
+.king-logo-frame:after{content:"";position:absolute;inset:8% 0;border-top:1px solid #78e6a016;border-bottom:1px solid #78e6a016;pointer-events:none}
+.logo-crosshair:before,.logo-crosshair:after{background:#f5c15e}
+.logo-scanline{background:linear-gradient(90deg,transparent,#f5c15e55,transparent);opacity:.55}
+.king-brand-caption .micro-label{color:#8dd6a2}
+.king-brand-caption .art-caption{color:#a7b9aa}
+.king-brand-caption .art-corner{border-radius:7px;border-color:#285d3b;background:#07100a;color:#e7bd6a}
+@keyframes tpCompassFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+@media(max-width:640px){.tastepilot-hero-emblem{width:min(55%,190px)}.tastepilot-hero-wordmark{top:calc(50% + 75px);font-size:22px}.tastepilot-hero-subtitle{top:calc(50% + 104px)}.king-brand-stage{min-height:365px}}
+</style></head>
 <body>
 <nav><a class="logo" href="#discover" aria-label="TastePilot home"><span class="brandmark" aria-label="TastePilot discovery compass logo"><svg viewBox="0 0 48 48" role="img" aria-label="Compass symbol for discovery"><circle cx="24" cy="24" r="18.5" fill="#090b10" stroke="#e7a83c" stroke-width="1.4"/><circle cx="24" cy="24" r="13.2" fill="none" stroke="#6c4a1f" stroke-width="1"/><path d="M24 5.5 28.3 19.7 42.5 24 28.3 28.3 24 42.5 19.7 28.3 5.5 24 19.7 19.7Z" fill="#f5c15e" stroke="#fff0c6" stroke-width=".7" stroke-linejoin="round"/><path d="M24 10 26.5 21.5 38 24 26.5 26.5 24 38 21.5 26.5 10 24 21.5 21.5Z" fill="#fff0c6"/><circle cx="24" cy="24" r="4.2" fill="#0a0c10" stroke="#e7a83c" stroke-width="1.2"/><path d="M10.5 35.2C17 40.5 29.8 39.4 36.2 29.4" fill="none" stroke="#ffcf69" stroke-width="1.7" stroke-linecap="round"/><circle cx="10.5" cy="35.2" r="2.5" fill="#ffcf69" stroke="#090b10" stroke-width="1"/><circle cx="36.2" cy="29.4" r="2.1" fill="#fff0c6" stroke="#090b10" stroke-width="1"/></svg></span><span>TastePilot <b>AI</b></span></a><div class="navlinks"><a href="#discover">Discover</a><a href="#taste">Taste map</a><a href="#chat">AI agent</a></div><div class="nav-right"><div class="pill"><span class="agent-status"></span> CULTURE INTELLIGENCE</div><span class="local-profile-pill" title="Taste preferences are saved only in this browser">✦ LOCAL TASTE PROFILE</span><button class="settings-trigger" id="settingsTrigger" type="button" aria-expanded="false" aria-controls="appearancePanel" onclick="toggleAppearance()">⚙ <span>SETTINGS</span></button></div></nav><aside class="appearance-panel" id="appearancePanel" aria-label="User settings" hidden>
 <div class="settings-head"><div><span class="settings-kicker">USER CONFIGURATION</span><h3>Settings</h3></div><button class="settings-close" type="button" onclick="toggleAppearance(false)" aria-label="Close settings">×</button></div>
@@ -521,8 +539,28 @@ html[lang="ar"] .msg.bot{border-top-left-radius:16px;border-top-right-radius:5px
 <section class="hero" id="discover">
 <div class="hero-copy"><div class="eyebrow"><span class="eyebrow-dot"></span> ROOT ACCESS TO YOUR NEXT DISCOVERY</div><h1><span style="font-size:.48em;display:block;color:#6bff9b;letter-spacing:.12em;margin-bottom:15px">TASTEPILOT // TERMINAL 01</span>Enter the <br><span class="gradient">unknown.</span></h1><p>A personal discovery intelligence console. Enter a mood, a signal, or a direction — let the agent map your next move through culture.</p>
 <div class="discovery-controls"><label class="discovery-category-label" for="discoveryCategory">Nimani kashf qilamiz?</label><select id="discoveryCategory" aria-label="Discovery kategoriyasi"><option value="auto" selected>Avtomatik — barcha mos yo‘nalishlar</option><option value="music">Musiqa va ijrochilar</option><option value="anime">Anime va seriallar</option><option value="movie">Filmlar</option><option value="places">Joylar</option><option value="books">Kitoblar</option><option value="games">Videoo‘yinlar</option></select></div><div class="search-panel"><label class="sr-only" for="q" style="position:absolute;left:-9999px">Nimani topmoqchisiz?</label><input id="q" aria-label="Nimani topmoqchisiz?" placeholder="O‘zbekcha yozing: Kayfiyatim yomon, nima maslahat berasan?…"><button class="go" onclick="discover()">Kashf et <span>↗</span></button></div><div class="helper-line">O‘zbekcha, ruscha yoki inglizcha yozing. Avtomatik rejim bir nechta yo‘nalishni tekshiradi; aniq kategoriya tanlasangiz, faqat shu yo‘nalish qidiriladi.</div><div class="chips"><button class="chip" onclick="setDiscovery('movie','Bugun kechqurun ko‘rishga yaxshi film top')">01 / Film</button><button class="chip" onclick="setDiscovery('music','Kayfiyatimni ko‘taradigan romantik musiqa top')">02 / Musiqa</button><button class="chip" onclick="setDiscovery('places','Shinam va chiroyli ovqatlanish joyi top')">03 / Joylar</button><button class="chip" onclick="setDiscovery('anime','Kulgili va romantik anime top')">04 / Anime</button></div><div class="status" id="status" role="status" aria-live="polite"></div></div>
-<div class="hero-art king-brand-stage" aria-label="KING brand logo">
-<img class="king-brand-logo" src="/king-logo.svg" alt="KING logo">
+<div class="hero-art king-brand-stage" aria-label="TastePilot AI discovery compass">
+ <div class="art-top"><span class="micro-label">TASTEPILOT / DISCOVERY ENGINE</span><span class="live-label"><span class="agent-status"></span> READY TO EXPLORE</span></div>
+ <div class="king-logo-frame">
+  <span class="logo-crosshair crosshair-a"></span><span class="logo-crosshair crosshair-b"></span><span class="logo-scanline"></span>
+  <svg class="tastepilot-hero-emblem" viewBox="0 0 220 220" role="img" aria-label="TastePilot oltin kompas logotipi">
+   <defs><radialGradient id="tpGlow"><stop offset="0" stop-color="#f5c15e" stop-opacity=".2"/><stop offset="1" stop-color="#f5c15e" stop-opacity="0"/></radialGradient><linearGradient id="tpGold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff0b2"/><stop offset=".48" stop-color="#f4bd53"/><stop offset="1" stop-color="#b87521"/></linearGradient></defs>
+   <circle cx="110" cy="110" r="98" fill="url(#tpGlow)"/>
+   <circle cx="110" cy="110" r="77" fill="#080d0a" stroke="#d99c3b" stroke-opacity=".55" stroke-width="1.5"/>
+   <circle cx="110" cy="110" r="62" fill="none" stroke="#f5c15e" stroke-opacity=".35" stroke-width="1"/>
+   <circle cx="110" cy="110" r="48" fill="none" stroke="#f5c15e" stroke-opacity=".18" stroke-dasharray="2 6"/>
+   <path d="M110 35 127 92 185 110 127 127 110 185 93 127 35 110 93 92Z" fill="url(#tpGold)" stroke="#fff1c6" stroke-width="1.2" stroke-linejoin="round"/>
+   <path d="M110 54 120 100 166 110 120 120 110 166 100 120 54 110 100 100Z" fill="#fff0c6"/>
+   <circle cx="110" cy="110" r="17" fill="#07100a" stroke="#f5c15e" stroke-width="2"/>
+   <circle cx="110" cy="110" r="6" fill="#f5c15e"/>
+   <path d="M45 151A76 76 0 0 0 169 145" fill="none" stroke="#78e6a0" stroke-width="2" stroke-linecap="round"/>
+   <circle cx="45" cy="151" r="5" fill="#78e6a0" stroke="#07100a" stroke-width="2"/>
+   <circle cx="169" cy="145" r="4" fill="#f5c15e" stroke="#07100a" stroke-width="2"/>
+  </svg>
+  <div class="tastepilot-hero-wordmark">TastePilot <span>AI</span></div>
+  <div class="tastepilot-hero-subtitle">FIND YOUR NEXT FAVOURITE</div>
+ </div>
+ <div class="king-brand-caption"><div><div class="micro-label">YOUR TASTE. CONNECTED.</div><div class="art-caption">One signal can lead to a whole new world.</div></div><div class="art-corner">DISCOVERY SYSTEM <strong>01</strong></div></div>
 </div>
 </section>
 <section class="section"><div class="sectionhead"><div><div class="section-kicker">01 // DISCOVERY MODULE</div><h2>Choose your next signal.</h2><div class="muted">Input a signal. Trace unexpected connections across culture.</div></div><div class="section-note muted">CURATED · CONNECTED · PERSONAL</div></div><div class="grid" id="cards"><div class="card"><div class="icon">◈</div><span class="tag">01 / Cinema</span><h3>Stories that stay with you</h3><p>Find a film or series that matches the feeling you want from tonight.</p></div><div class="card"><div class="icon">♫</div><span class="tag">02 / Sound</span><h3>Build a world through music</h3><p>Explore sounds that fit your mood, your setting, and your personal rhythm.</p></div><div class="card"><div class="icon">⌁</div><span class="tag">03 / Out there</span><h3>Discover your next place</h3><p>Connect your interests to restaurants, places, and experiences worth trying.</p></div></div></section>
