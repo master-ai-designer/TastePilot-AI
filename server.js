@@ -241,22 +241,53 @@ app.post("/api/voice-token",async(req,res)=>{
 });
 
 app.post("/api/discover",async(req,res)=>{
- const query=String(req.body?.query||"").trim().slice(0,180),category=String(req.body?.category||"movie").toLowerCase();
- const categories={music:{label:"Musiqa va ijrochilar",type:"urn:entity:artist",description:"music artists"},anime:{label:"Anime va seriallar",type:"urn:entity:tv_show",description:"anime and TV show entities"},movie:{label:"Filmlar",type:"urn:entity:movie",description:"movie entities"},places:{label:"Joylar",type:"urn:entity:place",description:"place entities"},books:{label:"Kitoblar",type:"urn:entity:book",description:"book entities"},games:{label:"Videoo‘yinlar",type:"urn:entity:videogame",description:"video game entities"}};
- const config=categories[category];if(!query)return res.status(400).json({error:"Iltimos, qidiruv so‘rovini yozing.",status:"error"});if(!config)return res.status(400).json({error:"Bu kategoriya qo‘llab-quvvatlanmaydi.",status:"error"});
- const apiKey=process.env.QLOO_API_KEY;if(!apiKey)return res.json({demo:true,query,category,categoryLabel:config.label,results:[],entities:[],resultCount:0,status:"not_configured"});
+ const body=req.body||{},query=String(body.query||"").trim().slice(0,180),requestedCategory=String(body.category||"auto").toLowerCase();
+ const categories={music:{label:"Musiqa",type:"urn:entity:artist",description:"music artists and musicians"},anime:{label:"Anime va seriallar",type:"urn:entity:tv_show",description:"anime and television shows"},movie:{label:"Filmlar",type:"urn:entity:movie",description:"movies and films"},places:{label:"Joylar va tajribalar",type:"urn:entity:place",description:"places and experiences"},books:{label:"Kitoblar",type:"urn:entity:book",description:"books and authors"},games:{label:"Videoo‘yinlar",type:"urn:entity:videogame",description:"video games"}};
+ if(!query)return res.status(400).json({error:"Iltimos, istagingizni yozing.",status:"error"});
+ const automatic=requestedCategory==="auto"||requestedCategory==="all";
+ if(!automatic&&!categories[requestedCategory])return res.status(400).json({error:"Bu kategoriya qo‘llab-quvvatlanmaydi.",status:"error"});
+ const chosen=automatic?["anime","movie","music","books","places","games"]:[requestedCategory],apiKey=process.env.QLOO_API_KEY;
+ if(!apiKey)return res.json({demo:true,query,category:requestedCategory,categoryLabel:automatic?"Barcha mos yo‘nalishlar":categories[requestedCategory].label,results:[],entities:[],resultCount:0,status:"not_configured"});
+ const geminiKey=process.env.GEMINI_API_KEY;
+ async function interpretForCategory(category){
+  if(!geminiKey)return query;
+  try{
+   const model=process.env.GEMINI_MODEL||"gemini-3.5-flash-lite";
+   const prompt="Convert the user's natural-language request into concise English search terms for a cultural catalogue. Category: "+categories[category].label+" ("+categories[category].description+"). Understand Uzbek, Russian, or English. Preserve mood and desired experience, but search for actual entities in this category. Return only a short search phrase. User request: "+query;
+   const r=await fetch("https://generativelanguage.googleapis.com/v1beta/models/"+encodeURIComponent(model)+":generateContent?key="+encodeURIComponent(geminiKey),{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({contents:[{role:"user",parts:[{text:prompt}]}],generationConfig:{maxOutputTokens:70,temperature:0.1}}),signal:AbortSignal.timeout(7000)});
+   if(!r.ok)return query;
+   const d=await r.json(),parts=d&&d.candidates&&d.candidates[0]&&d.candidates[0].content&&d.candidates[0].content.parts;
+   const out=parts?parts.map(p=>p.text||"").join("").trim():"";
+   return out?out.replace(/^["'\x60]|["'\x60]$/g,"").slice(0,140):query;
+  }catch(e){return query}
+ }
+ async function searchCategory(category){
+  const config=categories[category],searchQuery=await interpretForCategory(category),url=new URL("https://hackathon.api.qloo.com/search");
+  url.searchParams.set("query",searchQuery);url.searchParams.set("types",config.type);url.searchParams.set("take",automatic?"5":"12");
+  const r=await fetch(url,{headers:{"X-Api-Key":apiKey,"Accept":"application/json"},signal:AbortSignal.timeout(12000)});
+  if(r.status===401||r.status===403)throw Object.assign(new Error("Qloo autentifikatsiyasi muvaffaqiyatsiz. Vercel'dagi QLOO_API_KEY sozlamasini tekshiring."),{status:r.status});
+  if(r.status===429)throw Object.assign(new Error("Qloo so‘rov limiti tugadi. Biroz kutib, qayta urinib ko‘ring."),{status:429});
+  if(!r.ok)throw Object.assign(new Error("Qloo qidiruvi vaqtincha ishlamayapti."),{status:r.status});
+  const d=await r.json(),items=d&&d.results&&Array.isArray(d.results.entities)?d.results.entities:d&&Array.isArray(d.entities)?d.entities:d&&Array.isArray(d.results)?d.results:[];
+  return items.map(item=>Object.assign({},item,{_tastepilotCategory:category,_tastepilotCategoryLabel:config.label,_tastepilotSearchQuery:searchQuery}));
+ }
  try{
-  let searchQuery=query;const geminiKey=process.env.GEMINI_API_KEY;
-  if(geminiKey){try{const model=process.env.GEMINI_MODEL||"gemini-3.5-flash-lite";const prompt="Convert the user's request into concise English search terms for finding "+config.description+" in a cultural catalogue. The user may write Uzbek (Latin/Cyrillic), Russian, or English. The selected category is "+config.label+". The selected category must win if the request mentions another category; preserve mood and genre where useful. Return only search terms, no quotes or explanation. Request: "+query;const ir=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(geminiKey)}`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({contents:[{role:"user",parts:[{text:prompt}]}],generationConfig:{maxOutputTokens:80,temperature:0.1}}),signal:AbortSignal.timeout(8000)});if(ir.ok){const idata=await ir.json();const candidate=idata?.candidates?.[0]?.content?.parts?.map(p=>p.text||"").join("").trim();if(candidate)searchQuery=candidate.replace(/^["'`]|["'`]$/g,"").slice(0,140);}}catch(e){console.warn("Discovery query interpretation unavailable; using original query.");}}
-  const url=new URL("https://hackathon.api.qloo.com/search");url.searchParams.set("query",searchQuery);url.searchParams.set("types",config.type);url.searchParams.set("take","12");
-  const response=await fetch(url,{headers:{"X-Api-Key":apiKey,"Accept":"application/json"},signal:AbortSignal.timeout(12000)});
-  if(response.status===401||response.status===403)return res.status(502).json({error:"Qloo autentifikatsiyasi muvaffaqiyatsiz. Vercel'dagi QLOO_API_KEY sozlamasini tekshiring.",provider:"qloo",status:"error"});
-  if(response.status===429)return res.status(429).json({error:"Qloo so‘rov limiti tugadi. Biroz kutib, qayta urinib ko‘ring.",provider:"qloo",status:"error"});
-  if(!response.ok){console.error("Qloo entity search failed with status",response.status);return res.status(502).json({error:"Qloo qidiruvi vaqtincha ishlamayapti. Server loglarini tekshiring.",provider:"qloo",status:"error"});}
-  const data=await response.json(),entities=Array.isArray(data?.results?.entities)?data.results.entities:Array.isArray(data?.entities)?data.entities:Array.isArray(data?.results)?data.results:[];
-  const matchReason="Natija tanlangan "+config.label+" kategoriyasi va qidiruv iborasi bo‘yicha Qloo katalogidan topildi. Bu entity-search natijasi, Qloo affinity asosidagi shaxsiy reyting emas.";
-  return res.json({demo:false,provider:"qloo",status:entities.length?"results_found":"no_results",query,category,categoryLabel:config.label,searchQuery,resultCount:entities.length,matchReason,entities:entities.slice(0,12),results:data});
- }catch(error){console.error("Qloo discovery error:",error.name||"Error");return res.status(502).json({error:error.name==="TimeoutError"?"Qloo javobi kechikyapti. Qayta urinib ko‘ring.":"Qloo serveriga ulanib bo‘lmadi.",provider:"qloo",status:"error"});}
+  const settled=await Promise.allSettled(chosen.map(searchCategory)),failed=settled.filter(x=>x.status==="rejected"),entities=settled.filter(x=>x.status==="fulfilled").flatMap(x=>x.value);
+  if(!entities.length&&failed.length){const e=failed[0].reason;return res.status(e.status===429?429:502).json({error:e.message||"Qloo qidiruvi bajarilmadi.",provider:"qloo",status:"error"});}
+  const seen=new Set(),unique=entities.filter(item=>{const key=String(item.entity_id||item.id||item.name||item.title||"").toLowerCase();if(!key||seen.has(key))return false;seen.add(key);return true;}),selected=unique.slice(0,12);
+  let explanations=[];
+  if(geminiKey&&selected.length){
+   try{
+    const model=process.env.GEMINI_MODEL||"gemini-3.5-flash-lite";
+    const compact=selected.map((x,i)=>({index:i,title:x.name||x.title||(x.entity&&x.entity.name)||(x.properties&&x.properties.name)||x.id||"Unknown",category:x._tastepilotCategoryLabel,description:x.short_description||x.description||(x.properties&&x.properties.description)||""}));
+    const prompt="You are TastePilot, a careful recommendation explainer. User request: "+query+"\nCatalogue candidates (only these facts are known): "+JSON.stringify(compact)+"\nFor every candidate return one concise Uzbek Latin explanation of why it may fit the user's request based only on the request, category, title, and provided description. Do not invent plot, lyrics, artist style, availability, personal history, or claim certainty. If title alone gives little evidence, say it is a candidate worth exploring rather than asserting a specific trait. Return ONLY valid JSON array like [{\"index\":0,\"reason\":\"...\"}].";
+    const rr=await fetch("https://generativelanguage.googleapis.com/v1beta/models/"+encodeURIComponent(model)+":generateContent?key="+encodeURIComponent(geminiKey),{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({contents:[{role:"user",parts:[{text:prompt}]}],generationConfig:{maxOutputTokens:1000,temperature:0.2,responseMimeType:"application/json"}}),signal:AbortSignal.timeout(9000)});
+    if(rr.ok){const dd=await rr.json(),parts=dd&&dd.candidates&&dd.candidates[0]&&dd.candidates[0].content&&dd.candidates[0].content.parts;let raw=parts?parts.map(p=>p.text||"").join("").trim():"[]";raw=raw.replace(/^\x60\x60\x60(?:json)?/i,"").replace(/\x60\x60\x60$/,"");const parsed=JSON.parse(raw);if(Array.isArray(parsed))explanations=parsed;}
+   }catch(e){console.warn("TastePilot explanation generation unavailable.");}
+  }
+  const results=selected.map((item,index)=>{const found=explanations.find(x=>Number(x.index)===index&&typeof x.reason==="string");return Object.assign({},item,{tastepilotCategory:item._tastepilotCategory,tastepilotCategoryLabel:item._tastepilotCategoryLabel,tastepilotSearchQuery:item._tastepilotSearchQuery,tastepilotReason:found?found.reason:("“"+query+"” so‘rovingizga "+item._tastepilotCategoryLabel.toLowerCase()+" yo‘nalishi orqali javob izlash uchun katalogdan topildi. Nomi asosida mosligi hali to‘liq tasdiqlanmagan — batafsil tekshirib ko‘rish kerak.")});});
+  return res.json({demo:false,provider:"qloo",status:results.length?"results_found":"no_results",query,category:requestedCategory,categoryLabel:automatic?"Barcha mos yo‘nalishlar":categories[requestedCategory].label,automatic,resultCount:results.length,partialErrors:failed.length,explanationMode:explanations.length?"ai":"cautious_fallback",entities:results,results});
+ }catch(error){console.error("Qloo discovery error:",error.name||"Error");return res.status(502).json({error:error.name==="TimeoutError"?"Qloo javobi kechikyapti. Qayta urinib ko‘ring.":error.message||"Qloo serveriga ulanib bo‘lmadi.",provider:"qloo",status:"error"});}
 });
 if(!process.env.VERCEL){const port=process.env.PORT||3000;app.listen(port,()=>console.log(`TastePilot running on http://localhost:${port}`))}
 export default app;
