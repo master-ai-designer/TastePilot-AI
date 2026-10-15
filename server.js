@@ -244,28 +244,43 @@ app.post("/api/discover",async(req,res)=>{
  const query=String(req.body?.query||"").trim().slice(0,180);
  if(!query)return res.status(400).json({error:"Query is required."});
  const apiKey=process.env.QLOO_API_KEY;
- if(!apiKey)return res.json({demo:true,query,message:"TastePilot is ready. Add QLOO_API_KEY to enable live Qloo results.",results:[]});
+ if(!apiKey)return res.json({demo:true,query,message:"Qloo API key is not configured.",results:[],entities:[],resultCount:0,status:"not_configured"});
  try{
-  // Qloo entity search uses /search with the plural "types" parameter.
+  let searchQuery=query;
+  const geminiKey=process.env.GEMINI_API_KEY;
+  if(geminiKey){
+   try{
+    const model=process.env.GEMINI_MODEL||"gemini-3.5-flash-lite";
+    const prompt="Convert the user's request into a short, useful English search query for finding movie entities in a cultural catalogue. The user may write Uzbek (Latin/Cyrillic), Russian, or English. Return ONLY search terms, no quotes, no explanation, no markdown. Keep useful genre and mood terms. User request: "+query;
+    const ir=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(geminiKey)}`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({contents:[{role:"user",parts:[{text:prompt}]}],generationConfig:{maxOutputTokens:80,temperature:0.1}),signal:AbortSignal.timeout(8000)});
+    if(ir.ok){
+     const idata=await ir.json();
+     const candidate=idata?.candidates?.[0]?.content?.parts?.map(p=>p.text||"").join("").trim();
+     if(candidate)searchQuery=candidate.replace(/^["'`]|["'`]$/g,"").slice(0,140);
+    }
+   }catch(e){console.warn("Discovery query interpretation unavailable; using original query.");}
+  }
   const url=new URL("https://hackathon.api.qloo.com/search");
-  url.searchParams.set("query",query);
-  url.searchParams.set("types","urn:entity:movie");
+  url.searchParams.set("query",searchQuery);
+  // Official Qloo hackathon examples use the singular 'type' parameter.
+  url.searchParams.set("type","urn:entity:movie");
   url.searchParams.set("take","12");
   const response=await fetch(url,{headers:{"X-Api-Key":apiKey,"Accept":"application/json"},signal:AbortSignal.timeout(12000)});
   if(response.status===401||response.status===403){
    console.error("Qloo authentication rejected the configured server-side key.");
-   return res.status(502).json({error:"Qloo authentication failed. Check the QLOO_API_KEY environment variable."});
+   return res.status(502).json({error:"Qloo authentication failed. Check the QLOO_API_KEY environment variable.",provider:"qloo",status:"error"});
   }
-  if(response.status===429)return res.status(429).json({error:"Qloo rate limit reached. Please wait and try again."});
+  if(response.status===429)return res.status(429).json({error:"Qloo rate limit reached. Please wait and try again.",provider:"qloo",status:"error"});
   if(!response.ok){
    console.error("Qloo entity search failed with status",response.status);
-   return res.status(502).json({error:"Qloo search is temporarily unavailable."});
+   return res.status(502).json({error:"Qloo search is temporarily unavailable.",provider:"qloo",status:"error"});
   }
   const data=await response.json();
-  return res.json({demo:false,provider:"qloo",query,results:data});
+  const entities=Array.isArray(data?.results?.entities)?data.results.entities:Array.isArray(data?.entities)?data.entities:Array.isArray(data?.results)?data.results:[];
+  return res.json({demo:false,provider:"qloo",status:entities.length?"results_found":"no_results",query,searchQuery,resultCount:entities.length,entities:entities.slice(0,12),results:data});
  }catch(error){
   console.error("Qloo discovery error:",error.name||"Error");
-  return res.status(502).json({error:error.name==="TimeoutError"?"Qloo took too long to respond. Try again.":"Could not reach Qloo right now."});
+  return res.status(502).json({error:error.name==="TimeoutError"?"Qloo took too long to respond. Try again.":"Could not reach Qloo right now.",provider:"qloo",status:"error"});
  }
 });
 if(!process.env.VERCEL){const port=process.env.PORT||3000;app.listen(port,()=>console.log(`TastePilot running on http://localhost:${port}`))}
