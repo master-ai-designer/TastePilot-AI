@@ -252,7 +252,7 @@ app.post("/api/discover",async(req,res)=>{
    try{
     const model=process.env.GEMINI_MODEL||"gemini-3.5-flash-lite";
     const prompt="Convert the user's request into a short, useful English search query for finding movie entities in a cultural catalogue. The user may write Uzbek (Latin/Cyrillic), Russian, or English. Return ONLY search terms, no quotes, no explanation, no markdown. Keep useful genre and mood terms. User request: "+query;
-    const ir=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(geminiKey)}`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({contents:[{role:"user",parts:[{text:prompt}]}],generationConfig:{maxOutputTokens:80,temperature:0.1}),signal:AbortSignal.timeout(8000)});
+    const ir=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(geminiKey)}`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({contents:[{role:"user",parts:[{text:prompt}]}],generationConfig:{maxOutputTokens:80,temperature:0.1}}),signal:AbortSignal.timeout(8000)});
     if(ir.ok){
      const idata=await ir.json();
      const candidate=idata?.candidates?.[0]?.content?.parts?.map(p=>p.text||"").join("").trim();
