@@ -434,7 +434,7 @@ html[lang="ar"] .msg.bot{border-top-left-radius:16px;border-top-right-radius:5px
 .discovery-error{color:#ff9ba8}
 @media(max-width:640px){.discovery-results-head{flex-direction:column}.discovery-result-list{grid-template-columns:1fr}.discovery-result-meta{white-space:normal}}
 </style>
-</head>
+<style id="discovery-category-styles">.discovery-controls{display:flex;align-items:center;gap:12px;margin:20px 0 10px;flex-wrap:wrap}.discovery-category-label{font-size:11px;color:#a9b5c4}#discoveryCategory{max-width:100%;min-width:190px;padding:11px 35px 11px 12px;border:1px solid #ffffff20;border-radius:9px;background:#0a1016;color:#e7f2ec;font:inherit;font-size:12px}#discoveryCategory:focus-visible,#q:focus-visible{outline:2px solid var(--user-accent,#75e4e8);outline-offset:2px}.discovery-match-reason{margin-top:7px!important;color:#b3c7ba!important;font-size:10px!important}</style></head>
 <body>
 <nav><a class="logo" href="#discover" aria-label="TastePilot home"><span class="brandmark" aria-label="TastePilot logo"><svg viewBox="0 0 48 48" role="img"><path d="M24 4 29 15 40 11 34 22 44 28 31 30 30 43 22 34 12 41 14 29 4 23 17 20Z" fill="none" stroke="#75e4e8" stroke-width="1.5"/><circle cx="24" cy="24" r="7" fill="#a99bff"/><circle cx="24" cy="24" r="3" fill="#f1f5fb"/></svg></span><span>TastePilot <b>AI</b></span></a><div class="navlinks"><a href="#discover">Discover</a><a href="#taste">Taste map</a><a href="#chat">AI agent</a></div><div class="nav-right"><div class="pill"><span class="agent-status"></span> CULTURE INTELLIGENCE</div><span class="local-profile-pill" title="Taste preferences are saved only in this browser">✦ LOCAL TASTE PROFILE</span><button class="settings-trigger" id="settingsTrigger" type="button" aria-expanded="false" aria-controls="appearancePanel" onclick="toggleAppearance()">⚙ <span>SETTINGS</span></button></div></nav><aside class="appearance-panel" id="appearancePanel" aria-label="User settings" hidden>
 <div class="settings-head"><div><span class="settings-kicker">USER CONFIGURATION</span><h3>Settings</h3></div><button class="settings-close" type="button" onclick="toggleAppearance(false)" aria-label="Close settings">×</button></div>
@@ -520,7 +520,7 @@ html[lang="ar"] .msg.bot{border-top-left-radius:16px;border-top-right-radius:5px
 <main>
 <section class="hero" id="discover">
 <div class="hero-copy"><div class="eyebrow"><span class="eyebrow-dot"></span> ROOT ACCESS TO YOUR NEXT DISCOVERY</div><h1><span style="font-size:.48em;display:block;color:#6bff9b;letter-spacing:.12em;margin-bottom:15px">TASTEPILOT // TERMINAL 01</span>Enter the <br><span class="gradient">unknown.</span></h1><p>A personal discovery intelligence console. Enter a mood, a signal, or a direction — let the agent map your next move through culture.</p>
-<div class="search-panel"><label class="sr-only" for="q" style="position:absolute;left:-9999px">What would you like to discover?</label><input id="q" aria-label="What would you like to discover?" placeholder="O‘zbekcha yozing: Bugun kechqurun ko‘rishga romantik komediya top…"><button class="go" onclick="discover()">Explore <span>↗</span></button></div><div class="helper-line">Start with a mood, a favorite, or a plan. No special prompt needed.</div><div class="chips"><button class="chip" onclick="fill('a memorable movie for a relaxed evening')">01 / Cinema</button><button class="chip" onclick="fill('a relaxed evening playlist')">02 / Music</button><button class="chip" onclick="fill('a stylish place to eat')">03 / Places</button><button class="chip" onclick="fill('something to do when I am bored')">04 / Experiences</button></div><div class="status" id="status"></div></div>
+<div class="discovery-controls"><label class="discovery-category-label" for="discoveryCategory">Nimani kashf qilamiz?</label><select id="discoveryCategory" aria-label="Discovery kategoriyasi"><option value="music">Musiqa va ijrochilar</option><option value="anime">Anime va seriallar</option><option value="movie">Filmlar</option><option value="places">Joylar</option><option value="books">Kitoblar</option><option value="games">Videoo‘yinlar</option></select></div><div class="search-panel"><label class="sr-only" for="q" style="position:absolute;left:-9999px">Nimani topmoqchisiz?</label><input id="q" aria-label="Nimani topmoqchisiz?" placeholder="O‘zbekcha yozing: Kayfiyatimni ko‘taradigan romantik musiqa top…"><button class="go" onclick="discover()">Kashf et <span>↗</span></button></div><div class="helper-line">O‘zbekcha, ruscha yoki inglizcha yozing. Kategoriya natijalar turini belgilaydi.</div><div class="chips"><button class="chip" onclick="setDiscovery('movie','Bugun kechqurun ko‘rishga yaxshi film top')">01 / Film</button><button class="chip" onclick="setDiscovery('music','Kayfiyatimni ko‘taradigan romantik musiqa top')">02 / Musiqa</button><button class="chip" onclick="setDiscovery('places','Shinam va chiroyli ovqatlanish joyi top')">03 / Joylar</button><button class="chip" onclick="setDiscovery('anime','Kulgili va romantik anime top')">04 / Anime</button></div><div class="status" id="status" role="status" aria-live="polite"></div></div>
 <div class="hero-art king-brand-stage" aria-label="KING brand logo">
 <img class="king-brand-logo" src="/king-logo.svg" alt="KING logo">
 </div>
@@ -600,53 +600,20 @@ function analyzeTaste(query){
  document.getElementById('tasteBars').innerHTML=scored.map(g=>'<div class="barrow"><span>'+g.name+'</span><div class="bar"><div class="fill" style="width:'+g.score+'%"></div></div><b>'+g.score+'</b></div>').join('');
  document.getElementById('tasteHint').textContent='Inferred from your latest request — ready for cultural intelligence.';
 }
+function setDiscovery(category,query){const selector=document.getElementById('discoveryCategory');const input=document.getElementById('q');if(selector)selector.value=category;if(input){input.value=query;input.focus();}}
 async function discover(){
- const q=document.getElementById('q').value.trim(); if(!q){document.getElementById('q').focus();return}
- analyzeTaste(q);
- const status=document.getElementById('status'); status.textContent='✦ So‘rov tahlil qilinmoqda…';
- const cards=document.getElementById('cards');
- const resultsPanel=document.getElementById('discovery-results');
- const resultsList=document.getElementById('discovery-result-list');
- const resultsMeta=document.getElementById('discovery-result-meta');
- resultsPanel.hidden=false;
- resultsMeta.textContent='Qloo bilan aloqa tekshirilmoqda…';
- resultsList.innerHTML='<div class="discovery-empty">Haqiqiy natijalar kutilmoqda…</div>';
+ const q=document.getElementById('q').value.trim();if(!q){document.getElementById('q').focus();return}
+ const category=document.getElementById('discoveryCategory')?.value||'music';analyzeTaste(q);
+ const status=document.getElementById('status'),cards=document.getElementById('cards'),resultsPanel=document.getElementById('discovery-results'),resultsList=document.getElementById('discovery-result-list'),resultsMeta=document.getElementById('discovery-result-meta');
+ resultsPanel.hidden=false;status.textContent='✦ So‘rov tushunilmoqda va katalog qidirilmoqda…';resultsMeta.textContent='Qloo bilan aloqa tekshirilmoqda…';resultsList.innerHTML='<div class="discovery-empty">Haqiqiy katalog natijalari kutilmoqda…</div>';
  try{
-   const r=await fetch('/api/discover',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query:q})});
-   const data=await r.json();
-   if(!r.ok||data.status==='error'){
-    status.textContent='⚠ Qloo API xatosi — batafsil holat natijalar panelida.';
-    resultsMeta.textContent='API xatosi';
-    resultsList.innerHTML='<div class="discovery-empty discovery-error">'+escapeHtml(data.error||'Qloo so‘rovi bajarilmadi.')+'</div>';
-    cards.innerHTML='<div class="card"><div class="icon">✦</div><span class="tag">Sizning so‘rovingiz</span><h3>'+escapeHtml(q)+'</h3><p>So‘rov qabul qilindi.</p></div><div class="card"><div class="icon">⚠</div><span class="tag">Qloo holati</span><h3>Tekshirish kerak</h3><p>'+escapeHtml(data.error||'API javob bermadi.')+'</p></div><div class="card"><div class="icon">↻</div><span class="tag">Keyingi qadam</span><h3>Qayta urinib ko‘ring</h3><p>API kaliti, so‘rov parametrlari va Vercel loglarini tekshiring.</p></div>';
-    return;
-   }
-   if(data.demo){
-    status.textContent='Demo rejimi — Qloo API kaliti sozlanmagan.';
-    resultsMeta.textContent='Live Qloo ulanmagan';
-    resultsList.innerHTML='<div class="discovery-empty">Hozircha haqiqiy Qloo natijasi yo‘q. Vercel muhitidagi QLOO_API_KEY sozlamasini tekshiring.</div>';
-   }else{
-    const entities=Array.isArray(data.entities)?data.entities:[];
-    status.textContent=entities.length?'✓ Qloo javob berdi — '+entities.length+' ta natija topildi.':'Qloo API javob berdi, lekin mos natija topilmadi.';
-    resultsMeta.textContent=entities.length?'Qloo API · '+entities.length+' ta haqiqiy natija':'Qloo API ishladi · 0 ta natija';
-    if(entities.length){
-      resultsList.innerHTML=entities.map((item,index)=>{
-       const title=item.name||item.title||item.entity?.name||item.properties?.name||item.id||('Natija '+(index+1));
-       const subtype=item.type||item.entity_type||item.category||'Qloo katalogi';
-       const description=item.short_description||item.description||item.properties?.description||'Qloo qidiruv katalogidan topilgan obyekt.';
-       return '<article class="discovery-result"><div class="discovery-result-number">'+String(index+1).padStart(2,'0')+'</div><div class="discovery-result-copy"><h3>'+escapeHtml(String(title))+'</h3><p>'+escapeHtml(String(description))+'</p><span>'+escapeHtml(String(subtype))+'</span></div></article>';
-      }).join('');
-    }else{
-      resultsList.innerHTML='<div class="discovery-empty">Qloo API muvaffaqiyatli javob berdi, ammo bu so‘rov uchun natija topilmadi. Boshqacha yoki qisqaroq so‘rovni sinab ko‘ring.</div>';
-    }
-   }
-   const count=Number(data.resultCount||0);
-   cards.innerHTML='<div class="card"><div class="icon">✦</div><span class="tag">Sizning so‘rovingiz</span><h3>'+escapeHtml(q)+'</h3><p>So‘rov qabul qilindi va did signallari tahlil qilindi.</p></div><div class="card"><div class="icon">🎯</div><span class="tag">Qloo holati</span><h3>'+ (data.demo?'Sozlanmagan':(count?'Natijalar topildi':'Ulandi, natija yo‘q')) +'</h3><p>'+ (data.demo?'Serverda QLOO_API_KEY kerak.':(count?'Qloo katalogidan '+count+' ta obyekt qaytdi.':'API javob berdi, ammo mos obyekt qaytmadi.')) +'</p></div><div class="card"><div class="icon">🔎</div><span class="tag">Qidiruv tafsiloti</span><h3>'+escapeHtml(data.searchQuery||q)+'</h3><p>Qidiruv so‘rovi inglizcha kalit so‘zlarga aylantirilishi mumkin. Bu bosqich film katalogini qidiradi.</p></div>';
- }catch(e){
-   status.textContent='⚠ Server bilan aloqa yo‘q.';
-   resultsMeta.textContent='Ulanish xatosi';
-   resultsList.innerHTML='<div class="discovery-empty discovery-error">TastePilot serveriga ulanib bo‘lmadi. Sahifani yangilang va qayta urinib ko‘ring.</div>';
- }
+  const r=await fetch('/api/discover',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query:q,category})});const data=await r.json();
+  if(!r.ok||data.status==='error'){status.textContent='⚠ Qidiruv xatosi — natijalar panelini tekshiring.';resultsMeta.textContent='API xatosi';resultsList.innerHTML='<div class="discovery-empty discovery-error">'+escapeHtml(data.error||'Qloo so‘rovi bajarilmadi.')+'</div>';cards.innerHTML='<div class="card"><div class="icon">✦</div><span class="tag">Sizning so‘rovingiz</span><h3>'+escapeHtml(q)+'</h3><p>So‘rov qabul qilindi.</p></div><div class="card"><div class="icon">⚠</div><span class="tag">Qloo holati</span><h3>Tekshirish kerak</h3><p>'+escapeHtml(data.error||'API javob bermadi.')+'</p></div><div class="card"><div class="icon">↻</div><span class="tag">Keyingi qadam</span><h3>Qayta urinib ko‘ring</h3><p>Server kaliti, kategoriya va API javobini tekshiring.</p></div>';return;}
+  if(data.demo){status.textContent='Demo rejimi — Qloo API kaliti sozlanmagan.';resultsMeta.textContent='Live Qloo ulanmagan';resultsList.innerHTML='<div class="discovery-empty">Haqiqiy Qloo natijalari uchun serverdagi QLOO_API_KEY sozlamasini tekshiring.</div>';}
+  else{const entities=Array.isArray(data.entities)?data.entities:[];status.textContent=entities.length?'✓ Qloo javob berdi — '+entities.length+' ta natija.':'Qloo API javob berdi, lekin mos natija topilmadi.';resultsMeta.textContent=entities.length?'Qloo API · '+entities.length+' ta natija':'Qloo API ishladi · 0 ta natija';
+   resultsList.innerHTML=entities.length?entities.map((item,index)=>{const title=item.name||item.title||item.entity?.name||item.properties?.name||item.id||('Natija '+(index+1));const subtype=item.type||item.entity_type||item.category||data.categoryLabel||'Qloo katalogi';const description=item.short_description||item.description||item.properties?.description||'Qloo katalogidan topilgan obyekt.';return '<article class="discovery-result"><div class="discovery-result-number">'+String(index+1).padStart(2,'0')+'</div><div class="discovery-result-copy"><h3>'+escapeHtml(String(title))+'</h3><p>'+escapeHtml(String(description))+'</p><span>'+escapeHtml(String(subtype))+'</span><p class="discovery-match-reason">Nega ko‘rsatildi? '+escapeHtml(data.matchReason||('Tanlangan kategoriya: '+(data.categoryLabel||category)+'. Natija Qloo katalogidan qaytdi.'))+'</p></div></article>';}).join(''):'<div class="discovery-empty">Qloo API javob berdi, ammo bu kategoriya va so‘rov uchun natija topilmadi. Qisqaroq so‘rov yoki boshqa kategoriya sinab ko‘ring.</div>';}
+  const count=Number(data.resultCount||0);cards.innerHTML='<div class="card"><div class="icon">✦</div><span class="tag">Sizning so‘rovingiz</span><h3>'+escapeHtml(q)+'</h3><p>Qidiruv iborasi: '+escapeHtml(data.searchQuery||q)+'</p></div><div class="card"><div class="icon">🎯</div><span class="tag">Qloo holati</span><h3>'+(data.demo?'Sozlanmagan':(count?'Natijalar topildi':'Ulandi, natija yo‘q'))+'</h3><p>'+(data.demo?'Serverda QLOO_API_KEY kerak.':(count?'Qloo katalogidan '+count+' ta obyekt qaytdi.':'API javob berdi, ammo mos obyekt qaytmadi.'))+'</p></div><div class="card"><div class="icon">🔎</div><span class="tag">Kategoriya</span><h3>'+escapeHtml(data.categoryLabel||category)+'</h3><p>'+escapeHtml(data.matchReason||'Natijalar tanlangan kategoriya bo‘yicha qidirildi.')+'</p></div>';
+ }catch(e){status.textContent='⚠ Server bilan aloqa yo‘q.';resultsMeta.textContent='Ulanish xatosi';resultsList.innerHTML='<div class="discovery-empty discovery-error">TastePilot serveriga ulanib bo‘lmadi. Sahifani yangilang va qayta urinib ko‘ring.</div>';}
 }
 function mediaRequestFromChat(message){
  const history=window.tastePilotChatHistory||[];
