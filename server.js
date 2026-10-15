@@ -241,19 +241,32 @@ app.post("/api/voice-token",async(req,res)=>{
 });
 
 app.post("/api/discover",async(req,res)=>{
- const query=String(req.body?.query||"").trim();
+ const query=String(req.body?.query||"").trim().slice(0,180);
  if(!query)return res.status(400).json({error:"Query is required."});
- if(!process.env.QLOO_API_KEY)return res.json({demo:true,query,message:"TastePilot is ready. Add QLOO_API_KEY to enable live Qloo results.",results:[]});
+ const apiKey=process.env.QLOO_API_KEY;
+ if(!apiKey)return res.json({demo:true,query,message:"TastePilot is ready. Add QLOO_API_KEY to enable live Qloo results.",results:[]});
  try{
+  // Qloo entity search uses /search with the plural "types" parameter.
   const url=new URL("https://hackathon.api.qloo.com/search");
   url.searchParams.set("query",query);
-  url.searchParams.set("type","urn:entity:movie");
-  const response=await fetch(url,{headers:{"X-Api-Key":process.env.QLOO_API_KEY}});
-  const text=await response.text();
-  if(!response.ok)return res.status(response.status).json({error:"Qloo request failed.",details:text});
-  let data; try{data=JSON.parse(text)}catch{data={raw:text}}
-  res.json({demo:false,query,results:data});
- }catch(error){res.status(500).json({error:"Server error.",details:error.message})}
+  url.searchParams.set("types","urn:entity:movie");
+  url.searchParams.set("take","12");
+  const response=await fetch(url,{headers:{"X-Api-Key":apiKey,"Accept":"application/json"},signal:AbortSignal.timeout(12000)});
+  if(response.status===401||response.status===403){
+   console.error("Qloo authentication rejected the configured server-side key.");
+   return res.status(502).json({error:"Qloo authentication failed. Check the QLOO_API_KEY environment variable."});
+  }
+  if(response.status===429)return res.status(429).json({error:"Qloo rate limit reached. Please wait and try again."});
+  if(!response.ok){
+   console.error("Qloo entity search failed with status",response.status);
+   return res.status(502).json({error:"Qloo search is temporarily unavailable."});
+  }
+  const data=await response.json();
+  return res.json({demo:false,provider:"qloo",query,results:data});
+ }catch(error){
+  console.error("Qloo discovery error:",error.name||"Error");
+  return res.status(502).json({error:error.name==="TimeoutError"?"Qloo took too long to respond. Try again.":"Could not reach Qloo right now."});
+ }
 });
 if(!process.env.VERCEL){const port=process.env.PORT||3000;app.listen(port,()=>console.log(`TastePilot running on http://localhost:${port}`))}
 export default app;
