@@ -981,8 +981,8 @@ document.addEventListener('click',e=>{const panel=document.getElementById('appea
    const raw=n.nodeValue, trimmed=raw.trim();if(!trimmed)continue;
    if(!sourceNodes.has(n))sourceNodes.set(n,trimmed);
    const original=sourceNodes.get(n), leading=raw.match(/^\s*/)?.[0]||'', trailing=raw.match(/\s*$/)?.[0]||'';
-   if(lang==='en')n.nodeValue=leading+original+trailing;
-   else if(Object.prototype.hasOwnProperty.call(dict,original))n.nodeValue=leading+dict[original]+trailing;
+   const next=leading+(lang==='en'?original:(Object.prototype.hasOwnProperty.call(dict,original)?dict[original]:original))+trailing;
+   if(n.nodeValue!==next)n.nodeValue=next;
   }
   document.querySelectorAll('input[placeholder],textarea[placeholder]').forEach(el=>{
    if(!el.dataset.tpPlaceholderOriginal)el.dataset.tpPlaceholderOriginal=el.getAttribute('placeholder')||'';
