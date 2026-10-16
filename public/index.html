@@ -636,7 +636,7 @@ function setChatPrompt(t){
  input.value=prompts[key]?(prompts[key][lang]||prompts[key].en):t;
  input.focus();
 }
-function setChatPrompt(t){const input=document.getElementById('chatq');input.value=t;input.focus()}
+// Removed duplicate setChatPrompt definition: it was overriding the multilingual version above.
 function analyzeTaste(query){
  const text=query.toLowerCase();
  const groups=[
