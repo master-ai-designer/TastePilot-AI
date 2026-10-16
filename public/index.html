@@ -624,7 +624,18 @@ try{
 }catch{window.tastePilotChatHistory=[]}
 function persistTPHistory(){try{localStorage.setItem(TP_HISTORY_KEY,JSON.stringify((window.tastePilotChatHistory||[]).slice(-12)))}catch{}}
 function fill(t){document.getElementById('q').value=t}
-function setChatPrompt(t){const input=document.getElementById('chatq');input.value=t;input.focus()}
+function setChatPrompt(t){
+ const lang=document.documentElement.lang||'en';
+ const prompts={
+  bored:{en:"I am bored. Suggest something that fits my mood.",uz:"Zerikdim. Kayfiyatimga mos biror narsa tavsiya qil.",ru:"Мне скучно. Посоветуй что-нибудь под моё настроение.",ja:"退屈です。今の気分に合うものをおすすめしてください。",de:"Mir ist langweilig. Empfiehl mir etwas Passendes zu meiner Stimmung.",es:"Estoy aburrido. Recomiéndame algo que encaje con mi estado de ánimo.",fr:"Je m’ennuie. Propose-moi quelque chose qui correspond à mon humeur.",tr:"Sıkıldım. Ruh halime uygun bir şey öner.",ar:"أشعر بالملل. اقترح شيئًا يناسب مزاجي."},
+  movie:{en:"Help me choose a movie for tonight.",uz:"Bugun kechqurun ko‘rish uchun film tanlashga yordam ber.",ru:"Помоги выбрать фильм на сегодняшний вечер.",ja:"今夜見る映画を選ぶのを手伝ってください。",de:"Hilf mir, einen Film für heute Abend auszuwählen.",es:"Ayúdame a elegir una película para esta noche.",fr:"Aide-moi à choisir un film pour ce soir.",tr:"Bu akşam için bir film seçmeme yardım et.",ar:"ساعدني في اختيار فيلم لمشاهدته الليلة."},
+  friend:{en:"Suggest somewhere to go with a friend.",uz:"Do‘stim bilan borish uchun mos joy yoki mashg‘ulot tavsiya qil.",ru:"Посоветуй, куда сходить с другом.",ja:"友達と出かけるのにおすすめの場所を教えてください。",de:"Schlage einen Ort vor, an den ich mit einem Freund gehen kann.",es:"Sugiere un lugar para ir con un amigo.",fr:"Propose un endroit où aller avec un ami.",tr:"Bir arkadaşımla gidebileceğim bir yer öner.",ar:"اقترح مكانًا أذهب إليه مع صديق."}
+ };
+ const key=({ "I am bored. Suggest something that fits my mood.":"bored","Help me choose a movie for tonight.":"movie","Suggest somewhere to go with a friend.":"friend" })[t]||t;
+ const input=document.getElementById('chatq');
+ input.value=prompts[key]?(prompts[key][lang]||prompts[key].en):t;
+ input.focus();
+}
 function setChatPrompt(t){const input=document.getElementById('chatq');input.value=t;input.focus()}
 function analyzeTaste(query){
  const text=query.toLowerCase();
