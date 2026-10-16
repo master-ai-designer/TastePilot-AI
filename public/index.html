@@ -832,6 +832,9 @@ function setInterfaceLanguage(lang,save=true){
   if(lang==='en')node.nodeValue=leading+original+trailing;
   else if(Object.prototype.hasOwnProperty.call(dict,original))node.nodeValue=leading+dict[original]+trailing;
  });
+ const discoverLabels={en:'Discover',uz:'Kashf et',ru:'Найти',ja:'見つける',es:'Descubrir',fr:'Découvrir',de:'Entdecken',tr:'Keşfet',ar:'اكتشف'};
+ const discoverButton=document.querySelector('button.go');
+ if(discoverButton){const label=discoverLabels[lang]||discoverLabels.en;const arrow=discoverButton.querySelector('span');discoverButton.firstChild.nodeValue=label+' ';if(arrow)arrow.setAttribute('aria-hidden','true');}
  const heroTitle=document.querySelector('.hero-copy h1');
  if(heroTitle){
   const titles={
