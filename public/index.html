@@ -711,22 +711,35 @@ function mediaRequestFromChat(message){
 }
 async function appendMediaSources(message){
  const req=mediaRequestFromChat(message);if(!req)return;
+ const lang=document.documentElement.lang||"en";
+ const labels={
+  en:{heading:"Sources found on the internet",source:"Source",status:"Access",open:"Open source",preview:"Short free preview",none:"No verified matching results were found. This does not mean no legal free source exists.",note:"A free preview does not mean the full work is free. Check regional availability and license terms on the source website.",error:"I couldn’t check internet sources right now. Please try again shortly."},
+  uz:{heading:"Internetdan topilgan manbalar",source:"Manba",status:"Holati",open:"Manbani ochish",preview:"Bepul qisqa preview",none:"Mos keladigan tasdiqlangan natija topilmadi. Bu qonuniy bepul manba umuman yo‘q degani emas.",note:"Bepul preview to‘liq asar bepul degani emas. Hududingizdagi mavjudlik va litsenziya shartlarini manbaning o‘zida tekshiring.",error:"Internet manbalarini hozir tekshira olmadim. Birozdan keyin qayta urinib ko‘ring."},
+  ru:{heading:"Источники, найденные в интернете",source:"Источник",status:"Доступ",open:"Открыть источник",preview:"Бесплатный короткий фрагмент",none:"Подходящих подтверждённых результатов не найдено. Это не означает, что легальных бесплатных источников нет.",note:"Бесплатный фрагмент не означает, что произведение доступно целиком бесплатно. Проверьте доступность в вашем регионе и условия лицензии на сайте источника.",error:"Сейчас не удалось проверить интернет-источники. Попробуйте позже."},
+  es:{heading:"Fuentes encontradas en internet",source:"Fuente",status:"Acceso",open:"Abrir fuente",preview:"Vista previa breve gratuita",none:"No se encontraron resultados coincidentes verificados. Esto no significa que no existan fuentes legales gratuitas.",note:"Una vista previa gratuita no significa que la obra completa sea gratis. Comprueba la disponibilidad regional y la licencia en el sitio de origen.",error:"No pude consultar las fuentes de internet ahora. Inténtalo de nuevo pronto."},
+  fr:{heading:"Sources trouvées sur Internet",source:"Source",status:"Accès",open:"Ouvrir la source",preview:"Court aperçu gratuit",none:"Aucun résultat correspondant vérifié n’a été trouvé. Cela ne signifie pas qu’il n’existe aucune source gratuite légale.",note:"Un aperçu gratuit ne signifie pas que l’œuvre complète est gratuite. Vérifiez la disponibilité régionale et la licence sur le site source.",error:"Impossible de vérifier les sources Internet pour le moment. Réessayez bientôt."},
+  de:{heading:"Im Internet gefundene Quellen",source:"Quelle",status:"Zugriff",open:"Quelle öffnen",preview:"Kurze kostenlose Vorschau",none:"Es wurden keine passenden verifizierten Ergebnisse gefunden. Das bedeutet nicht, dass es keine legalen kostenlosen Quellen gibt.",note:"Eine kostenlose Vorschau bedeutet nicht, dass das vollständige Werk kostenlos ist. Prüfe die regionale Verfügbarkeit und Lizenzbedingungen auf der Quellseite.",error:"Internetquellen konnten gerade nicht geprüft werden. Bitte versuche es später erneut."},
+  tr:{heading:"İnternette bulunan kaynaklar",source:"Kaynak",status:"Erişim",open:"Kaynağı aç",preview:"Kısa ücretsiz ön izleme",none:"Doğrulanmış uygun sonuç bulunamadı. Bu, yasal ücretsiz kaynak olmadığı anlamına gelmez.",note:"Ücretsiz ön izleme, eserin tamamının ücretsiz olduğu anlamına gelmez. Bölgesel erişimi ve lisans koşullarını kaynak sitesinden kontrol edin.",error:"İnternet kaynakları şu anda kontrol edilemedi. Lütfen biraz sonra tekrar deneyin."},
+  ja:{heading:"インターネットで見つかった情報源",source:"情報源",status:"利用状況",open:"情報源を開く",preview:"無料の短いプレビュー",none:"条件に合う確認済みの結果は見つかりませんでした。合法的な無料ソースが存在しないという意味ではありません。",note:"無料プレビューが作品全体の無料提供を意味するわけではありません。地域での利用可否とライセンスを提供元で確認してください。",error:"現在インターネット上の情報源を確認できません。しばらくしてから再試行してください。"},
+  ar:{heading:"مصادر عُثر عليها على الإنترنت",source:"المصدر",status:"إمكانية الوصول",open:"فتح المصدر",preview:"معاينة قصيرة مجانية",none:"لم يتم العثور على نتائج مطابقة مؤكدة. لا يعني ذلك عدم وجود مصادر مجانية قانونية.",note:"المعاينة المجانية لا تعني أن العمل كاملًا مجاني. تحقق من التوفر في منطقتك وشروط الترخيص على موقع المصدر.",error:"تعذر التحقق من مصادر الإنترنت الآن. يرجى المحاولة بعد قليل."}
+ };
+ const t=labels[lang]||labels.en;
  try{
   const r=await fetch("/api/media-search",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(req)});
   const data=await r.json();if(!r.ok)throw new Error(data.error||"Search failed");
-  let out="**Internetdan topilgan manbalar**\n\n";
+  let out="**"+t.heading+"**\n\n";
   if(data.results?.length){
    out+=data.results.slice(0,6).map((x,i)=>{
     const title=String(x.title||"Untitled").replace(/[\[\]]/g,"");
     const creator=x.creator?" — "+String(x.creator).replace(/[\[\]]/g,""):"";
-    let line=(i+1)+". **"+title+"**"+creator+"\n   Manba: "+x.source+"\n   Holati: "+x.accessStatus+"\n   [Manbani ochish]("+x.url+")";
-    if(x.previewUrl)line+=" · [Bepul qisqa preview]("+x.previewUrl+")";
+    let line=(i+1)+". **"+title+"**"+creator+"\n   "+t.source+": "+x.source+"\n   "+t.status+": "+x.accessStatus+"\n   ["+t.open+"]("+x.url+")";
+    if(x.previewUrl)line+=" · ["+t.preview+"]("+x.previewUrl+")";
     return line;
    }).join("\n\n");
-  }else out+="Mos keladigan tasdiqlangan natija topilmadi. Bu qonuniy bepul manba umuman yo‘q degani emas.\n\n";
-  out+="\n\n_Eslatma: bepul preview to‘liq asar bepul degani emas. Hududingizdagi mavjudlik va litsenziya shartlarini manbaning o‘zida tekshiring._";
+  }else out+=t.none+"\n\n";
+  out+="\n\n_"+t.note+"_";
   addChat(out,"bot");
- }catch(e){addChat("Internet manbalarini hozir tekshira olmadim. Birozdan keyin qayta urinib ko‘ring.","bot");}
+ }catch(e){addChat(t.error,"bot");}
 }
 
 const TP_CHAT_UI={
