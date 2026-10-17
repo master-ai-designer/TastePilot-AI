@@ -825,6 +825,7 @@ ar:{
 }
 };
 const TP_BASE_TEXT=new Map();
+const TP_BASE_ATTRS=new Map();
 function setInterfaceLanguage(lang,save=true){
  const supported=Object.keys(TP_TRANSLATIONS);
  if(!supported.includes(lang))lang='en';
@@ -832,16 +833,36 @@ function setInterfaceLanguage(lang,save=true){
  document.documentElement.lang=lang;
  document.documentElement.dir=['ar','ur','fa','he'].includes(lang)?'rtl':'ltr';
  const sel=document.getElementById('uiLanguage');if(sel)sel.value=lang;
- if(!TP_BASE_TEXT.size){
-  const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
-  while(walker.nextNode()){const n=walker.currentNode;if(n.parentElement&&!n.parentElement.closest('script,style,option')){const t=n.nodeValue.trim();if(t)TP_BASE_TEXT.set(n,t)}}
+ // Register text nodes on every language change, not only the first page load.
+ // This includes option labels and UI elements that were added after the initial render.
+ const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
+ while(walker.nextNode()){
+  const n=walker.currentNode;
+  if(!n.parentElement||n.parentElement.closest('script,style'))continue;
+  const t=n.nodeValue.trim();
+  if(t&&!TP_BASE_TEXT.has(n))TP_BASE_TEXT.set(n,t);
  }
  TP_BASE_TEXT.forEach((original,node)=>{
   if(!node.isConnected)return;
   const trimmed=node.nodeValue.trim();
   const leading=node.nodeValue.match(/^\s*/)?.[0]||'',trailing=node.nodeValue.match(/\s*$/)?.[0]||'';
-  if(lang==='en')node.nodeValue=leading+original+trailing;
-  else if(Object.prototype.hasOwnProperty.call(dict,original))node.nodeValue=leading+dict[original]+trailing;
+  const translated=lang==='en'?original:(Object.prototype.hasOwnProperty.call(dict,original)?dict[original]:original);
+  const nextValue=leading+translated+trailing;
+  if(node.nodeValue!==nextValue)node.nodeValue=nextValue;
+ });
+ // Translate user-facing attributes as well as visible text: placeholders, accessibility
+ // labels, tooltips, and image descriptions are part of the interface too.
+ const translatableAttributes=['placeholder','aria-label','title','alt'];
+ document.querySelectorAll('*').forEach(el=>{
+  let originals=TP_BASE_ATTRS.get(el);
+  translatableAttributes.forEach(attr=>{
+   if(!el.hasAttribute(attr))return;
+   if(!originals){originals={};TP_BASE_ATTRS.set(el,originals);}
+   if(!(attr in originals))originals[attr]=el.getAttribute(attr)||'';
+   const base=originals[attr];
+   const translated=lang==='en'?base:(Object.prototype.hasOwnProperty.call(dict,base)?dict[base]:base);
+   if(el.getAttribute(attr)!==translated)el.setAttribute(attr,translated);
+  });
  });
  const TP_UI_PATCH={
   en:{helper:"Write in Uzbek, Russian, or English. Automatic mode checks several relevant categories; choose a category to search only there.",catLabel:"What should we discover?",categories:["Automatic — all relevant categories","Music & artists","Anime & series","Movies","Places","Books","Video games"],chips:["01 / Film","02 / Music","03 / Places","04 / Anime"],sectionKicker:"01 // DISCOVERY MODULE",sectionTitle:"Choose your next signal.",sectionDesc:"Input a signal. Trace unexpected connections across culture."},
