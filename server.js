@@ -349,6 +349,7 @@ app.post("/api/voice-token",async(req,res)=>{
 
 app.post("/api/discover",async(req,res)=>{
  const body=req.body||{},query=String(body.query||"").trim().slice(0,180),requestedCategory=String(body.category||"auto").toLowerCase();
+ const tasteProfile={preferences:Array.isArray(body.tasteProfile?.preferences)?body.tasteProfile.preferences.filter(x=>typeof x==="string").map(x=>x.slice(0,80)).slice(0,20):[],avoid:Array.isArray(body.tasteProfile?.avoid)?body.tasteProfile.avoid.filter(x=>typeof x==="string").map(x=>x.slice(0,80)).slice(0,15):[]};
  const categories={music:{label:"Musiqa",type:"urn:entity:artist",description:"music artists and musicians"},anime:{label:"Anime va seriallar",type:"urn:entity:tv_show",description:"anime and television shows"},movie:{label:"Filmlar",type:"urn:entity:movie",description:"movies and films"},places:{label:"Joylar va tajribalar",type:"urn:entity:place",description:"places and experiences"},books:{label:"Kitoblar",type:"urn:entity:book",description:"books and authors"},games:{label:"Videoo‘yinlar",type:"urn:entity:videogame",description:"video games"}};
  if(!query)return res.status(400).json({error:"Iltimos, istagingizni yozing.",status:"error"});
  const automatic=requestedCategory==="auto"||requestedCategory==="all";
