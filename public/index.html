@@ -951,4 +951,68 @@ function resetSettings(){
 })();
 document.addEventListener('keydown',e=>{if(e.key==='Escape')toggleAppearance(false)});
 document.addEventListener('click',e=>{const panel=document.getElementById('appearancePanel'),trigger=document.getElementById('settingsTrigger');if(panel&&!panel.hidden&&!panel.contains(e.target)&&!trigger.contains(e.target))toggleAppearance(false)});
-</script></body></html>
+</script>
+<script>
+/* Complete localization layer: covers omitted labels and text inserted after initial render. */
+(function(){
+ const EXTRA={
+ uz:{
+ "AGENT ONLINE":"AGENT ONLAYN","Initialize a conversation.":"Suhbatni boshlang.","Talk to the agent. Refine signals. Follow the trail.":"Agent bilan suhbatlashing. Did signallarini aniqlang va yangi kashfiyotlar qiling.","Welcome to TastePilot.":"TastePilot’ga xush kelibsiz.","Tell me how you feel, what you enjoy, or what kind of day you want. We’ll find a direction worth exploring.":"Kayfiyatingiz, yoqtirgan narsalaringiz yoki qanday kunni istayotganingizni yozing. Sizga mos yo‘nalishni topamiz.","I’m bored":"Zerikdim","Pick a movie":"Film tanlash","Plan with a friend":"Do‘st bilan reja","Tell me what you’re in the mood for…":"Qanday kayfiyatda ekaningizni yozing…","Send ↗":"Yuborish ↗","ENTER TO SEND":"YUBORISH UCHUN ENTER","FOLLOW-UP QUESTIONS WELCOME":"QO‘SHIMCHA SAVOLLAR MUMKIN","Personal culture intelligence":"Shaxsiy madaniy tavsiyalar","Built for the Qloo Agentic Hackathon":"Qloo Agentic Hackathon uchun yaratildi","LOCAL TASTE PROFILE":"MAHALLIY DID PROFILI","SETTINGS":"SOZLAMALAR","USER CONFIGURATION":"FOYDALANUVCHI SOZLAMALARI","Settings":"Sozlamalar","Make TastePilot feel right for you. Preferences are saved on this device.":"TastePilot’ni o‘zingizga moslang. Sozlamalar ushbu qurilmada saqlanadi.","LANGUAGE / TIL / ЯЗЫК":"TIL / ЯЗЫК","FONT / SHRIFT":"SHRIFT","THEME":"MAVZU","Dark":"Qorong‘i","Light":"Yorug‘","System":"Tizim","ACCENT COLOR":"ASOSIY RANG","CUSTOM COLOR":"MAXSUS RANG","TEXT SIZE":"MATN O‘LCHAMI","CHAT MESSAGE SIZE":"CHAT MATNI O‘LCHAMI","Compact layout":"Ixcham ko‘rinish","Less spacing, more content":"Kamroq oraliq, ko‘proq mazmun","Reduce motion":"Animatsiyalarni kamaytirish","Reset all settings":"Barcha sozlamalarni tiklash","Sign in":"Kirish","Create account":"Hisob yaratish","Sign out":"Chiqish","Email address":"Elektron pochta","Password":"Parol","Welcome back.":"Qaytganingizdan xursandmiz.","Forgot password?":"Parolni unutdingizmi?","Continue with Google":"Google orqali davom etish","OR CONTINUE WITH":"YOKI QUYIDAGI ORQALI DAVOM ETING","Sign in securely ↗":"Xavfsiz kirish ↗","At least 8 characters":"Kamida 8 ta belgi","Close settings":"Sozlamalarni yopish","Appearance":"Tashqi ko‘rinish","Save":"Saqlash","Cancel":"Bekor qilish","Loading…":"Yuklanmoqda…","Searching…":"Qidirilmoqda…","Something went wrong. Please try again.":"Xatolik yuz berdi. Qayta urinib ko‘ring."
+ },
+ ru:{
+ "AGENT ONLINE":"АГЕНТ В СЕТИ","Initialize a conversation.":"Начните разговор.","Talk to the agent. Refine signals. Follow the trail.":"Общайтесь с агентом, уточняйте интересы и открывайте новое.","Welcome to TastePilot.":"Добро пожаловать в TastePilot.","Tell me how you feel, what you enjoy, or what kind of day you want. We’ll find a direction worth exploring.":"Расскажите о настроении, интересах или о том, каким хотите видеть свой день. Найдём подходящее направление.","I’m bored":"Мне скучно","Pick a movie":"Выбрать фильм","Plan with a friend":"План с другом","Tell me what you’re in the mood for…":"Расскажите, что вам сейчас по настроению…","Send ↗":"Отправить ↗","ENTER TO SEND":"ENTER — ОТПРАВИТЬ","FOLLOW-UP QUESTIONS WELCOME":"МОЖНО ЗАДАВАТЬ УТОЧНЯЮЩИЕ ВОПРОСЫ","Personal culture intelligence":"Персональные культурные рекомендации","Built for the Qloo Agentic Hackathon":"Создано для Qloo Agentic Hackathon","LOCAL TASTE PROFILE":"ЛОКАЛЬНЫЙ ПРОФИЛЬ ВКУСОВ","SETTINGS":"НАСТРОЙКИ","USER CONFIGURATION":"НАСТРОЙКИ ПОЛЬЗОВАТЕЛЯ","Settings":"Настройки","Make TastePilot feel right for you. Preferences are saved on this device.":"Настройте TastePilot под себя. Настройки сохраняются на этом устройстве.","LANGUAGE / TIL / ЯЗЫК":"ЯЗЫК","FONT / SHRIFT":"ШРИФТ","THEME":"ТЕМА","Dark":"Тёмная","Light":"Светлая","System":"Системная","ACCENT COLOR":"ЦВЕТ АКЦЕНТА","CUSTOM COLOR":"СВОЙ ЦВЕТ","TEXT SIZE":"РАЗМЕР ТЕКСТА","CHAT MESSAGE SIZE":"РАЗМЕР ТЕКСТА ЧАТА","Compact layout":"Компактный режим","Less spacing, more content":"Меньше отступов, больше содержимого","Reduce motion":"Уменьшить анимацию","Reset all settings":"Сбросить настройки","Sign in":"Войти","Create account":"Создать аккаунт","Sign out":"Выйти","Email address":"Электронная почта","Password":"Пароль","Welcome back.":"С возвращением!","Forgot password?":"Забыли пароль?","Continue with Google":"Продолжить через Google","OR CONTINUE WITH":"ИЛИ ПРОДОЛЖИТЬ С ПОМОЩЬЮ","Sign in securely ↗":"Безопасный вход ↗","At least 8 characters":"Не менее 8 символов","Close settings":"Закрыть настройки","Save":"Сохранить","Cancel":"Отмена","Loading…":"Загрузка…","Searching…":"Поиск…","Something went wrong. Please try again.":"Произошла ошибка. Попробуйте ещё раз."
+ },
+ es:{"AGENT ONLINE":"AGENTE EN LÍNEA","Initialize a conversation.":"Inicia una conversación.","Welcome to TastePilot.":"Te damos la bienvenida a TastePilot.","I’m bored":"Estoy aburrido","Pick a movie":"Elegir una película","Plan with a friend":"Plan con un amigo","Tell me what you’re in the mood for…":"¿Qué te apetece?","Send ↗":"Enviar ↗","SETTINGS":"AJUSTES","Settings":"Ajustes","Sign in":"Iniciar sesión","Create account":"Crear cuenta","Sign out":"Cerrar sesión","Email address":"Correo electrónico","Password":"Contraseña","Forgot password?":"¿Olvidaste tu contraseña?","Continue with Google":"Continuar con Google","Save":"Guardar","Cancel":"Cancelar","Loading…":"Cargando…","Searching…":"Buscando…"},
+ fr:{"AGENT ONLINE":"AGENT EN LIGNE","Initialize a conversation.":"Commencer une conversation.","Welcome to TastePilot.":"Bienvenue sur TastePilot.","I’m bored":"Je m’ennuie","Pick a movie":"Choisir un film","Plan with a friend":"Sortie entre amis","Tell me what you’re in the mood for…":"Dites-nous ce qui vous ferait envie…","Send ↗":"Envoyer ↗","SETTINGS":"PARAMÈTRES","Settings":"Paramètres","Sign in":"Se connecter","Create account":"Créer un compte","Sign out":"Se déconnecter","Email address":"Adresse e-mail","Password":"Mot de passe","Forgot password?":"Mot de passe oublié ?","Continue with Google":"Continuer avec Google","Save":"Enregistrer","Cancel":"Annuler","Loading…":"Chargement…","Searching…":"Recherche…"},
+ de:{"AGENT ONLINE":"AGENT ONLINE","Initialize a conversation.":"Gespräch starten.","Welcome to TastePilot.":"Willkommen bei TastePilot.","I’m bored":"Mir ist langweilig","Pick a movie":"Film auswählen","Plan with a friend":"Mit Freunden planen","Tell me what you’re in the mood for…":"Wonach ist dir gerade?","Send ↗":"Senden ↗","SETTINGS":"EINSTELLUNGEN","Settings":"Einstellungen","Sign in":"Anmelden","Create account":"Konto erstellen","Sign out":"Abmelden","Email address":"E-Mail-Adresse","Password":"Passwort","Forgot password?":"Passwort vergessen?","Continue with Google":"Mit Google fortfahren","Save":"Speichern","Cancel":"Abbrechen","Loading…":"Wird geladen…","Searching…":"Suche läuft…"},
+ tr:{"AGENT ONLINE":"AJAN ÇEVRİM İÇİ","Initialize a conversation.":"Sohbet başlat.","Welcome to TastePilot.":"TastePilot’a hoş geldin.","I’m bored":"Sıkıldım","Pick a movie":"Film seç","Plan with a friend":"Arkadaşla plan yap","Tell me what you’re in the mood for…":"Nasıl bir şey istediğini yaz…","Send ↗":"Gönder ↗","SETTINGS":"AYARLAR","Settings":"Ayarlar","Sign in":"Giriş yap","Create account":"Hesap oluştur","Sign out":"Çıkış yap","Email address":"E-posta adresi","Password":"Şifre","Forgot password?":"Şifreni mi unuttun?","Continue with Google":"Google ile devam et","Save":"Kaydet","Cancel":"İptal","Loading…":"Yükleniyor…","Searching…":"Aranıyor…"},
+ ja:{"AGENT ONLINE":"エージェント稼働中","Initialize a conversation.":"会話を始めましょう。","Welcome to TastePilot.":"TastePilotへようこそ。","I’m bored":"退屈です","Pick a movie":"映画を選ぶ","Plan with a friend":"友達と計画する","Tell me what you’re in the mood for…":"今の気分を入力してください…","Send ↗":"送信 ↗","SETTINGS":"設定","Settings":"設定","Sign in":"ログイン","Create account":"アカウント作成","Sign out":"ログアウト","Email address":"メールアドレス","Password":"パスワード","Forgot password?":"パスワードをお忘れですか？","Continue with Google":"Googleで続行","Save":"保存","Cancel":"キャンセル","Loading…":"読み込み中…","Searching…":"検索中…"},
+ ar:{"AGENT ONLINE":"الوكيل متصل","Initialize a conversation.":"ابدأ محادثة.","Welcome to TastePilot.":"مرحبًا بك في TastePilot.","I’m bored":"أشعر بالملل","Pick a movie":"اختر فيلمًا","Plan with a friend":"خطط مع صديق","Tell me what you’re in the mood for…":"أخبرني بما يناسب مزاجك…","Send ↗":"إرسال ↗","SETTINGS":"الإعدادات","Settings":"الإعدادات","Sign in":"تسجيل الدخول","Create account":"إنشاء حساب","Sign out":"تسجيل الخروج","Email address":"البريد الإلكتروني","Password":"كلمة المرور","Forgot password?":"هل نسيت كلمة المرور؟","Continue with Google":"المتابعة باستخدام Google","Save":"حفظ","Cancel":"إلغاء","Loading…":"جارٍ التحميل…","Searching…":"جارٍ البحث…"}
+ };
+ Object.keys(EXTRA).forEach(lang=>Object.assign(TP_TRANSLATIONS[lang]||(TP_TRANSLATIONS[lang]={}),EXTRA[lang]));
+ const originalSetInterfaceLanguage=window.setInterfaceLanguage;
+ const sourceNodes=TP_BASE_TEXT;
+ function translateAll(lang){
+  const dict=TP_TRANSLATIONS[lang]||{};
+  const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
+  while(walker.nextNode()){
+   const n=walker.currentNode;
+   if(!n.parentElement||n.parentElement.closest('script,style,option,textarea'))continue;
+   const raw=n.nodeValue, trimmed=raw.trim();if(!trimmed)continue;
+   if(!sourceNodes.has(n))sourceNodes.set(n,trimmed);
+   const original=sourceNodes.get(n), leading=raw.match(/^\s*/)?.[0]||'', trailing=raw.match(/\s*$/)?.[0]||'';
+   const next=leading+(lang==='en'?original:(Object.prototype.hasOwnProperty.call(dict,original)?dict[original]:original))+trailing;
+   if(n.nodeValue!==next)n.nodeValue=next;
+  }
+  document.querySelectorAll('input[placeholder],textarea[placeholder]').forEach(el=>{
+   if(!el.dataset.tpPlaceholderOriginal)el.dataset.tpPlaceholderOriginal=el.getAttribute('placeholder')||'';
+   const original=el.dataset.tpPlaceholderOriginal;
+   el.setAttribute('placeholder',lang==='en'?original:(dict[original]||original));
+  });
+  document.querySelectorAll('[aria-label]').forEach(el=>{
+   if(!el.dataset.tpAriaOriginal)el.dataset.tpAriaOriginal=el.getAttribute('aria-label')||'';
+   const original=el.dataset.tpAriaOriginal;
+   if(original)el.setAttribute('aria-label',lang==='en'?original:(dict[original]||original));
+  });
+  document.querySelectorAll('button[title], [title]').forEach(el=>{
+   if(!el.dataset.tpTitleOriginal)el.dataset.tpTitleOriginal=el.getAttribute('title')||'';
+   const original=el.dataset.tpTitleOriginal;
+   if(original)el.setAttribute('title',lang==='en'?original:(dict[original]||original));
+  });
+ }
+ window.setInterfaceLanguage=function(lang,save=true){
+  if(typeof originalSetInterfaceLanguage==='function')originalSetInterfaceLanguage(lang,save);
+  translateAll(lang);
+ };
+ const saved=(()=>{try{return localStorage.getItem('tastepilot-language')||'en'}catch{return 'en'}})();
+ translateAll(saved);
+ let queued=false;
+ const observer=new MutationObserver(records=>{
+  if(queued)return;queued=true;
+  queueMicrotask(()=>{queued=false;const lang=document.getElementById('uiLanguage')?.value||saved;translateAll(lang)});
+ });
+ observer.observe(document.body,{subtree:true,childList:true,characterData:true});
+})();
+</script>
+
+</body></html>
