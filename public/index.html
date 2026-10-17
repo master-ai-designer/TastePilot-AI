@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#080b12">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Inter:wght@400;500;600;700;800&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <title>TastePilot AI — Operator Console</title>
 <style>
 :root{color-scheme:dark;--bg:#080b12;--panel:#10151f;--panel2:#0d121b;--line:#273241;--muted:#8e9aac;--text:#f1f5fb;--cyan:#75e4e8;--violet:#a99bff;--orange:#ff765e}
@@ -386,7 +387,12 @@ html[data-theme="light"] .card,
 html[data-theme="light"] .chatlog,
 html[data-theme="light"] .msg.bot,
 html[data-theme="light"] .flow-step{border-color:color-mix(in srgb,var(--user-accent) 26%,#d3e0d7)!important}
-</style><style id="tastepilot-comfort-preferences">
+</style><style id="tastepilot-font-coverage">
+/* Apply the selected typeface consistently, including controls and nested UI. */
+html,body,body *{font-family:var(--tp-font)!important}
+button,input,select,textarea{font:inherit}
+</style>
+<style id="tastepilot-comfort-preferences">
 :root{--tp-radius:16px;--tp-font:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
 body{font-family:var(--tp-font);letter-spacing:-.012em}
 nav,.pill,.brandmark,.search-panel,.go,.send,.chip,.card,.panel,.chat,.chatlog,.msg,.chatinput input,.settings-trigger,.appearance-panel,.theme-option,.accent-option,.auth-dialog,.auth-field input,.auth-primary,.auth-google{border-radius:var(--tp-radius)}
@@ -499,7 +505,7 @@ html[lang="ar"] .msg.bot{border-top-left-radius:16px;border-top-right-radius:5px
 </select>
 <div class="settings-label settings-space">FONT / SHRIFT</div>
 <select id="fontChoice" class="tp-setting-select" aria-label="Font style" onchange="setFontFamily(this.value)">
-<option value="system">System default — coming soon</option><option value="inter">Inter — modern — coming soon</option><option value="rounded">Nunito — rounded — coming soon</option><option value="readable">Atkinson Hyperlegible — readable — coming soon</option><option value="serif">Georgia — classic — coming soon</option><option value="mono">Monospace — technical — coming soon</option>
+<option value="system">System default</option><option value="inter">Inter — modern</option><option value="rounded">Nunito — rounded</option><option value="readable">Atkinson Hyperlegible — readable</option><option value="serif">Georgia — classic</option><option value="mono">Monospace — technical</option>
 </select>
 <div class="settings-label">THEME</div>
 <div class="theme-options" role="group" aria-label="Color theme">
@@ -835,9 +841,10 @@ function renderMarkdown(text){
 </script>
 <script>
 function setFontFamily(choice,save=true){
- const fonts={system:'ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif',inter:'Inter,ui-sans-serif,system-ui,sans-serif',rounded:'"Nunito",ui-rounded,system-ui,sans-serif',readable:'"Atkinson Hyperlegible",Arial,sans-serif',serif:'Georgia,"Times New Roman",serif',mono:'"SFMono-Regular",Consolas,monospace'};
- if(!fonts[choice])choice="system";
+ const fonts={system:'ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif',inter:'"Inter",ui-sans-serif,system-ui,sans-serif',rounded:'"Nunito",ui-rounded,system-ui,sans-serif',readable:'"Atkinson Hyperlegible",Arial,sans-serif',serif:'Georgia,"Times New Roman",serif',mono:'"SFMono-Regular",Consolas,"Liberation Mono",monospace'};
+ if(!Object.prototype.hasOwnProperty.call(fonts,choice))choice="system";
  document.documentElement.style.setProperty('--tp-font',fonts[choice]);
+ document.documentElement.dataset.fontChoice=choice;
  const el=document.getElementById('fontChoice');if(el)el.value=choice;
  if(save)try{localStorage.setItem('tastepilot-font',choice)}catch(e){}
 }
