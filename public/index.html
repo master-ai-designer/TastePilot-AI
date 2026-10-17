@@ -729,21 +729,38 @@ async function appendMediaSources(message){
  }catch(e){addChat("Internet manbalarini hozir tekshira olmadim. Birozdan keyin qayta urinib ko‘ring.","bot");}
 }
 
+const TP_CHAT_UI={
+ en:{thinking:"TastePilot is thinking…",unavailable:"The AI agent is temporarily unavailable. Please try again shortly.",empty:"I could not understand that yet. Try describing what you want to watch, listen to, eat, or discover.",offline:"I could not reach the agent right now. Please try again."},
+ uz:{thinking:"TastePilot o‘ylayapti…",unavailable:"AI agent hozircha ishlamayapti. Birozdan keyin qayta urinib ko‘ring.",empty:"Hozircha so‘rovingizni tushunmadim. Ko‘rmoqchi, tinglamoqchi, tatib ko‘rmoqchi yoki kashf qilmoqchi bo‘lgan narsangizni tasvirlab bering.",offline:"Hozir agent bilan bog‘lana olmadim. Qayta urinib ko‘ring."},
+ ru:{thinking:"TastePilot обдумывает запрос…",unavailable:"ИИ-агент временно недоступен. Попробуйте ещё раз чуть позже.",empty:"Пока не удалось понять запрос. Опишите, что хотите посмотреть, послушать, попробовать или открыть для себя.",offline:"Не удалось связаться с агентом. Попробуйте ещё раз."},
+ es:{thinking:"TastePilot está pensando…",unavailable:"El agente de IA no está disponible temporalmente. Inténtalo de nuevo pronto.",empty:"Aún no he entendido la solicitud. Describe qué quieres ver, escuchar, probar o descubrir.",offline:"No he podido conectar con el agente. Inténtalo de nuevo."},
+ fr:{thinking:"TastePilot réfléchit…",unavailable:"L’agent IA est temporairement indisponible. Réessayez dans un instant.",empty:"Je n’ai pas encore compris la demande. Décrivez ce que vous souhaitez regarder, écouter, goûter ou découvrir.",offline:"Impossible de joindre l’agent pour le moment. Réessayez."},
+ de:{thinking:"TastePilot denkt nach…",unavailable:"Der KI-Agent ist vorübergehend nicht verfügbar. Bitte versuche es gleich noch einmal.",empty:"Ich habe die Anfrage noch nicht verstanden. Beschreibe, was du ansehen, hören, probieren oder entdecken möchtest.",offline:"Der Agent ist momentan nicht erreichbar. Bitte versuche es erneut."},
+ tr:{thinking:"TastePilot düşünüyor…",unavailable:"Yapay zekâ aracısı geçici olarak kullanılamıyor. Lütfen biraz sonra tekrar deneyin.",empty:"İsteğinizi henüz anlayamadım. İzlemek, dinlemek, tatmak veya keşfetmek istediğiniz şeyi açıklayın.",offline:"Aracıya şu anda ulaşamadım. Lütfen tekrar deneyin."},
+ ja:{thinking:"TastePilot が考えています…",unavailable:"AI エージェントは一時的に利用できません。少ししてから再試行してください。",empty:"まだリクエストを理解できませんでした。見たいもの、聴きたいもの、味わいたいもの、発見したいものを説明してください。",offline:"エージェントに接続できませんでした。もう一度お試しください。"},
+ ar:{thinking:"TastePilot يفكر…",unavailable:"وكيل الذكاء الاصطناعي غير متاح مؤقتًا. يرجى المحاولة بعد قليل.",empty:"لم أفهم الطلب بعد. صف ما تريد مشاهدته أو الاستماع إليه أو تجربته أو اكتشافه.",offline:"تعذّر الاتصال بالوكيل الآن. يرجى المحاولة مرة أخرى."}
+};
+function tpChatUi(){
+ const lang=document.documentElement.lang||"en";
+ return TP_CHAT_UI[lang]||TP_CHAT_UI.en;
+}
+
 async function sendChat(){
  const input=document.getElementById('chatq'); const q=input.value.trim(); if(!q)return;
  addChat(q,'user'); updateTPMemory(q); persistTPHistory(); input.value='';
- addChat('TastePilot is thinking…','bot','typing');
+ const chatUi=tpChatUi();
+ addChat(chatUi.thinking,'bot','typing');
  try{
   const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:q,history:window.tastePilotChatHistory||[],tasteProfile:loadTPMemory()})});
   const data=await r.json(); document.querySelector('[data-typing="true"]')?.remove();
-  if(!r.ok){addChat(data.error||'The AI agent is temporarily unavailable. Please try again shortly.','bot');return;}
-  const reply=data.reply||'I could not understand that yet. Try describing what you want to watch, listen to, eat, or discover.';
+  if(!r.ok){addChat(chatUi.unavailable,'bot');return;}
+  const reply=data.reply||chatUi.empty;
   window.tastePilotChatHistory.push({role:'model',text:reply}); persistTPHistory();
   if(window.tastePilotChatHistory.length>12)window.tastePilotChatHistory.splice(0,window.tastePilotChatHistory.length-12);
   typeChatMessage(reply);
   await appendMediaSources(q);
 }
-catch(e){document.querySelector('[data-typing="true"]')?.remove();addChat('I could not reach the agent right now. Please try again.','bot')}
+catch(e){document.querySelector('[data-typing="true"]')?.remove();addChat(tpChatUi().offline,'bot')}
 }
 
 function addChat(text,who,typing=''){
