@@ -969,9 +969,27 @@ function setTheme(theme,save=true){
  document.querySelectorAll('[data-theme-choice]').forEach(el=>el.classList.toggle('is-active',el.dataset.themeChoice===theme));
  if(save)try{localStorage.setItem('tastepilot-theme',theme)}catch(e){}
 }
+function applyTypographyScales(){
+ const root=document.documentElement;
+ const general=Number.parseFloat(getComputedStyle(root).getPropertyValue('--user-font-scale'))||1;
+ const chat=Number.parseFloat(getComputedStyle(root).getPropertyValue('--chat-font-scale'))||1;
+ document.querySelectorAll('body *').forEach(el=>{
+  if(el.matches('svg,svg *,path,circle,rect,line,polyline,polygon,canvas'))return;
+  if(!el.hasAttribute('data-tp-base-font')){
+   const current=parseFloat(getComputedStyle(el).fontSize);
+   if(Number.isFinite(current)&&current>0)el.setAttribute('data-tp-base-font',String(current));
+  }
+  const base=parseFloat(el.getAttribute('data-tp-base-font'));
+  if(!Number.isFinite(base)||base<=0)return;
+  const isChat=!!el.closest('.msg');
+  const scale=isChat?chat:general;
+  el.style.setProperty('font-size',(base*scale)+'px','important');
+ });
+}
 function setTextSize(size,save=true){
  const scales={small:'0.92',normal:'1',large:'1.08'};if(!scales[size])return;
  document.documentElement.style.setProperty('--user-font-scale',scales[size]);
+ applyTypographyScales();
  document.querySelectorAll('[data-text-size]').forEach(el=>el.classList.toggle('is-active',el.dataset.textSize===size));
  if(save)try{localStorage.setItem('tastepilot-text-size',size)}catch(e){}
 }
@@ -979,6 +997,7 @@ function setChatTextSize(size,save=true){
  const scales={small:'0.92',normal:'1',large:'1.16',xlarge:'1.32'};
  if(!scales[size])return;
  document.documentElement.style.setProperty('--chat-font-scale',scales[size]);
+ applyTypographyScales();
  document.querySelectorAll('[data-chat-size]').forEach(el=>el.classList.toggle('is-active',el.dataset.chatSize===size));
  if(save)try{localStorage.setItem('tastepilot-chat-text-size',size)}catch(e){}
 }
@@ -1007,6 +1026,7 @@ function resetSettings(){
  setReducedMotion(get('tastepilot-reduce-motion')==='true',false);
  if(window.matchMedia){window.matchMedia('(prefers-color-scheme: light)').addEventListener?.('change',()=>{if(document.documentElement.dataset.themePreference==='system')setTheme('system',false)})}
 })();
+applyTypographyScales();
 document.addEventListener('keydown',e=>{if(e.key==='Escape')toggleAppearance(false)});
 document.addEventListener('click',e=>{const panel=document.getElementById('appearancePanel'),trigger=document.getElementById('settingsTrigger');if(panel&&!panel.hidden&&!panel.contains(e.target)&&!trigger.contains(e.target))toggleAppearance(false)});
 </script></body></html>
