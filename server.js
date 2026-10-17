@@ -347,7 +347,17 @@ app.post("/api/voice-token",async(req,res)=>{
  }
 });
 
+const discoveryRequestLog=new Map();
+function allowDiscoveryRequest(req){
+ const ip=String(req.headers["x-forwarded-for"]||req.socket?.remoteAddress||"unknown").split(",")[0].trim();
+ const now=Date.now(),recent=(discoveryRequestLog.get(ip)||[]).filter(t=>now-t<60000);
+ if(recent.length>=10)return false;
+ recent.push(now);discoveryRequestLog.set(ip,recent);
+ if(discoveryRequestLog.size>2000){for(const [key,times] of discoveryRequestLog){if(!times.length||now-times[times.length-1]>120000)discoveryRequestLog.delete(key);}}
+ return true;
+}
 app.post("/api/discover",async(req,res)=>{
+ if(!allowDiscoveryRequest(req))return res.status(429).json({error:"Qidiruvlar soni vaqtincha cheklangan. Bir daqiqadan keyin qayta urinib ko‘ring.",status:"rate_limited"});
  const body=req.body||{},query=String(body.query||"").trim().slice(0,180),requestedCategory=String(body.category||"auto").toLowerCase();
  const tasteProfile={preferences:Array.isArray(body.tasteProfile?.preferences)?body.tasteProfile.preferences.filter(x=>typeof x==="string").map(x=>x.slice(0,80)).slice(0,20):[],avoid:Array.isArray(body.tasteProfile?.avoid)?body.tasteProfile.avoid.filter(x=>typeof x==="string").map(x=>x.slice(0,80)).slice(0,15):[]};
  const categories={music:{label:"Musiqa",type:"urn:entity:artist",description:"music artists and musicians"},anime:{label:"Anime va seriallar",type:"urn:entity:tv_show",description:"anime and television shows"},movie:{label:"Filmlar",type:"urn:entity:movie",description:"movies and films"},places:{label:"Joylar va tajribalar",type:"urn:entity:place",description:"places and experiences"},books:{label:"Kitoblar",type:"urn:entity:book",description:"books and authors"},games:{label:"Videoo‘yinlar",type:"urn:entity:videogame",description:"video games"}};
@@ -389,7 +399,7 @@ app.post("/api/discover",async(req,res)=>{
    try{
     const model=process.env.GEMINI_MODEL||"gemini-3.5-flash-lite";
     const compact=selected.map((x,i)=>({index:i,title:x.name||x.title||(x.entity&&x.entity.name)||(x.properties&&x.properties.name)||x.id||"Unknown",category:x._tastepilotCategoryLabel,description:x.short_description||x.description||(x.properties&&x.properties.description)||""}));
-    const prompt="You are TastePilot, a careful recommendation explainer. User request: "+query+"\nCatalogue candidates (only these facts are known): "+JSON.stringify(compact)+"\nFor every candidate return one concise Uzbek Latin explanation of why it may fit the user's request based only on the request, category, title, and provided description. Do not invent plot, lyrics, artist style, availability, personal history, or claim certainty. If title alone gives little evidence, say it is a candidate worth exploring rather than asserting a specific trait. Return ONLY valid JSON array like [{\"index\":0,\"reason\":\"...\"}].";
+    const prompt="You are TastePilot, a careful recommendation explainer. User request: "+query+"\nCatalogue candidates (only these facts are known): "+JSON.stringify(compact)+"\nFor every candidate return one concise explanation in the same language as the user's request (Uzbek Latin, English, or Russian; otherwise follow the request language) of why it may fit based only on the request, category, title, and provided description. Do not invent plot, lyrics, artist style, availability, personal history, or claim certainty. If title alone gives little evidence, say it is a candidate worth exploring rather than asserting a specific trait. Return ONLY valid JSON array like [{\"index\":0,\"reason\":\"...\"}].";
     const rr=await fetch("https://generativelanguage.googleapis.com/v1beta/models/"+encodeURIComponent(model)+":generateContent?key="+encodeURIComponent(geminiKey),{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({contents:[{role:"user",parts:[{text:prompt}]}],generationConfig:{maxOutputTokens:1000,temperature:0.2,responseMimeType:"application/json"}}),signal:AbortSignal.timeout(9000)});
     if(rr.ok){const dd=await rr.json(),parts=dd&&dd.candidates&&dd.candidates[0]&&dd.candidates[0].content&&dd.candidates[0].content.parts;let raw=parts?parts.map(p=>p.text||"").join("").trim():"[]";raw=raw.replace(/^\x60\x60\x60(?:json)?/i,"").replace(/\x60\x60\x60$/,"");const parsed=JSON.parse(raw);if(Array.isArray(parsed))explanations=parsed;}
    }catch(e){console.warn("TastePilot explanation generation unavailable.");}
