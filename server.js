@@ -21,20 +21,72 @@ app.get("/api/auth-config",(req,res)=>{
  res.json({configured:true,url,anonKey});
 });
 
-function chatReply(message){
- const q=message.toLowerCase();
- const has=(...words)=>words.some(w=>q.includes(w));
- if(has("kim yarat","kim ishlab chiq","kim asos sol","kimning loyihasi","loyiha egasi","yaratuvchisi kim","founder","creator","who created","who made","who built","who is the owner","who developed","who founded","about the creator","abdulaziz ibroximjonov"))
-  return "TastePilot AI’ning asoschisi va yaratuvchisi — Abdulaziz Ibroximjonov. 🇺🇿\\n\\nU TastePilot AI’ni foydalanuvchilarning didi va qiziqishlarini tushunib, ularga mos anime, film, musiqa va boshqa kashfiyotlarni topishga yordam beradigan aqlli AI agent sifatida rivojlantirmoqda. Uning maqsadi — oddiy tavsiyalardan nariga o‘tib, har bir inson uchun mos va mazmunli kashfiyotlar yaratish.\\n\\n**Founder & Creator of TastePilot AI**";
- if(has("salom","hello","hi","hey")) return "Salom! 👋 Men TastePilot. Anime, film, musiqa, restoran, joy yoki boshqa tajriba haqida istagingizni yozing.";
- if(has("anime","animeni","animega")) return "Albatta 🎬 Sizga anime topib beraman. Masalan, janrni ayting: romantika, komediya, action, school life yoki happy ending.";
- if(has("film","movie","kino","serial")) return "Zo‘r 🎬 Qanday film yoki serial qidiryapsiz? Janr, kayfiyat yoki yoqtirgan filmingizni yozing.";
- if(has("musiqa","music","playlist","qo‘shiq","song")) return "🎧 Kayfiyatingizni ayting — masalan “sokin tungi musiqa” yoki “energetik gym playlist”.";
- if(has("restoran","restaurant","ovqat","dinner","kafe","cafe","taom")) return "🍽️ Qaysi shahar yoki hudud? Masalan: “Toshkentda sokin romantik dinner uchun joy”.";
- if(has("nima ko‘ray","nima ko'ray","tavsiya","recommend","topib ber","qidir")) return "😊 Albatta. Menga istagingizni oddiy gap bilan yozavering — men uni taste signalga aylantirishga yordam beraman.";
- return "Tushundim 👌 Men sizning istagingizni taste signalga aylantira olaman. Nima qidiryapsiz — anime, film, musiqa, restoran, sayohat joyi yoki boshqa tajribami?";
+function detectFallbackLanguage(message){
+ const text=String(message||"").trim().toLowerCase();
+ if(/[\\u0600-\\u06ff]/.test(text))return "ar";
+ if(/[\\u0400-\\u04ff]/.test(text))return "ru";
+ const uzWords=/\\b(salom|assalomu|rahmat|iltimos|menga|men|qanday|qanaqa|tavsiya|kerak|qidir|topib|ber|bo\\u2018lsa|bo\\u2019lsa|uzbek|o\\u2018zbek|o\\u2019zbek|zerikdim|yoqadi|yoqmaydi|film|kino|musiqa|qo\\u2018shiq|qo\\u2019shiq|anime|serial|restoran|sayohat)\\b/i;
+ const enWords=/\\b(hello|hi|hey|please|recommend|suggest|what|which|where|how|can you|help me|i am|i'm|my|for tonight|movie|music|song|restaurant|travel|find|looking for|created|founder)\\b/i;
+ if(uzWords.test(text))return "uz";
+ if(enWords.test(text))return "en";
+ return "uz";
 }
-
+function chatReply(message){
+ const q=String(message||"").toLowerCase();
+ const lang=detectFallbackLanguage(message);
+ const has=(...words)=>words.some(w=>q.includes(w));
+ const replies={
+  en:{
+   founder:"The founder and creator of TastePilot AI is Abdulaziz Ibroximjonov. 🇺🇿\\n\\nHe is developing TastePilot AI to understand people's interests and help them discover anime, films, music, and other experiences that fit their taste.\\n\\n**Founder & Creator of TastePilot AI**",
+   greeting:"Hi! 👋 I’m TastePilot. Tell me what you’d like to discover—anime, films, music, restaurants, places, or something else.",
+   anime:"Absolutely 🎬 I can help you discover anime. What mood or genre do you want—romance, comedy, action, school life, or a happy ending?",
+   film:"Great 🎬 What kind of film or series are you looking for? Share a genre, mood, or something you already like.",
+   music:"🎧 Tell me the mood you want—something calm for the night, energetic for a workout, or music for a drive.",
+   food:"🍽️ Which city or area should I focus on? For example: “a quiet, romantic dinner spot in Tashkent.”",
+   recommend:"😊 Sure! Describe what you want in your own words and I’ll help turn it into a useful discovery signal.",
+   general:"Got it 👌 What are you hoping to discover—anime, films, music, restaurants, travel spots, or something else?"
+  },
+  uz:{
+   founder:"TastePilot AI’ning asoschisi va yaratuvchisi — Abdulaziz Ibroximjonov. 🇺🇿\\n\\nU TastePilot AI’ni foydalanuvchilarning didi va qiziqishlarini tushunib, ularga mos anime, film, musiqa va boshqa tajribalarni topishga yordam beradigan aqlli agent sifatida rivojlantirmoqda.\\n\\n**Founder & Creator of TastePilot AI**",
+   greeting:"Salom! 👋 Men TastePilot. Anime, film, musiqa, restoran, sayohat joyi yoki boshqa nimani kashf qilmoqchisiz?",
+   anime:"Albatta 🎬 Sizga mos anime topishga yordam beraman. Qaysi janr yoqadi: romantika, komediya, jangari, school life yoki baxtli yakun?",
+   film:"Zo‘r 🎬 Qanday film yoki serial qidiryapsiz? Janr, kayfiyat yoki yoqtirgan filmingizni ayting.",
+   music:"🎧 Qanday kayfiyatdagi musiqa kerak: sokin tungi musiqa, mashg‘ulot uchun energiyali treklar yoki yo‘l uchun playlist?",
+   food:"🍽️ Qaysi shahar yoki hududdan qidiray? Masalan: “Toshkentda sokin, romantik kechki ovqat uchun joy”.",
+   recommend:"😊 Albatta. Istagingizni oddiy gap bilan yozing — men uni mos tavsiyalar topishga yordam beradigan signalga aylantiraman.",
+   general:"Tushundim 👌 Nimani kashf qilmoqchisiz: anime, film, musiqa, restoran, sayohat joyi yoki boshqa tajribami?"
+  },
+  ru:{
+   founder:"Основатель и создатель TastePilot AI — Abdulaziz Ibroximjonov. 🇺🇿\\n\\nОн развивает TastePilot AI, чтобы агент понимал интересы людей и помогал находить подходящие аниме, фильмы, музыку и другие впечатления.\\n\\n**Founder & Creator of TastePilot AI**",
+   greeting:"Привет! 👋 Я TastePilot. Что хотите открыть для себя — аниме, фильмы, музыку, рестораны, места или что-то ещё?",
+   anime:"Конечно 🎬 Помогу подобрать аниме. Какой жанр предпочитаете: романтика, комедия, экшен, школьная жизнь или счастливый финал?",
+   film:"Отлично 🎬 Какой фильм или сериал ищете? Расскажите о жанре, настроении или любимом примере.",
+   music:"🎧 Какое настроение нужно: спокойная ночная музыка, энергичный плейлист для тренировки или музыка для поездки?",
+   food:"🍽️ В каком городе или районе искать? Например: «уютное место для романтического ужина в Ташкенте».",
+   recommend:"😊 Конечно. Опишите желание обычными словами — я помогу превратить его в ориентир для подходящих рекомендаций.",
+   general:"Понял 👌 Что хотите найти: аниме, фильм, музыку, ресторан, место для путешествия или что-то другое?"
+  },
+  ar:{
+   founder:"مؤسس ومبتكر TastePilot AI هو عبد العزيز إبروخيمجونوف. 🇺🇿\\n\\nيطوّر TastePilot AI لمساعدة الناس على اكتشاف الأنمي والأفلام والموسيقى والتجارب التي تناسب اهتماماتهم.\\n\\n**Founder & Creator of TastePilot AI**",
+   greeting:"مرحبًا! 👋 أنا TastePilot. ماذا تريد أن تكتشف—أنمي، أفلام، موسيقى، مطاعم، أماكن أم شيئًا آخر؟",
+   anime:"بالتأكيد 🎬 يمكنني مساعدتك في العثور على أنمي مناسب. ما النوع الذي تفضله: الرومانسية، الكوميديا، الأكشن، الحياة المدرسية أم نهاية سعيدة؟",
+   film:"رائع 🎬 ما نوع الفيلم أو المسلسل الذي تبحث عنه؟ أخبرني بالنوع أو المزاج الذي تريده.",
+   music:"🎧 أخبرني بالمزاج الذي تريده: موسيقى هادئة لليل، أو قائمة نشيطة للتمرين، أو موسيقى للقيادة.",
+   food:"🍽️ في أي مدينة أو منطقة أبحث؟",
+   recommend:"😊 بالتأكيد. صف ما تريده بكلماتك وسأساعدك في تحويله إلى إشارة لاكتشاف توصيات مناسبة.",
+   general:"فهمت 👌 ماذا تريد أن تكتشف—أنمي، أفلام، موسيقى، مطاعم، أماكن سفر أم شيئًا آخر؟"
+  }
+ };
+ const r=replies[lang]||replies.uz;
+ if(has("kim yarat","kim ishlab chiq","kim asos sol","kimning loyihasi","loyiha egasi","yaratuvchisi kim","founder","creator","who created","who made","who built","who is the owner","who developed","who founded","about the creator","abdulaziz ibroximjonov"))return r.founder;
+ if(/(^|[^a-z])(salom|hello|hi|hey)([^a-z]|$)/i.test(q))return r.greeting;
+ if(has("anime","animeni","animega","аниме","أنمي"))return r.anime;
+ if(has("film","movie","kino","serial","фильм","кино","مسلسل","فيلم"))return r.film;
+ if(has("musiqa","music","playlist","qo‘shiq","qo'shiq","song","музыка","песня","موسيقى"))return r.music;
+ if(has("restoran","restaurant","ovqat","dinner","kafe","cafe","taom","ресторан","еда","مطعم"))return r.food;
+ if(has("nima ko‘ray","nima ko'ray","tavsiya","recommend","topib ber","qidir","recommend","suggest","посоветуй","найди","اقترح"))return r.recommend;
+ return r.general;
+}
 function cleanHistory(history){
  if(!Array.isArray(history)) return [];
  const out=[];
