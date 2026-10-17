@@ -361,7 +361,8 @@ app.post("/api/discover",async(req,res)=>{
   if(!geminiKey)return query;
   try{
    const model=process.env.GEMINI_MODEL||"gemini-3.5-flash-lite";
-   const prompt="Convert the user's natural-language request into concise English search terms for a cultural catalogue. Category: "+categories[category].label+" ("+categories[category].description+"). Understand Uzbek, Russian, or English. Preserve mood and desired experience, but search for actual entities in this category. Return only a short search phrase. User request: "+query;
+   const profileHints=[tasteProfile.preferences.length?"Known preferences: "+tasteProfile.preferences.join(", "):"",tasteProfile.avoid.length?"Known dislikes: "+tasteProfile.avoid.join(", "):""].filter(Boolean).join(". ");
+   const prompt="Convert the user's natural-language request into concise English search terms for a cultural catalogue. Category: "+categories[category].label+" ("+categories[category].description+"). Understand Uzbek, Russian, or English. Preserve the current request as the priority; use the profile only to refine relevant results. "+profileHints+" Return only a short search phrase. User request: "+query;
    const r=await fetch("https://generativelanguage.googleapis.com/v1beta/models/"+encodeURIComponent(model)+":generateContent?key="+encodeURIComponent(geminiKey),{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({contents:[{role:"user",parts:[{text:prompt}]}],generationConfig:{maxOutputTokens:70,temperature:0.1}}),signal:AbortSignal.timeout(7000)});
    if(!r.ok)return query;
    const d=await r.json(),parts=d&&d.candidates&&d.candidates[0]&&d.candidates[0].content&&d.candidates[0].content.parts;
