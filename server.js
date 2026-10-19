@@ -255,6 +255,7 @@ HONESTY: Never claim perfect accuracy, perfect fluency, or capabilities that hav
 app.post("/api/chat",async(req,res)=>{
  const message=String(req.body?.message||"").trim();
  if(!message)return res.status(400).json({error:"Message is required."});
+ if(message.length>2000)return res.status(413).json({error:"Please keep each message under 2,000 characters."});
  if(!allowChatRequest(req))return res.status(429).json({error:"Too many requests. Please wait a moment and try again."});
  const history=Array.isArray(req.body?.history)?req.body.history:[];
  try{
@@ -334,7 +335,17 @@ app.post("/api/media-search",async(req,res)=>{
  return res.json({query,kind,results:unique,freeFullAccessVerified:false,notice:unique.length?"Free/legal catalogue matches are prioritized. A free preview is not the same as free full access; check each source's terms and regional availability.":"No matching source could be verified from the connected public catalogues. This does not prove that no legal free source exists.",errors});
 });
 
+const voiceTokenLog=new Map();
+function allowVoiceTokenRequest(req){
+ const ip=String(req.headers["x-forwarded-for"]||req.socket?.remoteAddress||"unknown").split(",")[0].trim();
+ const now=Date.now(),recent=(voiceTokenLog.get(ip)||[]).filter(t=>now-t<60000);
+ if(recent.length>=5)return false;
+ recent.push(now);voiceTokenLog.set(ip,recent);
+ if(voiceTokenLog.size>2000){for(const [key,times] of voiceTokenLog){if(!times.length||now-times[times.length-1]>120000)voiceTokenLog.delete(key);}}
+ return true;
+}
 app.post("/api/voice-token",async(req,res)=>{
+ if(!allowVoiceTokenRequest(req))return res.status(429).json({error:"Voice sessions are temporarily limited. Please wait a minute and try again."});
  const key=process.env.GEMINI_API_KEY;
  if(!key)return res.status(503).json({error:"Voice AI is not configured yet."});
  try{
