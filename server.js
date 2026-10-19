@@ -364,13 +364,27 @@ function allowDiscoveryRequest(req){
  return true;
 }
 app.post("/api/discover",async(req,res)=>{
- if(!allowDiscoveryRequest(req))return res.status(429).json({error:"Qidiruvlar soni vaqtincha cheklangan. Bir daqiqadan keyin qayta urinib ko‘ring.",status:"rate_limited"});
- const body=req.body||{},query=String(body.query||"").trim().slice(0,180),requestedCategory=String(body.category||"auto").toLowerCase();
+ const body=req.body||{};
+ const uiLanguage=["uz","en","ru","ar","ja","de","es","fr","tr"].includes(body.language)?body.language:"en";
+ const messages={
+  uz:{rate:"Qidiruvlar soni vaqtincha cheklangan. Bir daqiqadan keyin qayta urinib ko‘ring.",required:"Iltimos, istagingizni yozing.",category:"Bu kategoriya qo‘llab-quvvatlanmaydi."},
+  en:{rate:"Searches are temporarily limited. Please wait a minute and try again.",required:"Please describe what you want to discover.",category:"This category is not supported."},
+  ru:{rate:"Частота поиска временно ограничена. Подождите минуту и попробуйте снова.",required:"Опишите, что вы хотите найти.",category:"Эта категория не поддерживается."},
+  ar:{rate:"تم تقييد البحث مؤقتًا. انتظر دقيقة ثم حاول مرة أخرى.",required:"يرجى وصف ما تريد اكتشافه.",category:"هذه الفئة غير مدعومة."},
+  ja:{rate:"検索は一時的に制限されています。1分ほど待ってから再試行してください。",required:"見つけたいものを入力してください。",category:"このカテゴリはサポートされていません。"},
+  es:{rate:"Las búsquedas están limitadas temporalmente. Espera un minuto e inténtalo de nuevo.",required:"Describe qué te gustaría descubrir.",category:"Esta categoría no es compatible."},
+  fr:{rate:"Les recherches sont temporairement limitées. Attendez une minute puis réessayez.",required:"Décrivez ce que vous souhaitez découvrir.",category:"Cette catégorie n’est pas prise en charge."},
+  de:{rate:"Die Suche ist vorübergehend begrenzt. Warte eine Minute und versuche es erneut.",required:"Beschreibe, was du entdecken möchtest.",category:"Diese Kategorie wird nicht unterstützt."},
+  tr:{rate:"Aramalar geçici olarak sınırlandırıldı. Bir dakika bekleyip tekrar deneyin.",required:"Keşfetmek istediğiniz şeyi açıklayın.",category:"Bu kategori desteklenmiyor."}
+ };
+ const M=messages[uiLanguage]||messages.en;
+ if(!allowDiscoveryRequest(req))return res.status(429).json({error:M.rate,status:"rate_limited"});
+ const query=String(body.query||"").trim().slice(0,180),requestedCategory=String(body.category||"auto").toLowerCase();
  const tasteProfile={preferences:Array.isArray(body.tasteProfile?.preferences)?body.tasteProfile.preferences.filter(x=>typeof x==="string").map(x=>x.slice(0,80)).slice(0,20):[],avoid:Array.isArray(body.tasteProfile?.avoid)?body.tasteProfile.avoid.filter(x=>typeof x==="string").map(x=>x.slice(0,80)).slice(0,15):[]};
  const categories={music:{label:"Musiqa",type:"urn:entity:artist",description:"music artists and musicians"},anime:{label:"Anime va seriallar",type:"urn:entity:tv_show",description:"anime and television shows"},movie:{label:"Filmlar",type:"urn:entity:movie",description:"movies and films"},places:{label:"Joylar va tajribalar",type:"urn:entity:place",description:"places and experiences"},books:{label:"Kitoblar",type:"urn:entity:book",description:"books and authors"},games:{label:"Videoo‘yinlar",type:"urn:entity:videogame",description:"video games"}};
- if(!query)return res.status(400).json({error:"Iltimos, istagingizni yozing.",status:"error"});
+ if(!query)return res.status(400).json({error:M.required,status:"error"});
  const automatic=requestedCategory==="auto"||requestedCategory==="all";
- if(!automatic&&!categories[requestedCategory])return res.status(400).json({error:"Bu kategoriya qo‘llab-quvvatlanmaydi.",status:"error"});
+ if(!automatic&&!categories[requestedCategory])return res.status(400).json({error:M.category,status:"error"});
  const chosen=automatic?["anime","movie","music","books","places","games"]:[requestedCategory],apiKey=process.env.QLOO_API_KEY;
  if(!apiKey)return res.json({demo:true,query,category:requestedCategory,categoryLabel:automatic?"Barcha mos yo‘nalishlar":categories[requestedCategory].label,results:[],entities:[],resultCount:0,status:"not_configured"});
  const geminiKey=process.env.GEMINI_API_KEY;
