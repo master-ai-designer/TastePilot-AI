@@ -411,7 +411,37 @@ app.post("/api/discover",async(req,res)=>{
     if(rr.ok){const dd=await rr.json(),parts=dd&&dd.candidates&&dd.candidates[0]&&dd.candidates[0].content&&dd.candidates[0].content.parts;let raw=parts?parts.map(p=>p.text||"").join("").trim():"[]";raw=raw.replace(/^\x60\x60\x60(?:json)?/i,"").replace(/\x60\x60\x60$/,"");const parsed=JSON.parse(raw);if(Array.isArray(parsed))explanations=parsed;}
    }catch(e){console.warn("TastePilot explanation generation unavailable.");}
   }
-  const results=selected.map((item,index)=>{const found=explanations.find(x=>Number(x.index)===index&&typeof x.reason==="string");return Object.assign({},item,{tastepilotCategory:item._tastepilotCategory,tastepilotCategoryLabel:item._tastepilotCategoryLabel,tastepilotSearchQuery:item._tastepilotSearchQuery,tastepilotReason:found?found.reason:(/[\u0600-\u06ff]/.test(query)?"تم العثور على هذا العنصر في الكتالوج ضمن فئة "+item._tastepilotCategoryLabel+". لا يمكن تأكيد مدى ملاءمته من العنوان وحده، لذا يُنصح بالاطلاع على تفاصيله.":/[\u0400-\u04ff]/.test(query)?"Этот вариант найден в каталоге категории «"+item._tastepilotCategoryLabel+"». По одному названию нельзя уверенно подтвердить, насколько он подходит; стоит изучить подробности.":/[\u3040-\u30ff\u3400-\u9fff]/.test(query)?"この候補はカタログの「"+item._tastepilotCategoryLabel+"」カテゴリで見つかりました。タイトルだけでは適合性を判断できないため、詳細を確認してください。":"“"+query+"” so‘rovingizga "+item._tastepilotCategoryLabel.toLowerCase()+" yo‘nalishi orqali javob izlash uchun katalogdan topildi. Nomi asosida mosligi hali to‘liq tasdiqlanmagan — batafsil tekshirib ko‘rish kerak.")});});
+  const resultLanguage=detectFallbackLanguage(query);
+  const localizedLabels={
+   music:{uz:"Musiqa",en:"Music",ru:"Музыка",ar:"الموسيقى",ja:"音楽",tr:"Müzik",es:"Música",fr:"Musique",de:"Musik"},
+   anime:{uz:"Anime va seriallar",en:"Anime and series",ru:"Аниме и сериалы",ar:"الأنمي والمسلسلات",ja:"アニメ・シリーズ",tr:"Anime ve diziler",es:"Anime y series",fr:"Anime et séries",de:"Anime und Serien"},
+   movie:{uz:"Filmlar",en:"Films",ru:"Фильмы",ar:"الأفلام",ja:"映画",tr:"Filmler",es:"Películas",fr:"Films",de:"Filme"},
+   places:{uz:"Joylar va tajribalar",en:"Places and experiences",ru:"Места и впечатления",ar:"الأماكن والتجارب",ja:"場所と体験",tr:"Mekânlar ve deneyimler",es:"Lugares y experiencias",fr:"Lieux et expériences",de:"Orte und Erlebnisse"},
+   books:{uz:"Kitoblar",en:"Books",ru:"Книги",ar:"الكتب",ja:"本",tr:"Kitaplar",es:"Libros",fr:"Livres",de:"Bücher"},
+   games:{uz:"Videoo‘yinlar",en:"Video games",ru:"Видеоигры",ar:"ألعاب الفيديو",ja:"ビデオゲーム",tr:"Video oyunları",es:"Videojuegos",fr:"Jeux vidéo",de:"Videospiele"}
+  };
+  const fallbackReasons={
+   uz:(label)=>"Bu nomzod so‘rovingizga mos kelishi mumkin bo‘lgan "+label+" natijasi sifatida katalogdan topildi. Faqat nomiga qarab mosligini aniq tasdiqlab bo‘lmaydi — batafsil ma’lumotini tekshirib ko‘ring.",
+   en:(label)=>"This catalogue item was found as a possible match in "+label+". Its title alone is not enough to confirm how well it fits, so check the details before deciding.",
+   ru:(label)=>"Этот вариант найден в каталоге в категории «"+label+"» как возможное совпадение с запросом. По одному названию нельзя точно подтвердить, насколько он подходит, поэтому стоит проверить подробности.",
+   ar:(label)=>"عُثر على هذا العنصر في فئة «"+label+"» بوصفه خيارًا قد يناسب طلبك. لا يكفي العنوان وحده لتأكيد مدى ملاءمته، لذا يُرجى مراجعة التفاصيل.",
+   ja:(label)=>"この候補は「"+label+"」カテゴリで、リクエストに合う可能性があるものとして見つかりました。タイトルだけでは適合性を判断できないため、詳細を確認してください。",
+   tr:(label)=>"Bu öğe, isteğinize uygun olabilecek bir seçenek olarak "+label+" kategorisinde bulundu. Yalnızca başlığa bakarak uygunluğunu doğrulamak mümkün değil; ayrıntıları kontrol edin.",
+   es:(label)=>"Este elemento se encontró en la categoría «"+label+"» como posible coincidencia con tu solicitud. El título por sí solo no confirma si encaja; consulta los detalles antes de decidir.",
+   fr:(label)=>"Cet élément a été trouvé dans la catégorie «"+label+"» comme correspondance possible. Le titre seul ne permet pas de confirmer qu’il convient ; consultez les détails.",
+   de:(label)=>"Dieser Eintrag wurde in der Kategorie „"+label+"“ als mögliche Übereinstimmung gefunden. Der Titel allein bestätigt nicht, wie gut er passt; prüfe daher die Details."
+  };
+  const results=selected.map((item,index)=>{
+   const found=explanations.find(x=>Number(x.index)===index&&typeof x.reason==="string");
+   const category=item._tastepilotCategory;
+   const label=(localizedLabels[category]&&localizedLabels[category][resultLanguage])||(localizedLabels[category]&&localizedLabels[category].en)||"catalogue";
+   return Object.assign({},item,{
+    tastepilotCategory:item._tastepilotCategory,
+    tastepilotCategoryLabel:label,
+    tastepilotSearchQuery:item._tastepilotSearchQuery,
+    tastepilotReason:found?found.reason:(fallbackReasons[resultLanguage]||fallbackReasons.en)(label)
+   });
+  });
   return res.json({demo:false,provider:"qloo",status:results.length?"results_found":"no_results",query,category:requestedCategory,categoryLabel:automatic?"Barcha mos yo‘nalishlar":categories[requestedCategory].label,automatic,resultCount:results.length,partialErrors:failed.length,explanationMode:explanations.length?"ai":"cautious_fallback",entities:results,results});
  }catch(error){console.error("Qloo discovery error:",error.name||"Error");return res.status(502).json({error:error.name==="TimeoutError"?"Qloo javobi kechikyapti. Qayta urinib ko‘ring.":error.message||"Qloo serveriga ulanib bo‘lmadi.",provider:"qloo",status:"error"});}
 });
