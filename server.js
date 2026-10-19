@@ -368,13 +368,27 @@ app.post("/api/voice-token",async(req,res)=>{
     }
    }
   };
-  const response=await fetch("https://generativelanguage.googleapis.com/v1beta/auth_tokens",{
+  let response=await fetch("https://generativelanguage.googleapis.com/v1beta/auth_tokens",{
    method:"POST",headers:{"x-goog-api-key":key,"Content-Type":"application/json"},body:JSON.stringify(body),signal:AbortSignal.timeout(10000)
   });
-  const raw=await response.text();
-  if(!response.ok)return res.status(response.status).json({error:"Could not start voice agent."});
+  let raw=await response.text();
+  let usedMode=mode, notice=null;
+  if(!response.ok&&mode==="thinking"){
+   console.warn("Extended Thinking token creation failed; falling back to standard Live:",response.status,raw.slice(0,500));
+   usedMode="live";
+   body.liveConnectConstraints.model="models/gemini-3.8-live";
+   response=await fetch("https://generativelanguage.googleapis.com/v1beta/auth_tokens",{
+    method:"POST",headers:{"x-goog-api-key":key,"Content-Type":"application/json"},body:JSON.stringify(body),signal:AbortSignal.timeout(10000)
+   });
+   raw=await response.text();
+   notice="Extended Thinking is not available for this session, so TastePilot switched to standard Live voice.";
+  }
+  if(!response.ok){
+   console.error("Gemini voice token provisioning failed:",response.status,raw.slice(0,700));
+   return res.status(502).json({error:"Gemini could not create a voice session. Check the API key, model access and billing in Google AI Studio."});
+  }
   const data=JSON.parse(raw);
-  return res.json({token:data.name,model:mode==="thinking"?"gemini-3.8-live-extended-thinking":"gemini-3.8-live",mode});
+  return res.json({token:data.name,model:usedMode==="thinking"?"gemini-3.8-live-extended-thinking":"gemini-3.8-live",mode:usedMode,notice});
  }catch(error){
   console.error("Voice token error:",error);
   return res.status(502).json({error:"Voice agent is temporarily unavailable."});
