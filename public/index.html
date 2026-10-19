@@ -1038,6 +1038,26 @@ function setInterfaceLanguage(lang,save=true){
  const moduleKicker=document.querySelector('.sectionhead .section-kicker');if(moduleKicker)moduleKicker.textContent=uiPatch.sectionKicker;
  const moduleTitle=document.querySelector('.sectionhead h2');if(moduleTitle)moduleTitle.textContent=uiPatch.sectionTitle;
  const moduleDesc=document.querySelector('.sectionhead .muted');if(moduleDesc)moduleDesc.textContent=uiPatch.sectionDesc;
+ const resultUI={
+  en:{kicker:'LIVE CATALOGUE CHECK',title:'Discovery results',description:'Live results returned by the Qloo API appear here.',empty:'Submit a request to see matching results here.'},
+  uz:{kicker:'JONLI KATALOG TEKSHIRUVI',title:'Topilgan natijalar',description:'Bu yerda Qloo API qaytargan haqiqiy katalog natijalari ko‘rsatiladi.',empty:'So‘rov yuborilgandan keyin natijalar shu yerda chiqadi.'},
+  ru:{kicker:'ПРОВЕРКА КАТАЛОГА В РЕАЛЬНОМ ВРЕМЕНИ',title:'Результаты поиска',description:'Здесь отображаются реальные результаты, полученные от API Qloo.',empty:'Результаты появятся здесь после отправки запроса.'},
+  es:{kicker:'CONSULTA DEL CATÁLOGO EN DIRECTO',title:'Resultados',description:'Aquí aparecen los resultados reales devueltos por la API de Qloo.',empty:'Envía una solicitud para ver los resultados aquí.'},
+  fr:{kicker:'VÉRIFICATION DU CATALOGUE EN DIRECT',title:'Résultats de découverte',description:'Les résultats réels renvoyés par l’API Qloo apparaissent ici.',empty:'Envoyez une demande pour afficher les résultats ici.'},
+  de:{kicker:'LIVE-KATALOGABFRAGE',title:'Suchergebnisse',description:'Hier erscheinen die echten Ergebnisse der Qloo-API.',empty:'Sende eine Anfrage, um passende Ergebnisse zu sehen.'},
+  tr:{kicker:'CANLI KATALOG KONTROLÜ',title:'Keşif sonuçları',description:'Qloo API tarafından döndürülen gerçek sonuçlar burada görünür.',empty:'Sonuçları görmek için bir istek gönder.'},
+  ja:{kicker:'ライブカタログ確認',title:'検索結果',description:'Qloo APIから返された実際の結果がここに表示されます。',empty:'リクエストを送信すると、ここに結果が表示されます。'},
+  ar:{kicker:'فحص الكتالوج المباشر',title:'نتائج الاكتشاف',description:'تظهر هنا النتائج الفعلية التي أعادتها واجهة Qloo.',empty:'أرسل طلبًا لعرض النتائج هنا.'}
+ };
+ const resultText=resultUI[lang]||resultUI.en;
+ const resultSection=document.getElementById('discovery-results');
+ if(resultSection){
+  const resultKicker=resultSection.querySelector('.section-kicker');if(resultKicker)resultKicker.textContent=resultText.kicker;
+  const resultTitle=resultSection.querySelector('h2');if(resultTitle)resultTitle.textContent=resultText.title;
+  const resultDescription=resultSection.querySelector('.discovery-results-head .muted');if(resultDescription)resultDescription.textContent=resultText.description;
+  const emptyResult=resultSection.querySelector('#discovery-result-list .discovery-empty');
+  if(emptyResult&&!window.tpLastDiscoveryResults?.length)emptyResult.textContent=resultText.empty;
+ }
  const discoverLabels={en:'Discover',uz:'Kashf et',ru:'Найти',ja:'見つける',es:'Descubrir',fr:'Découvrir',de:'Entdecken',tr:'Keşfet',ar:'اكتشف'};
  const discoverButton=document.querySelector('button.go');
  if(discoverButton){const label=discoverLabels[lang]||discoverLabels.en;const arrow=discoverButton.querySelector('span');discoverButton.firstChild.nodeValue=label+' ';if(arrow)arrow.setAttribute('aria-hidden','true');}
