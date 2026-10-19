@@ -1081,7 +1081,7 @@ function setInterfaceLanguage(lang,save=true){
  attrs.forEach(([id,attr,base])=>{const el=document.getElementById(id);if(el)el.setAttribute(attr,lang==='en'?base:(dict[base]||base))});
  const settingsTitle=document.querySelector('.settings-head h3');if(settingsTitle)settingsTitle.textContent=lang==='en'?'Settings':(dict['Settings']||'Settings');
  if(save)try{localStorage.setItem('tastepilot-language',lang)}catch(e){}
- if(window.tpLastDiscoveryContext&&window.tpLastDiscoveryContext.language!==lang){const q=document.getElementById('q'),cat=document.getElementById('discoveryCategory');if(q&&window.tpLastDiscoveryContext.query)q.value=window.tpLastDiscoveryContext.query;if(cat&&window.tpLastDiscoveryContext.data&&window.tpLastDiscoveryContext.data.category)cat.value=window.tpLastDiscoveryContext.data.category;window.setTimeout(()=>{if(typeof discover==='function')discover()},0);}
+  // Changing interface language must not repeat a live Qloo search or consume API quota.
 }
 
 function toggleAppearance(force){
