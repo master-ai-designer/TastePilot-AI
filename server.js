@@ -458,7 +458,7 @@ app.post("/api/discover",async(req,res)=>{
   const results=selected.map((item,index)=>{
    const found=explanations.find(x=>Number(x.index)===index&&typeof x.reason==="string");
    const category=item._tastepilotCategory;
-   const label=(localizedLabels[category]&&localizedLabels[category][resultLanguage])||(localizedLabels[category]&&localizedLabels[category].en)||"catalogue";
+   const label=(localizedLabels[category]&&localizedLabels[category][uiLanguage])||(localizedLabels[category]&&localizedLabels[category].en)||"catalogue";
    return Object.assign({},item,{
     tastepilotCategory:item._tastepilotCategory,
     tastepilotCategoryLabel:label,
@@ -466,7 +466,7 @@ app.post("/api/discover",async(req,res)=>{
     tastepilotReason:found?found.reason:(fallbackReasons[resultLanguage]||fallbackReasons.en)(label)
    });
   });
-  return res.json({demo:false,provider:"qloo",status:results.length?"results_found":"no_results",query,category:requestedCategory,categoryLabel:automatic?"Barcha mos yo‘nalishlar":categories[requestedCategory].label,automatic,resultCount:results.length,partialErrors:failed.length,explanationMode:explanations.length?"ai":"cautious_fallback",entities:results,results});
+  const categoryUiLabels={uz:{auto:"Barcha mos yo‘nalishlar",music:"Musiqa",anime:"Anime va seriallar",movie:"Filmlar",places:"Joylar va tajribalar",books:"Kitoblar",games:"Videoo‘yinlar"},en:{auto:"All relevant categories",music:"Music",anime:"Anime and series",movie:"Films",places:"Places and experiences",books:"Books",games:"Video games"},ru:{auto:"Все подходящие категории",music:"Музыка",anime:"Аниме и сериалы",movie:"Фильмы",places:"Места и впечатления",books:"Книги",games:"Видеоигры"},ar:{auto:"جميع الفئات المناسبة",music:"الموسيقى",anime:"الأنمي والمسلسلات",movie:"الأفلام",places:"الأماكن والتجارب",books:"الكتب",games:"ألعاب الفيديو"},ja:{auto:"関連するすべてのカテゴリ",music:"音楽",anime:"アニメ・シリーズ",movie:"映画",places:"場所と体験",books:"本",games:"ビデオゲーム"},tr:{auto:"İlgili tüm kategoriler",music:"Müzik",anime:"Anime ve diziler",movie:"Filmler",places:"Mekânlar ve deneyimler",books:"Kitaplar",games:"Video oyunları"},es:{auto:"Todas las categorías relevantes",music:"Música",anime:"Anime y series",movie:"Películas",places:"Lugares y experiencias",books:"Libros",games:"Videojuegos"},fr:{auto:"Toutes les catégories pertinentes",music:"Musique",anime:"Anime et séries",movie:"Films",places:"Lieux et expériences",books:"Livres",games:"Jeux vidéo"},de:{auto:"Alle passenden Kategorien",music:"Musik",anime:"Anime und Serien",movie:"Filme",places:"Orte und Erlebnisse",books:"Bücher",games:"Videospiele"}};const categoryUi=categoryUiLabels[uiLanguage]||categoryUiLabels.en;return res.json({demo:false,provider:"qloo",status:results.length?"results_found":"no_results",query,category:requestedCategory,categoryLabel:automatic?categoryUi.auto:(categoryUi[requestedCategory]||categories[requestedCategory].label),automatic,resultCount:results.length,partialErrors:failed.length,explanationMode:explanations.length?"ai":"cautious_fallback",entities:results,results});
  }catch(error){console.error("Qloo discovery error:",error.name||"Error");return res.status(502).json({error:error.name==="TimeoutError"?M.timeout:(error.message||M.failed),provider:"qloo",status:"error"});}
 });
 if(!process.env.VERCEL){const port=process.env.PORT||3000;app.listen(port,()=>console.log(`TastePilot running on http://localhost:${port}`))}
