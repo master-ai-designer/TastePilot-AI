@@ -46,7 +46,7 @@ function detectReplyLanguage(message,history=[]){
  const current=detectFallbackLanguage(raw);
  const ambiguous=/^(ok|okay|yes|no|yeah|yep|nope|ha|xa|yo['’‘]?q|mayli|bo['’‘]?ladi|tushunarli|yana|davom et|да|нет|ага|хорошо|تمام|نعم|لا|はい|いいえ|うん|oui|non|d’accord|ja|nein|evet|hayır|sí|si)$/i.test(raw);
  if(ambiguous&&Array.isArray(history)){
-  const previous=[...history].reverse().find(item=>item&&item.role==="user"&&typeof item.text==="string"&&item.text.trim());
+  const previous=[...history].reverse().find(item=>item&&item.role==="user"&&typeof item.text==="string"&&item.text.trim()&&item.text.trim()!==raw);
   if(previous)return detectFallbackLanguage(previous.text);
  }
  return current;
