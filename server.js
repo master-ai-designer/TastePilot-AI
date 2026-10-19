@@ -367,15 +367,15 @@ app.post("/api/discover",async(req,res)=>{
  const body=req.body||{};
  const uiLanguage=["uz","en","ru","ar","ja","de","es","fr","tr"].includes(body.language)?body.language:"en";
  const messages={
-  uz:{rate:"Qidiruvlar soni vaqtincha cheklangan. Bir daqiqadan keyin qayta urinib ko‘ring.",required:"Iltimos, istagingizni yozing.",category:"Bu kategoriya qo‘llab-quvvatlanmaydi."},
-  en:{rate:"Searches are temporarily limited. Please wait a minute and try again.",required:"Please describe what you want to discover.",category:"This category is not supported."},
-  ru:{rate:"Частота поиска временно ограничена. Подождите минуту и попробуйте снова.",required:"Опишите, что вы хотите найти.",category:"Эта категория не поддерживается."},
-  ar:{rate:"تم تقييد البحث مؤقتًا. انتظر دقيقة ثم حاول مرة أخرى.",required:"يرجى وصف ما تريد اكتشافه.",category:"هذه الفئة غير مدعومة."},
-  ja:{rate:"検索は一時的に制限されています。1分ほど待ってから再試行してください。",required:"見つけたいものを入力してください。",category:"このカテゴリはサポートされていません。"},
-  es:{rate:"Las búsquedas están limitadas temporalmente. Espera un minuto e inténtalo de nuevo.",required:"Describe qué te gustaría descubrir.",category:"Esta categoría no es compatible."},
-  fr:{rate:"Les recherches sont temporairement limitées. Attendez une minute puis réessayez.",required:"Décrivez ce que vous souhaitez découvrir.",category:"Cette catégorie n’est pas prise en charge."},
-  de:{rate:"Die Suche ist vorübergehend begrenzt. Warte eine Minute und versuche es erneut.",required:"Beschreibe, was du entdecken möchtest.",category:"Diese Kategorie wird nicht unterstützt."},
-  tr:{rate:"Aramalar geçici olarak sınırlandırıldı. Bir dakika bekleyip tekrar deneyin.",required:"Keşfetmek istediğiniz şeyi açıklayın.",category:"Bu kategori desteklenmiyor."}
+  uz:{rate:"Qidiruvlar soni vaqtincha cheklangan. Bir daqiqadan keyin qayta urinib ko‘ring.",required:"Iltimos, istagingizni yozing.",category:"Bu kategoriya qo‘llab-quvvatlanmaydi.",auth:"Qloo autentifikatsiyasi muvaffaqiyatsiz. Vercel sozlamalaridagi QLOO_API_KEY kalitini tekshiring.",limit:"Qloo so‘rov limiti tugadi. Biroz kutib, qayta urinib ko‘ring.",unavailable:"Qloo qidiruvi vaqtincha ishlamayapti.",timeout:"Qloo javobi kechikyapti. Qayta urinib ko‘ring.",failed:"Qloo serveriga ulanib bo‘lmadi."},
+  en:{rate:"Searches are temporarily limited. Please wait a minute and try again.",required:"Please describe what you want to discover.",category:"This category is not supported.",auth:"Qloo authentication failed. Check QLOO_API_KEY in Vercel.",limit:"The Qloo request limit was reached. Wait a moment and try again.",unavailable:"Qloo search is temporarily unavailable.",timeout:"Qloo is taking too long to respond. Please try again.",failed:"Could not connect to Qloo."},
+  ru:{rate:"Частота поиска временно ограничена. Подождите минуту и попробуйте снова.",required:"Опишите, что вы хотите найти.",category:"Эта категория не поддерживается.",auth:"Не удалось пройти аутентификацию Qloo. Проверьте QLOO_API_KEY в Vercel.",limit:"Достигнут лимит запросов Qloo. Немного подождите и попробуйте снова.",unavailable:"Поиск Qloo временно недоступен.",timeout:"Qloo слишком долго отвечает. Попробуйте ещё раз.",failed:"Не удалось подключиться к Qloo."},
+  ar:{rate:"تم تقييد البحث مؤقتًا. انتظر دقيقة ثم حاول مرة أخرى.",required:"يرجى وصف ما تريد اكتشافه.",category:"هذه الفئة غير مدعومة.",auth:"فشل التحقق من Qloo. تحقق من إعداد QLOO_API_KEY في Vercel.",limit:"تم بلوغ حد طلبات Qloo. انتظر قليلًا ثم حاول مرة أخرى.",unavailable:"البحث عبر Qloo غير متاح مؤقتًا.",timeout:"استغرق Qloo وقتًا طويلًا للرد. حاول مرة أخرى.",failed:"تعذر الاتصال بخدمة Qloo."},
+  ja:{rate:"検索は一時的に制限されています。1分ほど待ってから再試行してください。",required:"見つけたいものを入力してください。",category:"このカテゴリはサポートされていません。",auth:"Qlooの認証に失敗しました。VercelのQLOO_API_KEY設定を確認してください。",limit:"Qlooのリクエスト上限に達しました。少し待ってから再試行してください。",unavailable:"Qloo検索は一時的に利用できません。",timeout:"Qlooの応答に時間がかかっています。もう一度お試しください。",failed:"Qlooサービスに接続できませんでした。"},
+  es:{rate:"Las búsquedas están limitadas temporalmente. Espera un minuto e inténtalo de nuevo.",required:"Describe qué te gustaría descubrir.",category:"Esta categoría no es compatible.",auth:"Falló la autenticación de Qloo. Revisa QLOO_API_KEY en Vercel.",limit:"Se alcanzó el límite de solicitudes de Qloo. Espera un momento e inténtalo de nuevo.",unavailable:"La búsqueda de Qloo no está disponible temporalmente.",timeout:"Qloo está tardando demasiado en responder. Inténtalo de nuevo.",failed:"No se pudo conectar con Qloo."},
+  fr:{rate:"Les recherches sont temporairement limitées. Attendez une minute puis réessayez.",required:"Décrivez ce que vous souhaitez découvrir.",category:"Cette catégorie n’est pas prise en charge.",auth:"L’authentification Qloo a échoué. Vérifiez QLOO_API_KEY dans Vercel.",limit:"La limite de requêtes Qloo est atteinte. Patientez puis réessayez.",unavailable:"La recherche Qloo est temporairement indisponible.",timeout:"Qloo met trop de temps à répondre. Réessayez.",failed:"Impossible de joindre le service Qloo."},
+  de:{rate:"Die Suche ist vorübergehend begrenzt. Warte eine Minute und versuche es erneut.",required:"Beschreibe, was du entdecken möchtest.",category:"Diese Kategorie wird nicht unterstützt.",auth:"Die Qloo-Authentifizierung ist fehlgeschlagen. Prüfe QLOO_API_KEY in Vercel.",limit:"Das Qloo-Anfragelimit wurde erreicht. Warte kurz und versuche es erneut.",unavailable:"Die Qloo-Suche ist vorübergehend nicht verfügbar.",timeout:"Qloo antwortet zu langsam. Bitte versuche es erneut.",failed:"Verbindung zu Qloo nicht möglich."},
+  tr:{rate:"Aramalar geçici olarak sınırlandırıldı. Bir dakika bekleyip tekrar deneyin.",required:"Keşfetmek istediğiniz şeyi açıklayın.",category:"Bu kategori desteklenmiyor.",auth:"Qloo kimlik doğrulaması başarısız oldu. Vercel'deki QLOO_API_KEY ayarını kontrol edin.",limit:"Qloo istek sınırına ulaşıldı. Biraz bekleyip tekrar deneyin.",unavailable:"Qloo araması geçici olarak kullanılamıyor.",timeout:"Qloo yanıt vermekte gecikiyor. Lütfen tekrar deneyin.",failed:"Qloo hizmetine bağlanılamadı."}
  };
  const M=messages[uiLanguage]||messages.en;
  if(!allowDiscoveryRequest(req))return res.status(429).json({error:M.rate,status:"rate_limited"});
@@ -405,15 +405,15 @@ app.post("/api/discover",async(req,res)=>{
   const config=categories[category],searchQuery=await interpretForCategory(category),url=new URL("https://hackathon.api.qloo.com/search");
   url.searchParams.set("query",searchQuery);url.searchParams.set("types",config.type);url.searchParams.set("take",automatic?"5":"12");
   const r=await fetch(url,{headers:{"X-Api-Key":apiKey,"Accept":"application/json"},signal:AbortSignal.timeout(12000)});
-  if(r.status===401||r.status===403)throw Object.assign(new Error("Qloo autentifikatsiyasi muvaffaqiyatsiz. Vercel'dagi QLOO_API_KEY sozlamasini tekshiring."),{status:r.status});
-  if(r.status===429)throw Object.assign(new Error("Qloo so‘rov limiti tugadi. Biroz kutib, qayta urinib ko‘ring."),{status:429});
-  if(!r.ok)throw Object.assign(new Error("Qloo qidiruvi vaqtincha ishlamayapti."),{status:r.status});
+  if(r.status===401||r.status===403)throw Object.assign(new Error(M.auth),{status:r.status});
+  if(r.status===429)throw Object.assign(new Error(M.limit),{status:429});
+  if(!r.ok)throw Object.assign(new Error(M.unavailable),{status:r.status});
   const d=await r.json(),items=d&&d.results&&Array.isArray(d.results.entities)?d.results.entities:d&&Array.isArray(d.entities)?d.entities:d&&Array.isArray(d.results)?d.results:[];
   return items.map(item=>Object.assign({},item,{_tastepilotCategory:category,_tastepilotCategoryLabel:config.label,_tastepilotSearchQuery:searchQuery}));
  }
  try{
   const settled=await Promise.allSettled(chosen.map(searchCategory)),failed=settled.filter(x=>x.status==="rejected"),entities=settled.filter(x=>x.status==="fulfilled").flatMap(x=>x.value);
-  if(!entities.length&&failed.length){const e=failed[0].reason;return res.status(e.status===429?429:502).json({error:e.message||"Qloo qidiruvi bajarilmadi.",provider:"qloo",status:"error"});}
+  if(!entities.length&&failed.length){const e=failed[0].reason;return res.status(e.status===429?429:502).json({error:e.message||M.failed,provider:"qloo",status:"error"});}
   const seen=new Set(),unique=entities.filter(item=>{const key=String(item.entity_id||item.id||item.name||item.title||"").toLowerCase();if(!key||seen.has(key))return false;seen.add(key);return true;}),selected=unique.slice(0,12);
   let explanations=[];
   if(geminiKey&&selected.length){
@@ -457,7 +457,7 @@ app.post("/api/discover",async(req,res)=>{
    });
   });
   return res.json({demo:false,provider:"qloo",status:results.length?"results_found":"no_results",query,category:requestedCategory,categoryLabel:automatic?"Barcha mos yo‘nalishlar":categories[requestedCategory].label,automatic,resultCount:results.length,partialErrors:failed.length,explanationMode:explanations.length?"ai":"cautious_fallback",entities:results,results});
- }catch(error){console.error("Qloo discovery error:",error.name||"Error");return res.status(502).json({error:error.name==="TimeoutError"?"Qloo javobi kechikyapti. Qayta urinib ko‘ring.":error.message||"Qloo serveriga ulanib bo‘lmadi.",provider:"qloo",status:"error"});}
+ }catch(error){console.error("Qloo discovery error:",error.name||"Error");return res.status(502).json({error:error.name==="TimeoutError"?M.timeout:(error.message||M.failed),provider:"qloo",status:"error"});}
 });
 if(!process.env.VERCEL){const port=process.env.PORT||3000;app.listen(port,()=>console.log(`TastePilot running on http://localhost:${port}`))}
 export default app;
