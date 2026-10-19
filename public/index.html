@@ -617,7 +617,7 @@ html[lang="ar"] .msg.bot{border-top-left-radius:16px;border-top-right-radius:5px
 <section class="section"><div class="sectionhead"><div><div class="section-kicker">01 // DISCOVERY MODULE</div><h2>Choose your next signal.</h2><div class="muted">Input a signal. Trace unexpected connections across culture.</div></div><div class="section-note muted">CURATED · CONNECTED · PERSONAL</div></div><div class="grid" id="cards"><div class="card"><div class="icon">◈</div><span class="tag">01 / Cinema</span><h3>Stories that stay with you</h3><p>Find a film or series that matches the feeling you want from tonight.</p></div><div class="card"><div class="icon">♫</div><span class="tag">02 / Sound</span><h3>Build a world through music</h3><p>Explore sounds that fit your mood, your setting, and your personal rhythm.</p></div><div class="card"><div class="icon">⌁</div><span class="tag">03 / Out there</span><h3>Discover your next place</h3><p>Connect your interests to restaurants, places, and experiences worth trying.</p></div></div></section>
 <section class="section discovery-results-section" id="discovery-results" hidden><div class="panel"><div class="discovery-results-head"><div><div class="section-kicker">LIVE CATALOGUE CHECK</div><h2>Topilgan natijalar</h2><div class="muted">Bu yerda Qloo API qaytargan haqiqiy katalog natijalari ko‘rsatiladi.</div></div><div class="discovery-result-meta" id="discovery-result-meta">Tekshirilmoqda…</div></div><div id="discovery-result-list" class="discovery-result-list"><div class="discovery-empty">So‘rov yuborilgandan keyin natijalar shu yerda chiqadi.</div></div></div></section>
 <section class="section profile" id="taste"><div class="panel"><div class="section-kicker">02 // SIGNAL MONITOR</div><h2>Taste signal monitor.</h2><div class="muted" id="tasteHint">Try a discovery above to infer signals from your request.</div><div class="bars" id="tasteBars"><div class="barrow"><span>Curiosity</span><div class="bar"><div class="fill" style="width:72%"></div></div><b>72</b></div><div class="barrow"><span>Atmosphere</span><div class="bar"><div class="fill" style="width:64%"></div></div><b>64</b></div><div class="barrow"><span>Story</span><div class="bar"><div class="fill" style="width:81%"></div></div><b>81</b></div><div class="barrow"><span>Novelty</span><div class="bar"><div class="fill" style="width:67%"></div></div><b>67</b></div></div></div><div class="panel"><div class="section-kicker">03 // AGENT PIPELINE</div><h2>From input to intelligence.</h2><div class="flow-steps"><div class="flow-step"><b>01</b>Your intent</div><div class="flow-step"><b>02</b>Taste signals</div><div class="flow-step"><b>03</b>Cultural graph</div><div class="flow-step"><b>04</b>Discovery</div></div><p class="flow-note">TastePilot is designed to connect preferences across categories — not just return a generic list. Live cultural results activate when the Qloo API is configured.</p></div></section>
-<section class="chat" id="chat"><div class="chathead"><div><div class="section-kicker">04 // OPERATOR TERMINAL</div><h2>Initialize a conversation.</h2><div class="muted">Talk to the agent. Refine signals. Follow the trail.</div></div><div class="pill"><span class="agent-status"></span> AGENT ONLINE</div></div><div class="chatlog" id="chatlog"><div class="msg bot welcome-msg"><strong>Welcome to TastePilot.</strong><p>Tell me how you feel, what you enjoy, or what kind of day you want. We’ll find a direction worth exploring.</p><div class="welcome-examples"><button class="mini-prompt" onclick="setChatPrompt('bored')">I’m bored</button><button class="mini-prompt" onclick="setChatPrompt('movie')">Pick a movie</button><button class="mini-prompt" onclick="setChatPrompt('friend')">Plan with a friend</button></div></div></div><div class="chatinput"><input id="chatq" aria-label="Message TastePilot" placeholder="Tell me what you’re in the mood for…" onkeydown="if(event.key==='Enter')sendChat()"><button class="send" onclick="sendChat()">Send ↗</button></div><div class="input-hint">ENTER TO SEND <span>·</span> FOLLOW-UP QUESTIONS WELCOME</div><div class="status" id="voiceStatus" style="text-align:left"></div></section>
+<section class="chat" id="chat"><div class="chathead"><div><div class="section-kicker">04 // OPERATOR TERMINAL</div><h2>Initialize a conversation.</h2><div class="muted">Talk to the agent. Refine signals. Follow the trail.</div></div><div class="pill"><span class="agent-status"></span> AGENT ONLINE</div></div><div class="chatlog" id="chatlog"><div class="msg bot welcome-msg"><strong>Welcome to TastePilot.</strong><p>Tell me how you feel, what you enjoy, or what kind of day you want. We’ll find a direction worth exploring.</p><div class="welcome-examples"><button class="mini-prompt" onclick="setChatPrompt('bored')">I’m bored</button><button class="mini-prompt" onclick="setChatPrompt('movie')">Pick a movie</button><button class="mini-prompt" onclick="setChatPrompt('friend')">Plan with a friend</button></div></div></div><div class="chatinput"><input id="chatq" aria-label="Message TastePilot" placeholder="Tell me what you’re in the mood for…" onkeydown="if(event.key==='Enter')sendChat()"><button class="send" onclick="sendChat()">Send ↗</button></div><div class="voice-toolbar" role="group" aria-label="Voice controls"><button type="button" id="tpVoiceMic" class="voice-btn" aria-pressed="false">🎙 <span id="tpVoiceMicLabel">Speak</span></button><button type="button" id="tpVoiceRead" class="voice-btn" aria-pressed="false">🔊 <span id="tpVoiceReadLabel">Read replies: Off</span></button><button type="button" id="tpVoiceStop" class="voice-btn voice-stop" disabled>Stop audio</button></div><div class="input-hint" id="tpVoiceHint">Speak to send a message, or type as usual. Voice and chat share one conversation.</div><div class="input-hint">ENTER TO SEND <span>·</span> FOLLOW-UP QUESTIONS WELCOME</div><div class="status" id="voiceStatus" style="text-align:left" role="status" aria-live="polite"></div></section>
 </main><footer><span><b>TastePilot AI</b> · Personal culture intelligence</span><span>Built for the Qloo Agentic Hackathon</span></footer>
 <script>
 // Local-first memory: stored per browser profile; never sent to another user's browser.
@@ -1181,6 +1181,68 @@ document.addEventListener('click',e=>{const panel=document.getElementById('appea
  if(seen||reduce){intro.hidden=true;return}
  window.setTimeout(()=>intro.classList.add('tp-open'),80);
  window.setTimeout(finish,2850);
+})();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+<script src="/auth.js" defer></script>
+<style>
+.voice-toolbar{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.voice-btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:38px;padding:0 12px;border:1px solid #ffffff1c;border-radius:8px;background:#ffffff06;color:#c6d2df;font-size:11px;font-weight:650;transition:background .18s,border-color .18s}
+.voice-btn:hover:not(:disabled){border-color:#75e4e86b;background:#75e4e810;color:#efffff}
+.voice-btn[aria-pressed="true"]{border-color:#75e4e8;background:#75e4e817;color:#bafff9}
+.voice-btn:disabled{opacity:.42;cursor:not-allowed}
+.voice-btn.is-listening{border-color:#ff765e;background:#ff765e18;color:#ffb8a9;animation:tp-voice-pulse 1.5s ease-in-out infinite}
+.voice-stop{margin-left:auto}
+@keyframes tp-voice-pulse{50%{box-shadow:0 0 0 4px #ff765e17}}
+@media(prefers-reduced-motion:reduce){.voice-btn.is-listening{animation:none}}
+</style>
+<script>
+(function(){
+ const mic=document.getElementById('tpVoiceMic'),micLabel=document.getElementById('tpVoiceMicLabel');
+ const read=document.getElementById('tpVoiceRead'),readLabel=document.getElementById('tpVoiceReadLabel');
+ const stop=document.getElementById('tpVoiceStop'),status=document.getElementById('voiceStatus'),input=document.getElementById('chatq');
+ if(!mic||!read||!input)return;
+ const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+ let recognition=null,listening=false,readReplies=false,manualStop=false,requestInFlight=false;
+ const words={
+  en:{speak:'Speak',stop:'Stop listening',readOn:'Read replies: On',readOff:'Read replies: Off',start:'Listening… speak now.',unsupported:'Voice input is not supported in this browser. Try Chrome or Edge, or type your message.',denied:'Microphone access was blocked. Allow microphone access in your browser settings.',empty:'I didn’t catch that. Please try again.',sending:'Sending your voice message to TastePilot…',on:'Voice replies enabled.',off:'Voice replies disabled.',stopped:'Audio stopped.',error:'Voice input failed. You can still type normally.'},
+  uz:{speak:'Gapirish',stop:'Tinglashni to‘xtatish',readOn:'Javob ovozi: Yoqilgan',readOff:'Javob ovozi: O‘chiq',start:'Tinglayapman… gapiring.',unsupported:'Bu brauzer ovozli kiritishni qo‘llamaydi. Chrome yoki Edge’da urinib ko‘ring yoki yozing.',denied:'Mikrofonga ruxsat berilmadi. Brauzer sozlamalarida ruxsat bering.',empty:'Ovozingizni anglay olmadim. Qayta urinib ko‘ring.',sending:'Ovozli xabar TastePilot’ga yuborilmoqda…',on:'Ovozli javob yoqildi.',off:'Ovozli javob o‘chirildi.',stopped:'Ovoz to‘xtatildi.',error:'Ovozli kiritishda xatolik. Istasangiz, yozishingiz mumkin.'},
+  ru:{speak:'Говорить',stop:'Остановить прослушивание',readOn:'Озвучивание: Вкл.',readOff:'Озвучивание: Выкл.',start:'Слушаю… говорите.',unsupported:'Браузер не поддерживает голосовой ввод. Попробуйте Chrome или Edge либо напишите сообщение.',denied:'Нет доступа к микрофону. Разрешите его в настройках браузера.',empty:'Не удалось распознать речь. Попробуйте ещё раз.',sending:'Отправляю голосовое сообщение в TastePilot…',on:'Озвучивание ответов включено.',off:'Озвучивание ответов выключено.',stopped:'Воспроизведение остановлено.',error:'Ошибка голосового ввода. Можно продолжить печатать.'}
+ };
+ function t(key){const lang=document.documentElement.lang||'en';return (words[lang]||words.en)[key]||words.en[key]||key}
+ function setStatus(msg){if(status)status.textContent=msg}
+ function languageTag(){const l=document.documentElement.lang||'en';return ({uz:'uz-UZ',en:'en-US',ru:'ru-RU',ar:'ar-SA',ja:'ja-JP',de:'de-DE',es:'es-ES',fr:'fr-FR',tr:'tr-TR'})[l]||l}
+ function stopSpeech(){if('speechSynthesis'in window)window.speechSynthesis.cancel();stop.disabled=true}
+ function speak(text){
+  if(!readReplies||!('speechSynthesis'in window)||!text)return;
+  stopSpeech();
+  const clean=String(text).replace(/\[[^\]]*\]\([^)]*\)/g,'').replace(/https?:\/\/\S+/g,'').replace(/[\x60*_#>]/g,' ').replace(/\s+/g,' ').trim().slice(0,1800);
+  if(!clean)return;
+  const utterance=new SpeechSynthesisUtterance(clean);utterance.lang=languageTag();utterance.rate=1;utterance.pitch=1;
+  const voices=window.speechSynthesis.getVoices();const base=utterance.lang.toLowerCase().split('-')[0];
+  const preferred=voices.find(v=>v.lang.toLowerCase()===utterance.lang.toLowerCase())||voices.find(v=>v.lang.toLowerCase().startsWith(base));
+  if(preferred)utterance.voice=preferred;
+  utterance.onstart=()=>{stop.disabled=false;setStatus('🔊 '+clean.slice(0,90)+(clean.length>90?'…':''))};
+  utterance.onend=()=>{stop.disabled=true;setStatus('')};utterance.onerror=()=>{stop.disabled=true};
+  window.speechSynthesis.speak(utterance);
+ }
+ if(!SR){mic.title=t('unsupported');mic.addEventListener('click',()=>setStatus(t('unsupported')));mic.style.opacity='.7'}
+ else{
+  recognition=new SR();recognition.continuous=false;recognition.interimResults=true;recognition.maxAlternatives=1;
+  recognition.onstart=()=>{listening=true;manualStop=false;mic.classList.add('is-listening');mic.setAttribute('aria-pressed','true');micLabel.textContent=t('stop');setStatus(t('start'))};
+  recognition.onresult=(event)=>{let finalText='';let interim='';for(let i=event.resultIndex;i<event.results.length;i++){const transcript=event.results[i][0].transcript;if(event.results[i].isFinal)finalText+=transcript;else interim+=transcript}if(interim&&!finalText)setStatus(interim);if(finalText.trim()){input.value=finalText.trim();setStatus(t('sending'));manualStop=true;try{recognition.stop()}catch{};if(!requestInFlight){requestInFlight=true;Promise.resolve(window.sendChat()).finally(()=>{requestInFlight=false})}}};
+  recognition.onerror=(event)=>{listening=false;mic.classList.remove('is-listening');mic.setAttribute('aria-pressed','false');micLabel.textContent=t('speak');if(event.error==='not-allowed'||event.error==='service-not-allowed')setStatus(t('denied'));else if(event.error==='no-speech')setStatus(t('empty'));else if(event.error!=='aborted')setStatus(t('error'))};
+  recognition.onend=()=>{listening=false;mic.classList.remove('is-listening');mic.setAttribute('aria-pressed','false');micLabel.textContent=t('speak');if(!manualStop&&status&&status.textContent===t('start'))setStatus('')};
+  mic.addEventListener('click',()=>{if(listening){manualStop=true;recognition.stop();return}if(requestInFlight)return;stopSpeech();recognition.lang=languageTag();try{recognition.start()}catch(e){setStatus(t('error'))}});
+ }
+ read.addEventListener('click',()=>{readReplies=!readReplies;read.setAttribute('aria-pressed',String(readReplies));readLabel.textContent=t(readReplies?'readOn':'readOff');setStatus(t(readReplies?'on':'off'));if(!readReplies)stopSpeech()});
+ stop.addEventListener('click',()=>{stopSpeech();setStatus(t('stopped'))});
+ const originalSend=window.sendChat;
+ if(typeof originalSend==='function'){
+  window.sendChat=async function(){await originalSend();const h=window.tastePilotChatHistory||[];if(readReplies&&h.length){const last=h[h.length-1];if(last&&last.role==='model')speak(last.text)}};
+ }
+ document.addEventListener('visibilitychange',()=>{if(document.hidden&&listening){manualStop=true;try{recognition.stop()}catch{}}});
+ window.addEventListener('beforeunload',()=>{try{if(recognition&&listening)recognition.stop()}catch{};stopSpeech()});
 })();
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
