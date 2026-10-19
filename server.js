@@ -182,6 +182,7 @@ function allowChatRequest(req){
  const recent=(requestLog.get(ip)||[]).filter(t=>now-t<60000);
  if(recent.length>=8)return false;
  recent.push(now); requestLog.set(ip,recent);
+ if(requestLog.size>2000){for(const [key,times] of requestLog){if(!times.length||now-times[times.length-1]>120000)requestLog.delete(key);}}
  return true;
 }
 
@@ -279,7 +280,7 @@ function allowMediaSearch(req){
  const ip=String(req.headers["x-forwarded-for"]||req.socket?.remoteAddress||"unknown").split(",")[0].trim();
  const now=Date.now(), recent=(mediaSearchLog.get(ip)||[]).filter(t=>now-t<60000);
  if(recent.length>=12)return false;
- recent.push(now);mediaSearchLog.set(ip,recent);return true;
+ recent.push(now);mediaSearchLog.set(ip,recent);if(mediaSearchLog.size>2000){for(const [key,times] of mediaSearchLog){if(!times.length||now-times[times.length-1]>120000)mediaSearchLog.delete(key);}}return true;
 }
 app.post("/api/media-search",async(req,res)=>{
  const query=String(req.body?.query||"").trim().slice(0,180);
@@ -300,7 +301,7 @@ app.post("/api/media-search",async(req,res)=>{
   archiveUrl.searchParams.append("fl[]","licenseurl");
   archiveUrl.searchParams.append("fl[]","year");
   archiveUrl.searchParams.set("rows","6");archiveUrl.searchParams.set("page","1");archiveUrl.searchParams.set("output","json");
-  const ar=await fetch(archiveUrl,{headers:{"Accept":"application/json","User-Agent":"TastePilotAI/1.0"}});
+  const ar=await fetch(archiveUrl,{headers:{"Accept":"application/json","User-Agent":"TastePilotAI/1.0"},signal:AbortSignal.timeout(7000)});
   if(ar.ok){
    const ad=await ar.json();
    for(const item of (ad?.response?.docs||[])){
@@ -316,7 +317,7 @@ app.post("/api/media-search",async(req,res)=>{
   try{
    const url=new URL("https://itunes.apple.com/search");
    url.searchParams.set("term",query);url.searchParams.set("entity",kind==="music"?"song":"movie");url.searchParams.set("limit","8");
-   const r=await fetch(url,{headers:{"Accept":"application/json"}});
+   const r=await fetch(url,{headers:{"Accept":"application/json"},signal:AbortSignal.timeout(7000)});
    if(r.ok){
     const data=await r.json();
     for(const x of (data.results||[])){
@@ -352,7 +353,7 @@ app.post("/api/voice-token",async(req,res)=>{
    }
   };
   const response=await fetch("https://generativelanguage.googleapis.com/v1beta/auth_tokens",{
-   method:"POST",headers:{"x-goog-api-key":key,"Content-Type":"application/json"},body:JSON.stringify(body)
+   method:"POST",headers:{"x-goog-api-key":key,"Content-Type":"application/json"},body:JSON.stringify(body),signal:AbortSignal.timeout(10000)
   });
   const raw=await response.text();
   if(!response.ok)return res.status(response.status).json({error:"Could not start voice agent."});
