@@ -22,19 +22,24 @@ app.get("/api/auth-config",(req,res)=>{
 });
 
 function detectFallbackLanguage(message){
- const text=String(message||"").trim().toLowerCase();
- if(/[\u0600-\u06ff]/.test(text))return "ar";
- if(/[\u3040-\u30ff\u3400-\u9fff]/.test(text))return "ja";
- if(/[\u0400-\u04ff]/.test(text))return "ru";
- if(/[ıİğşçöü]/i.test(text)||/\b(merhaba|lütfen|öner|ne arıyorsun|film arıyorum)\b/i.test(text))return "tr";
- if(/[äöüß]/i.test(text)||/\b(ich|bitte|empfiehl|was suchst|film für heute)\b/i.test(text))return "de";
- if(/[¿¡ñ]/i.test(text)||/\b(hola|por favor|recomienda|qué buscas|película|música|estoy|quiero)\b/i.test(text))return "es";
- if(/[àâçéèêëîïôûùüÿœ]/i.test(text)||/\b(bonjour|merci|s'il vous plaît|recommande|je cherche|qu'est-ce|je veux)\b/i.test(text))return "fr";
- const uzWords=/\b(salom|assalomu|rahmat|iltimos|menga|men|qanday|qanaqa|tavsiya|kerak|qidir|topib|ber|bo‘lsa|bo’sa|uzbek|o‘zbek|o'zbek|zerikdim|yoqadi|yoqmaydi|film|kino|musiqa|qo‘shiq|qo'shiq|anime|serial|restoran|sayohat)\b/i;
- const enWords=/\b(hello|hi|hey|please|recommend|suggest|what|which|where|how|can you|help me|i am|i'm|my|for tonight|movie|music|song|restaurant|travel|find|looking for|created|founder)\b/i;
- if(uzWords.test(text))return "uz";
- if(enWords.test(text))return "en";
- return "uz";
+ const raw=String(message||"").trim();
+ const text=raw.toLowerCase();
+ // Scripts are strong signals; do not infer language from generic words such as "anime", "film", or "music".
+ if(/[\u0600-\u06ff]/.test(raw))return "ar";
+ if(/[\u3040-\u30ff\u3400-\u9fff]/.test(raw))return "ja";
+ if(/[\u0400-\u04ff]/.test(raw))return "ru";
+ if(/[ıİğşçöü]/i.test(raw)||/\b(merhaba|lütfen|öner|ne arıyorsun|film arıyorum)\b/i.test(text))return "tr";
+ if(/[äöüß]/i.test(raw)||/\b(ich|bitte|empfiehl|was suchst|film für heute)\b/i.test(text))return "de";
+ if(/[¿¡ñ]/i.test(raw)||/\b(hola|por favor|recomienda|qué buscas|película|música|estoy|quiero)\b/i.test(text))return "es";
+ if(/[àâçéèêëîïôûùüÿœ]/i.test(raw)||/\b(bonjour|merci|s'il vous plaît|recommande|je cherche|qu'est-ce|je veux)\b/i.test(text))return "fr";
+ const uzWords=/\b(salom|assalomu|rahmat|iltimos|menga|men|qanday|qanaqa|tavsiya|kerak|qidir|topib|ber|bo‘lsa|bo’sa|uzbek|o‘zbek|o'zbek|zerikdim|yoqadi|yoqmaydi|kino|musiqa|qo‘shiq|qo'shiq|restoran|sayohat|qaysi|nima|qayerda|nechta|narxi|tushuntir|aytib|yaxshi|yomon|menga|xohlayman)\b/i;
+ const enWords=/\b(hello|hi|hey|please|recommend|suggest|what|which|where|how|can you|help me|i am|i'm|my|for tonight|movie|music|song|restaurant|travel|find|looking for|created|founder|show me|tell me|explain|compare|best|good|want|need|why|when|who|could you)\b/i;
+ const uzMatch=(text.match(uzWords)||[]).length;
+ const enMatch=(text.match(enWords)||[]).length;
+ if(uzMatch>0 && uzMatch>=enMatch)return "uz";
+ if(enMatch>0)return "en";
+ // Latin-script ambiguity should not silently force Uzbek. English is the neutral fallback.
+ return "en";
 }
 function chatReply(message){
  const q=String(message||"").toLowerCase();
