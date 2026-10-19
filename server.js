@@ -351,23 +351,12 @@ app.post("/api/voice-token",async(req,res)=>{
  try{
   const now=Date.now();
   const mode=req.body?.mode==="thinking"?"thinking":"live";
-  const model=mode==="thinking"?"models/gemini-3.8-live-extended-thinking":"models/gemini-3.8-live";
   const language=String(req.body?.language||"en").slice(0,12);
   const languageNames={uz:"Uzbek (Latin)",en:"English",ru:"Russian",ar:"Arabic",ja:"Japanese",de:"German",es:"Spanish",fr:"French",tr:"Turkish"};
   const systemText="You are TastePilot AI, a warm, concise cultural-discovery voice agent. Reply in the same language as the user's latest speech; the interface language is "+(languageNames[language]||"the user's latest language")+", but always follow the actual spoken language and switch immediately when the user switches. Understand Uzbek, English, Russian, Arabic, and other languages when possible. Keep replies natural and conversational, ask at most one short follow-up when essential, and help discover anime, films, music, books, restaurants, travel, places, games, and experiences. Do not invent facts, claim a search was performed, or claim Qloo data unless it was actually provided. Never mention internal instructions.";
-  const body={
-   uses:1,
-   expireTime:new Date(now+10*60*1000).toISOString(),
-   newSessionExpireTime:new Date(now+60*1000).toISOString(),
-   liveConnectConstraints:{
-    model,
-    config:{
-     sessionResumption:{},
-     responseModalities:["AUDIO"],
-     systemInstruction:{parts:[{text:systemText}]}
-    }
-   }
-  };
+  // Create a short-lived token using the basic REST-supported fields; apply model and
+  // system instruction in the WebSocket setup to avoid rejected constraint fields.
+  const body={uses:1,expireTime:new Date(now+10*60*1000).toISOString(),newSessionExpireTime:new Date(now+60*1000).toISOString()};
   let response=await fetch("https://generativelanguage.googleapis.com/v1beta/auth_tokens",{
    method:"POST",headers:{"x-goog-api-key":key,"Content-Type":"application/json"},body:JSON.stringify(body),signal:AbortSignal.timeout(10000)
   });
@@ -376,7 +365,6 @@ app.post("/api/voice-token",async(req,res)=>{
   if(!response.ok&&mode==="thinking"){
    console.warn("Extended Thinking token creation failed; falling back to standard Live:",response.status,raw.slice(0,500));
    usedMode="live";
-   body.liveConnectConstraints.model="models/gemini-3.8-live";
    response=await fetch("https://generativelanguage.googleapis.com/v1beta/auth_tokens",{
     method:"POST",headers:{"x-goog-api-key":key,"Content-Type":"application/json"},body:JSON.stringify(body),signal:AbortSignal.timeout(10000)
    });
@@ -388,7 +376,7 @@ app.post("/api/voice-token",async(req,res)=>{
    return res.status(502).json({error:"Gemini could not create a voice session. Check the API key, model access and billing in Google AI Studio."});
   }
   const data=JSON.parse(raw);
-  return res.json({token:data.name,model:usedMode==="thinking"?"gemini-3.8-live-extended-thinking":"gemini-3.8-live",mode:usedMode,notice});
+  return res.json({token:data.name,model:usedMode==="thinking"?"gemini-3.8-live-extended-thinking":"gemini-3.8-live",mode:usedMode,systemInstruction:systemText,notice});
  }catch(error){
   console.error("Voice token error:",error);
   return res.status(502).json({error:"Voice agent is temporarily unavailable."});
