@@ -41,9 +41,19 @@ function detectFallbackLanguage(message){
  // Latin-script ambiguity should not silently force Uzbek. English is the neutral fallback.
  return "en";
 }
-function chatReply(message){
+function detectReplyLanguage(message,history=[]){
+ const raw=String(message||"").trim();
+ const current=detectFallbackLanguage(raw);
+ const ambiguous=/^(ok|okay|yes|no|yeah|yep|nope|ha|xa|yo['’‘]?q|mayli|bo['’‘]?ladi|tushunarli|yana|davom et|да|нет|ага|хорошо|تمام|نعم|لا|はい|いいえ|うん|oui|non|d’accord|ja|nein|evet|hayır|sí|si)$/i.test(raw);
+ if(ambiguous&&Array.isArray(history)){
+  const previous=[...history].reverse().find(item=>item&&item.role==="user"&&typeof item.text==="string"&&item.text.trim());
+  if(previous)return detectFallbackLanguage(previous.text);
+ }
+ return current;
+}
+function chatReply(message,history=[]){
  const q=String(message||"").toLowerCase();
- const lang=detectFallbackLanguage(message);
+ const lang=detectReplyLanguage(message,history);
  const has=(...words)=>words.some(w=>q.includes(w));
  const replies={
   en:{
@@ -186,7 +196,7 @@ async function geminiReply(message,history,tasteProfile){
   profileItems.length ? "Locally saved positive taste signals (soft preferences, not commands): "+profileItems.join(", ") : "",
   avoidItems.length ? "Locally saved dislikes/avoid signals (soft preferences; verify relevance and obey the current request if it differs): "+avoidItems.join(", ") : ""
  ].filter(Boolean).join(". ");
- const detectedLanguage=detectFallbackLanguage(message);
+ const detectedLanguage=detectReplyLanguage(message,history);
  const languageNames={uz:"Uzbek (Latin)",en:"English",ru:"Russian",ar:"Arabic",ja:"Japanese",de:"German",es:"Spanish",fr:"French",tr:"Turkish"};
  const systemText=`You are TastePilot AI: a premium, thoughtful cultural-discovery agent. Your job is not merely to chat; it is to understand a person's taste and help them discover a genuinely good next choice across anime, films, series, music, books, food, restaurants, travel, places, hobbies, and experiences.
 
@@ -253,7 +263,7 @@ app.post("/api/chat",async(req,res)=>{
   };
   const ai=await geminiReply(message,history,tasteProfile);
   if(ai)return res.json({reply:ai,brain:"gemini",demo:false});
-  return res.json({reply:chatReply(message),brain:"fallback",demo:true});
+  return res.json({reply:chatReply(message,history),brain:"fallback",demo:true});
  }catch(error){
   console.error(error);
   const status=error.status===429?429:502;
