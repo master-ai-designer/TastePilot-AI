@@ -339,7 +339,7 @@ const voiceTokenLog=new Map();
 function allowVoiceTokenRequest(req){
  const ip=String(req.headers["x-forwarded-for"]||req.socket?.remoteAddress||"unknown").split(",")[0].trim();
  const now=Date.now(),recent=(voiceTokenLog.get(ip)||[]).filter(t=>now-t<60000);
- if(recent.length>=5)return false;
+ if(recent.length>=12)return false;
  recent.push(now);voiceTokenLog.set(ip,recent);
  if(voiceTokenLog.size>2000){for(const [key,times] of voiceTokenLog){if(!times.length||now-times[times.length-1]>120000)voiceTokenLog.delete(key);}}
  return true;
