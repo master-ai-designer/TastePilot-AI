@@ -13,22 +13,29 @@
   if(active||starting){await stop("Live voice stopped.");return}
   if(!navigator.mediaDevices?.getUserMedia||!window.WebSocket){status("Live voice is not supported here. Use Chrome/Edge or the regular voice button.");return}
   starting=true;button.disabled=true;status("Requesting microphone permission…");
+  let setupTimer=null,micTimedOut=false;
   try{
-   stream=await navigator.mediaDevices.getUserMedia({audio:{channelCount:1,echoCancellation:true,noiseSuppression:true,autoGainControl:true}});
+   const micRequest=navigator.mediaDevices.getUserMedia({audio:{channelCount:1,echoCancellation:true,noiseSuppression:true,autoGainControl:true}});
+   micRequest.then(s=>{if(micTimedOut)s.getTracks().forEach(t=>t.stop())}).catch(()=>{});
+   stream=await Promise.race([micRequest,new Promise((_,reject)=>setTimeout(()=>{micTimedOut=true;reject(Error("Microphone request timed out. Check Chrome site permissions and the selected microphone."))},12000))]);
+   status("Microphone ready. Creating secure voice session…");
    context=new(window.AudioContext||window.webkitAudioContext)({sampleRate:24000});await context.resume();
+   status("Connecting to Gemini Live…");
    const r=await fetch("/api/voice-token",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({mode:thinking?.checked?"thinking":"live",language:document.documentElement.lang||"en"})});
    const d=await r.json();if(!r.ok||!d.token)throw Error(d.error||"Could not create voice session.");
-   socket=new WebSocket("wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1beta.GenerativeService.BidiGenerateContentConstrained?access_token="+encodeURIComponent(d.token));
+   if(!starting)return;
+   socket=new WebSocket("wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1beta.GenerativeService.BidiGenerateContentConstrained?access_token="+d.token);
+   setupTimer=setTimeout(()=>{if(starting&&!ready)stop("Gemini Live did not confirm setup. Check the WebSocket Messages for a server error; normal chat is still available.")},12000);
    socket.onopen=()=>{const setup={setup:{model:d.model.startsWith("models/")?d.model:"models/"+d.model,generationConfig:{responseModalities:["AUDIO"]},systemInstruction:{parts:[{text:d.systemInstruction||"You are TastePilot AI. Reply in the language the user speaks and switch languages when they do."}]}}};if(d.mode==="thinking")setup.setup.generationConfig.thinkingConfig={thinkingLevel:"medium"};socket.send(JSON.stringify(setup))};
-   socket.onmessage=async(e)=>{let p;try{p=JSON.parse(e.data)}catch{return}
-    if(p.setupComplete){ready=true;active=true;starting=false;button.disabled=false;button.setAttribute("aria-pressed","true");button.classList.add("is-listening");label.textContent="Stop live voice";status("Connected. Speak naturally; tap Stop live voice when finished.");try{source=context.createMediaStreamSource(stream);processor=context.createScriptProcessor(2048,1,1);processor.onaudioprocess=e=>{if(active)send(e.inputBuffer.getChannelData(0))};source.connect(processor);processor.connect(context.destination)}catch(err){await stop("Microphone stream could not start.")}}
+   socket.onmessage=async(e)=>{let p;try{const payload=e.data instanceof Blob?await e.data.text():e.data;p=JSON.parse(payload)}catch(err){console.warn("Gemini Live message could not be parsed:",err);return}
+    if(p.error){console.error("Gemini Live server error:",p.error);await stop("Gemini Live error: "+(p.error.message||p.error.status||"session rejected")+". Normal chat is still available.");return}
+    if(p.setupComplete){clearTimeout(setupTimer);ready=true;active=true;starting=false;button.disabled=false;button.setAttribute("aria-pressed","true");button.classList.add("is-listening");label.textContent="Stop live voice";status("Connected. Speak naturally; tap Stop live voice when finished.");try{source=context.createMediaStreamSource(stream);processor=context.createScriptProcessor(2048,1,1);processor.onaudioprocess=e=>{if(active)send(e.inputBuffer.getChannelData(0))};source.connect(processor);processor.connect(context.destination)}catch(err){await stop("Microphone stream could not start.")}}
     for(const part of (p.serverContent?.modelTurn?.parts||[])){const x=part.inlineData||part.inline_data;if(x?.data&&String(x.mimeType||x.mime_type||"").includes("audio/pcm"))play(x.data,x.mimeType||x.mime_type)}
     if(p.serverContent?.interrupted)nextPlayAt=context?.currentTime||0;
-    if(p.error)await stop("Gemini Live returned an error. Normal chat is still available.");
    };
-   socket.onerror=()=>{if(starting||active)stop("Live voice connection failed. Check model access and try again.")};
-   socket.onclose=()=>{if(starting||active)stop("Live voice session ended. Normal chat is still available.")};
-  }catch(e){await stop(e?.message||"Could not start Live voice. Normal chat remains available.")}
+   socket.onerror=()=>{if(starting||active){console.error("Gemini Live WebSocket error");stop("Live voice connection failed. Check model access and try again.")}};
+   socket.onclose=(e)=>{clearTimeout(setupTimer);if(starting||active)stop("Live voice session ended (code "+e.code+"). Normal chat is still available.")};
+  }catch(e){clearTimeout(setupTimer);console.error("TastePilot Live Voice startup failed:",e);await stop(e?.message||"Could not start Live voice. Normal chat remains available.")}
   finally{button.disabled=false}
  }
  button.addEventListener("click",start);
