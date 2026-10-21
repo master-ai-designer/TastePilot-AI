@@ -430,15 +430,16 @@ function scoreCandidate(item, query, primaryCategory){
  const description=String(item.short_description||item.description||(item.properties&&item.properties.description)||"").toLowerCase();
  const q=String(query||"").toLowerCase();
  let score=item._tastepilotCategory===primaryCategory?8:0;
- const tokens=q.normalize("NFKD").replace(/[^\p{L}\p{N}\s]/gu," ").split(/\s+/).filter(w=>w.length>=3);
+ const intentTerms=new Set(["like","with","the","and","for","that","from","into","about","happy","ending","endings","romantic","romance","anime","series","film","films","movie","movies","manga","please","want","find","show","shows","i"]);
+ const tokens=q.normalize("NFKD").replace(/[^\p{L}\p{N}\s]/gu," ").split(/\s+/).filter(w=>w.length>=3&&!intentTerms.has(w));
  for(const token of tokens){
   if(title.includes(token))score+=3;
   else if(description.includes(token))score+=1;
  }
- // Generic catalogue-like labels are weak evidence of a real, relevant recommendation.
- if(/^(happy ending|happy endings|happy end|romance|romantic|music|anime|movie|film|unknown)$/i.test(title.trim()))score-=8;
+ // Broad, query-like labels are weak evidence of a specific cultural entity.
+ if(/^(happy ending|happy endings|happy end|happy ending romance|romantic anime|anime romance|romance|romantic|music|anime|movie|film|unknown)$/i.test(title.trim()))score-=12;
  if(title.length<4)score-=3;
- if(!description.trim())score-=1;
+ if(!description.trim())score-=2;
  return score;
 }
 const primaryCategory=automatic?inferPrimaryCategory(query):requestedCategory;
@@ -506,7 +507,8 @@ const chosen=automatic?[primaryCategory,...["anime","movie","music","books","pla
    de:(label)=>"Dieser Eintrag wurde in der Kategorie „"+label+"“ als mögliche Übereinstimmung gefunden. Der Titel allein bestätigt nicht, wie gut er passt; prüfe daher die Details."
   };
   const results=selected.map((item,index)=>{
-   const found=explanations.find(x=>Number(x.index)===index&&typeof x.reason==="string");
+   const description=String(item.short_description||item.description||(item.properties&&item.properties.description)||"").trim();
+   const found=description?explanations.find(x=>Number(x.index)===index&&typeof x.reason==="string"):null;
    const category=item._tastepilotCategory;
    const label=(localizedLabels[category]&&localizedLabels[category][uiLanguage])||(localizedLabels[category]&&localizedLabels[category].en)||"catalogue";
    return Object.assign({},item,{
