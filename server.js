@@ -468,7 +468,8 @@ const chosen=automatic?(inferredCategory?[primaryCategory]:["anime","movie","mus
  async function searchCategory(category){
   const config=categories[category],searchQuery=await interpretForCategory(category);
   const headers={"X-Api-Key":apiKey,"Accept":"application/json"};
-  const tokens=[...new Set(searchQuery.toLowerCase().normalize("NFKD").replace(/[^\p{L}\p{N}\s]/gu," ").split(/\s+/).filter(x=>x.length>=4))].slice(0,3);
+  const stopTerms=new Set(["music","song","songs","artist","artists","anime","series","show","shows","movie","movies","film","films","book","books","game","games","place","places","restaurant","restaurants","food","video","the","with","for","from","when","that","your","and","like","want","find","good","best","recommend","please"]);
+  const tokens=[...new Set(searchQuery.toLowerCase().normalize("NFKD").replace(/[^\p{L}\p{N}\s]/gu," ").split(/\s+/).filter(x=>x.length>=4&&!stopTerms.has(x)))].slice(0,3);
   const scopePattern={
    music:/music|media|genre|mood/i,
    anime:/media|genre|tv|show/i,
@@ -537,7 +538,7 @@ const chosen=automatic?(inferredCategory?[primaryCategory]:["anime","movie","mus
   if(!entities.length&&failed.length){const e=failed[0].reason;return res.status(e.status===429?429:502).json({error:e.message||M.failed,provider:"qloo",status:"error"});}
   const seen=new Set(),unique=entities.filter(item=>{const key=String(item.entity_id||item.id||item.name||item.title||"").toLowerCase();if(!key||seen.has(key))return false;seen.add(key);return true;});
   // Keep the inferred primary category prominent, then rank candidates by query/title evidence.
-  const selectedInitial=unique.map((item,index)=>({item,index,score:scoreCandidate(item,query,primaryCategory)}))
+  const selectedInitial=unique.map((item,index)=>({item,index,score:scoreCandidate(item,item._tastepilotSearchQuery||query,primaryCategory) }))
    .sort((a,b)=>b.score-a.score||a.index-b.index).slice(0,18).map(x=>x.item);
   // Remove generic query-like labels that are not useful, standalone cultural titles.
   const genericTitle=/^(happy ending|happy endings|happy end|happy ending romance|romantic anime|anime romance|romance|romantic|music|anime|movie|film|unknown)$/i;
