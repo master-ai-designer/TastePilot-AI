@@ -508,7 +508,7 @@ const chosen=automatic?(inferredCategory?[primaryCategory]:["anime","movie","mus
     const id=String(tag.id||tag.tag_id||"").trim(),name=String(tag.name||tag.label||"").trim(),type=String(tag.type||"");
     if(!id||!name||!scopePattern.test(type))continue;
     const nameTokens=name.toLowerCase().normalize("NFKD").replace(/[^\p{L}\p{N}\s]/gu," ").split(/\s+/);
-    const score=tagTerms.reduce((n,t)=>n+(nameTokens.some(w=>w===t||w.includes(t)||t.includes(w))?3:0),0);
+    const score=tagTerms.flatMap(term=>term.split(/\s+/)).reduce((n,t)=>n+(nameTokens.some(w=>w===t||w.includes(t)||t.includes(w))?3:0),0);
     if(score>0&&(!tagMap.has(id)||tagMap.get(id).score<score))tagMap.set(id,{id,name,type,score});
    }
    const chosenTags=[...tagMap.values()].sort((a,b)=>b.score-a.score).slice(0,3);
