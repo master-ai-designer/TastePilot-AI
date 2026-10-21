@@ -479,8 +479,31 @@ const chosen=automatic?(inferredCategory?[primaryCategory]:["anime","movie","mus
   if(!entities.length&&failed.length){const e=failed[0].reason;return res.status(e.status===429?429:502).json({error:e.message||M.failed,provider:"qloo",status:"error"});}
   const seen=new Set(),unique=entities.filter(item=>{const key=String(item.entity_id||item.id||item.name||item.title||"").toLowerCase();if(!key||seen.has(key))return false;seen.add(key);return true;});
   // Keep the inferred primary category prominent, then rank candidates by query/title evidence.
-  const selected=unique.map((item,index)=>({item,index,score:scoreCandidate(item,query,primaryCategory)}))
-   .sort((a,b)=>b.score-a.score||a.index-b.index).slice(0,12).map(x=>x.item);
+  const selectedInitial=unique.map((item,index)=>({item,index,score:scoreCandidate(item,query,primaryCategory)}))
+   .sort((a,b)=>b.score-a.score||a.index-b.index).slice(0,18).map(x=>x.item);
+  // Remove generic query-like labels that are not useful, standalone cultural titles.
+  const genericTitle=/^(happy ending|happy endings|happy end|happy ending romance|romantic anime|anime romance|romance|romantic|music|anime|movie|film|unknown)$/i;
+  let selected=selectedInitial.filter(item=>{
+   const title=String(item.name||item.title||(item.entity&&item.entity.name)||(item.properties&&item.properties.name)||"").trim();
+   return title.length>=4&&!genericTitle.test(title);
+  });
+  // High-precision relevance gate rejects obvious category mismatches and keyword collisions.
+  if(geminiKey&&selected.length){
+   try{
+    const model=process.env.GEMINI_MODEL||"gemini-3.5-flash-lite";
+    const compactForValidation=selected.map((item,index)=>({index,title:item.name||item.title||(item.entity&&item.entity.name)||(item.properties&&item.properties.name)||"",category:item._tastepilotCategoryLabel,description:item.short_description||item.description||(item.properties&&item.properties.description)||""}));
+    const validationPrompt="You are a strict cultural-catalogue relevance filter. User request: "+query+"\\nRequested primary category: "+primaryCategory+"\\nCandidates: "+JSON.stringify(compactForValidation)+"\\nFor each candidate, keep=true ONLY if the title appears to be a specific real work/entity and it plausibly belongs to the requested category and fits the request's stated intent. Reject generic placeholder-like titles, unrelated formats, and obvious keyword collisions (for example a comedy special when anime is requested). Do not assume an ending, genre, mood, or plot unless supported by provided metadata. If uncertain, set keep=false. Return only a JSON array of objects {index:number,keep:boolean}.";
+    const vr=await fetch("https://generativelanguage.googleapis.com/v1beta/models/"+encodeURIComponent(model)+":generateContent?key="+encodeURIComponent(geminiKey),{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({contents:[{role:"user",parts:[{text:validationPrompt}]}],generationConfig:{maxOutputTokens:500,temperature:0,responseMimeType:"application/json"}}),signal:AbortSignal.timeout(7000)});
+    if(vr.ok){
+     const vd=await vr.json(),vp=vd&&vd.candidates&&vd.candidates[0]&&vd.candidates[0].content&&vd.candidates[0].content.parts;
+     const raw=vp?vp.map(p=>p.text||"").join("").trim():"";
+     const decisions=JSON.parse(raw.replace(/^\\x60\\x60\\x60(?:json)?/i,"").replace(/\\x60\\x60\\x60$/,""));
+     if(Array.isArray(decisions)&&decisions.length===selected.length&&decisions.every(x=>Number.isInteger(Number(x.index))&&typeof x.keep==="boolean")){
+      selected=selected.filter((item,index)=>decisions.some(x=>Number(x.index)===index&&x.keep===true));
+     }
+    }
+   }catch(e){console.warn("Discovery relevance validation unavailable; using conservative title filtering.");}
+  }
   let explanations=[];
   if(geminiKey&&selected.length){
    try{
