@@ -538,7 +538,6 @@ const chosen=automatic?(inferredCategory?[primaryCategory]:["anime","movie","mus
   }
   // Fallback: try the interpreted query first, then safer broad catalogue phrases.
   // Mood requests often produce a good natural-language intent but zero exact title matches.
-  const qLower=(query+" "+searchQuery).toLowerCase();
   const variants=[searchQuery];
   if(category==="music"&&/kayfiyat|mood|sad|happy|cheer|uplift|feel.?good|поднять настроение|груст|радост/i.test(qLower)){
    variants.push("uplifting music","happy music","music");
