@@ -430,7 +430,7 @@ function scoreCandidate(item, query, primaryCategory){
  const description=String(item.short_description||item.description||(item.properties&&item.properties.description)||"").toLowerCase();
  const q=String(query||"").toLowerCase();
  let score=item._tastepilotCategory===primaryCategory?8:0;
- const tokens=q.normalize("NFKD").replace(/[^\\p{L}\\p{N}\\s]/gu," ").split(/\\s+/).filter(w=>w.length>=3);
+ const tokens=q.normalize("NFKD").replace(/[^\p{L}\p{N}\s]/gu," ").split(/\s+/).filter(w=>w.length>=3);
  for(const token of tokens){
   if(title.includes(token))score+=3;
   else if(description.includes(token))score+=1;
