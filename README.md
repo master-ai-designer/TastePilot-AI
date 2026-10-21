@@ -5,7 +5,9 @@ A multilingual, AI-powered cultural discovery agent for anime, films, series, mu
 ## Agent experience
 
 - **Conversation continuity:** Uses recent chat history to understand follow-up questions and avoid asking for details already supplied.
-- **Taste-aware suggestions:** Uses explicit preferences and locally saved taste signals to tailor recommendations.
+- **Qloo discovery:** Tries Qloo Insights with tag IDs resolved from Qloo's tag catalogue; falls back to ordinary catalogue search when a suitable taste tag cannot be resolved. The UI labels the result source so catalogue matches are not presented as affinity-ranked Insights.
+- **Result details:** Normalizes catalogue descriptions for display and gives cautious explanations when metadata is incomplete.
+- **Taste feedback:** Positive and negative feedback is stored locally as lightweight signals; it is not a trained user model.
 - **Positive and negative feedback:** The browser can keep simple preference and dislike signals on the user's device; the latest request takes priority.
 - **Multilingual replies:** The model is instructed to respond in the language and script the user is currently using.
 - **Honest recommendations:** The agent is instructed not to invent live prices, ratings, opening hours, availability, links, or Qloo results.
@@ -38,6 +40,16 @@ npm start
 
 Then open `http://localhost:3000`.
 
+## Tests
+
+Run the lightweight route smoke tests with:
+
+```bash
+npm test
+```
+
+These tests cover the homepage, input validation, and public auth configuration. They do not replace live Qloo/Gemini integration tests, which require valid server-side API keys.
+
 ## Privacy notes
 
 - The simple taste profile and recent chat history are stored in the current browser's local storage.
@@ -50,5 +62,5 @@ Then open `http://localhost:3000`.
 
 - `POST /api/chat` — AI conversation.
 - `POST /api/media-search` — public catalogue lookup for music/movie results.
-- `POST /api/discover` — Qloo discovery route (verify the current Qloo API contract and returned schema before relying on it in production).
+- `POST /api/discover` — Qloo Insights-first discovery with a catalogue-search fallback. Live recommendation quality still depends on tag resolution, API access, and real request testing.
 - `GET /api/auth-config` — public Supabase client configuration only; never expose a service-role key.
