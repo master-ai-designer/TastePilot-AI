@@ -423,7 +423,7 @@ app.post("/api/discover",async(req,res)=>{
  if(has(["book","kitob","книга","книги","livre","libro","本"]))return "books";
  if(has(["game","o‘yin","o'yin","игра","видеоигр","video game","ゲーム"]))return "games";
  if(has(["restaurant","restoran","cafe","café","food","ovqat","taom","ресторан","مطعم"]))return "places";
- return "anime";
+ return null;
 }
 function scoreCandidate(item, query, primaryCategory){
  const title=String(item.name||item.title||(item.entity&&item.entity.name)||(item.properties&&item.properties.name)||"").toLowerCase();
@@ -442,8 +442,10 @@ function scoreCandidate(item, query, primaryCategory){
  if(!description.trim())score-=2;
  return score;
 }
-const primaryCategory=automatic?inferPrimaryCategory(query):requestedCategory;
-const chosen=automatic?[primaryCategory,...["anime","movie","music","books","places","games"].filter(c=>c!==primaryCategory)]:[requestedCategory],apiKey=process.env.QLOO_API_KEY;
+const inferredCategory=automatic?inferPrimaryCategory(query):requestedCategory;
+const primaryCategory=inferredCategory||"anime";
+// Explicit-domain requests stay focused; broad discovery can still explore across categories.
+const chosen=automatic?(inferredCategory?[primaryCategory]:["anime","movie","music","books","places","games"]):[requestedCategory],apiKey=process.env.QLOO_API_KEY;
  if(!apiKey)return res.json({demo:true,query,category:requestedCategory,categoryLabel:automatic?"Barcha mos yo‘nalishlar":categories[requestedCategory].label,results:[],entities:[],resultCount:0,status:"not_configured"});
  const geminiKey=process.env.GEMINI_API_KEY;
  async function interpretForCategory(category){
