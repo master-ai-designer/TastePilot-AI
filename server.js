@@ -406,12 +406,13 @@ app.post("/api/discover",async(req,res)=>{
   de:{rate:"Die Suche ist vorübergehend begrenzt. Warte eine Minute und versuche es erneut.",required:"Beschreibe, was du entdecken möchtest.",category:"Diese Kategorie wird nicht unterstützt.",auth:"Die Qloo-Authentifizierung ist fehlgeschlagen. Prüfe QLOO_API_KEY in Vercel.",limit:"Das Qloo-Anfragelimit wurde erreicht. Warte kurz und versuche es erneut.",unavailable:"Die Qloo-Suche ist vorübergehend nicht verfügbar.",timeout:"Qloo antwortet zu langsam. Bitte versuche es erneut.",failed:"Verbindung zu Qloo nicht möglich."},
   tr:{rate:"Aramalar geçici olarak sınırlandırıldı. Bir dakika bekleyip tekrar deneyin.",required:"Keşfetmek istediğiniz şeyi açıklayın.",category:"Bu kategori desteklenmiyor.",auth:"Qloo kimlik doğrulaması başarısız oldu. Vercel'deki QLOO_API_KEY ayarını kontrol edin.",limit:"Qloo istek sınırına ulaşıldı. Biraz bekleyip tekrar deneyin.",unavailable:"Qloo araması geçici olarak kullanılamıyor.",timeout:"Qloo yanıt vermekte gecikiyor. Lütfen tekrar deneyin.",failed:"Qloo hizmetine bağlanılamadı."}
  };
- const M=messages[uiLanguage]||messages.en;
+ let M=messages[uiLanguage]||messages.en;
  if(!allowDiscoveryRequest(req))return res.status(429).json({error:M.rate,status:"rate_limited"});
  const query=String(body.query||"").trim().slice(0,180),requestedCategory=String(body.category||"auto").toLowerCase();
  const detectedQueryLanguage=detectFallbackLanguage(query);
  const shortOrAmbiguousQuery=query.length<18||/^(anime|film|movie|music|musiqa|kino|книги|аниме|映画|音楽|ok|okay|ha|salom|hello|hi)$/i.test(query.trim());
  const responseLanguage=shortOrAmbiguousQuery?uiLanguage:detectedQueryLanguage;
+ M=messages[responseLanguage]||messages.en;
  const tasteProfile={preferences:Array.isArray(body.tasteProfile?.preferences)?body.tasteProfile.preferences.filter(x=>typeof x==="string").map(x=>x.slice(0,80)).slice(0,20):[],avoid:Array.isArray(body.tasteProfile?.avoid)?body.tasteProfile.avoid.filter(x=>typeof x==="string").map(x=>x.slice(0,80)).slice(0,15):[]};
  const categories={music:{label:"Musiqa",type:"urn:entity:artist",description:"music artists and musicians"},anime:{label:"Anime va seriallar",type:"urn:entity:tv_show",description:"anime and television shows"},movie:{label:"Filmlar",type:"urn:entity:movie",description:"movies and films"},places:{label:"Joylar va tajribalar",type:"urn:entity:place",description:"places and experiences"},books:{label:"Kitoblar",type:"urn:entity:book",description:"books and authors"},games:{label:"Videoo‘yinlar",type:"urn:entity:videogame",description:"video games"}};
  if(!query)return res.status(400).json({error:M.required,status:"error"});
