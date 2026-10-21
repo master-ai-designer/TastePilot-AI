@@ -414,7 +414,35 @@ app.post("/api/discover",async(req,res)=>{
  if(!query)return res.status(400).json({error:M.required,status:"error"});
  const automatic=requestedCategory==="auto"||requestedCategory==="all";
  if(!automatic&&!categories[requestedCategory])return res.status(400).json({error:M.category,status:"error"});
- const chosen=automatic?["anime","movie","music","books","places","games"]:[requestedCategory],apiKey=process.env.QLOO_API_KEY;
+ function inferPrimaryCategory(text){
+ const q=String(text||"").toLowerCase();
+ const has=(words)=>words.some(w=>q.includes(w));
+ if(has(["anime","animeni","аниме","أنمي","アニメ","manga","манга"]))return "anime";
+ if(has(["film","movie","kino","serial","сериал","фильм","кино","película","pelicula","映画"]))return "movie";
+ if(has(["music","musiqa","qo‘shiq","qo'shiq","song","playlist","музыка","песня","موسيقى","音楽"]))return "music";
+ if(has(["book","kitob","книга","книги","livre","libro","本"]))return "books";
+ if(has(["game","o‘yin","o'yin","игра","видеоигр","video game","ゲーム"]))return "games";
+ if(has(["restaurant","restoran","cafe","café","food","ovqat","taom","ресторан","مطعم"]))return "places";
+ return "anime";
+}
+function scoreCandidate(item, query, primaryCategory){
+ const title=String(item.name||item.title||(item.entity&&item.entity.name)||(item.properties&&item.properties.name)||"").toLowerCase();
+ const description=String(item.short_description||item.description||(item.properties&&item.properties.description)||"").toLowerCase();
+ const q=String(query||"").toLowerCase();
+ let score=item._tastepilotCategory===primaryCategory?8:0;
+ const tokens=q.normalize("NFKD").replace(/[^\\p{L}\\p{N}\\s]/gu," ").split(/\\s+/).filter(w=>w.length>=3);
+ for(const token of tokens){
+  if(title.includes(token))score+=3;
+  else if(description.includes(token))score+=1;
+ }
+ // Generic catalogue-like labels are weak evidence of a real, relevant recommendation.
+ if(/^(happy ending|happy endings|happy end|romance|romantic|music|anime|movie|film|unknown)$/i.test(title.trim()))score-=8;
+ if(title.length<4)score-=3;
+ if(!description.trim())score-=1;
+ return score;
+}
+const primaryCategory=automatic?inferPrimaryCategory(query):requestedCategory;
+const chosen=automatic?[primaryCategory,...["anime","movie","music","books","places","games"].filter(c=>c!==primaryCategory)]:[requestedCategory],apiKey=process.env.QLOO_API_KEY;
  if(!apiKey)return res.json({demo:true,query,category:requestedCategory,categoryLabel:automatic?"Barcha mos yo‘nalishlar":categories[requestedCategory].label,results:[],entities:[],resultCount:0,status:"not_configured"});
  const geminiKey=process.env.GEMINI_API_KEY;
  async function interpretForCategory(category){
@@ -443,7 +471,10 @@ app.post("/api/discover",async(req,res)=>{
  try{
   const settled=await Promise.allSettled(chosen.map(searchCategory)),failed=settled.filter(x=>x.status==="rejected"),entities=settled.filter(x=>x.status==="fulfilled").flatMap(x=>x.value);
   if(!entities.length&&failed.length){const e=failed[0].reason;return res.status(e.status===429?429:502).json({error:e.message||M.failed,provider:"qloo",status:"error"});}
-  const seen=new Set(),unique=entities.filter(item=>{const key=String(item.entity_id||item.id||item.name||item.title||"").toLowerCase();if(!key||seen.has(key))return false;seen.add(key);return true;}),selected=unique.slice(0,12);
+  const seen=new Set(),unique=entities.filter(item=>{const key=String(item.entity_id||item.id||item.name||item.title||"").toLowerCase();if(!key||seen.has(key))return false;seen.add(key);return true;});
+  // Keep the inferred primary category prominent, then rank candidates by query/title evidence.
+  const selected=unique.map((item,index)=>({item,index,score:scoreCandidate(item,query,primaryCategory)}))
+   .sort((a,b)=>b.score-a.score||a.index-b.index).slice(0,12).map(x=>x.item);
   let explanations=[];
   if(geminiKey&&selected.length){
    try{
