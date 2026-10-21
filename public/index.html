@@ -787,7 +787,7 @@ async function discover(){
    const categoryLabel=(categoryNames[key]&&categoryNames[key][lang])||T.catalogue;
    const description=String(item.tastepilotDescription||'').trim()||T.noDescription;
    const reason=item.tastepilotReason||T.fallbackReason;
-   return '<article class="discovery-result"><div class="discovery-result-number">'+String(index+1).padStart(2,'0')+'</div><div class="discovery-result-copy"><span>'+escapeHtml(String(categoryLabel))+'</span><h3>'+escapeHtml(String(title))+'</h3><p>'+escapeHtml(String(description))+'</p><p class="discovery-match-reason"><strong>'+T.reason+'</strong> '+escapeHtml(String(reason))+'</p><p class="discovery-match-reason"><strong>'+T.source+'</strong> '+T.catalogue+' · <strong>'+T.query+'</strong> '+escapeHtml(String(item.tastepilotSearchQuery||q))+'</p><div class="discovery-feedback"><button type="button" onclick="rateDiscoveryResult('+index+',true)">'+T.like+'</button><button type="button" onclick="rateDiscoveryResult('+index+',false)">'+T.dislike+'</button></div></div></article>';
+   return '<article class="discovery-result"><div class="discovery-result-number">'+String(index+1).padStart(2,'0')+'</div><div class="discovery-result-copy"><span>'+escapeHtml(String(categoryLabel))+'</span><h3>'+escapeHtml(String(title))+'</h3><p>'+escapeHtml(String(description))+'</p><p class="discovery-match-reason"><strong>'+T.reason+'</strong> '+escapeHtml(String(reason))+'</p><p class="discovery-match-reason"><strong>'+T.source+'</strong> '+(item.tastepilotDiscoveryMode==='insights'?'Qloo Insights · taste affinity':T.catalogue)+' · <strong>'+T.query+'</strong> '+escapeHtml(String(item.tastepilotSearchQuery||q))+'</p><div class="discovery-feedback"><button type="button" onclick="rateDiscoveryResult('+index+',true)">'+T.like+'</button><button type="button" onclick="rateDiscoveryResult('+index+',false)">'+T.dislike+'</button></div></div></article>';
   }).join(''):'<div class="discovery-empty">'+T.empty+'</div>';
   const categoryNamesForCards={
    movie:{en:'Movies',uz:'Filmlar',ru:'Фильмы',es:'Películas',fr:'Films',de:'Filme',tr:'Filmler',ja:'映画',ar:'الأفلام'},
@@ -1187,8 +1187,6 @@ document.addEventListener('click',e=>{const panel=document.getElementById('appea
  window.setTimeout(finish,2850);
 })();
 </script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-<script src="/auth.js" defer></script>
 <style>
 .voice-toolbar{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
 .voice-btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:38px;padding:0 12px;border:1px solid #ffffff1c;border-radius:8px;background:#ffffff06;color:#c6d2df;font-size:11px;font-weight:650;transition:background .18s,border-color .18s}
