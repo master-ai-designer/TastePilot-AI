@@ -529,15 +529,33 @@ const chosen=automatic?(inferredCategory?[primaryCategory]:["anime","movie","mus
    if(error?.status===401||error?.status===403||error?.status===429)throw error;
    console.warn("Qloo Insights unavailable for category:",category,error?.name||"Error");
   }
-  // Fallback: catalogue search when no suitable taste tag can be resolved.
-  const url=new URL("https://hackathon.api.qloo.com/search");
-  url.searchParams.set("query",searchQuery);url.searchParams.set("types",config.type);url.searchParams.set("take","12");
-  const r=await fetch(url,{headers,signal:AbortSignal.timeout(12000)});
-  if(r.status===401||r.status===403)throw Object.assign(new Error(M.auth),{status:r.status});
-  if(r.status===429)throw Object.assign(new Error(M.limit),{status:429});
-  if(!r.ok)throw Object.assign(new Error(M.unavailable),{status:r.status});
-  const d=await r.json(),items=d&&d.results&&Array.isArray(d.results.entities)?d.results.entities:d&&Array.isArray(d.entities)?d.entities:d&&Array.isArray(d.results)?d.results:[];
-  return items.map(item=>Object.assign({},item,{_tastepilotCategory:category,_tastepilotCategoryLabel:config.label,_tastepilotSearchQuery:searchQuery,_tastepilotDiscoveryMode:"catalogue"}));
+  // Fallback: try the interpreted query first, then safer broad catalogue phrases.
+  // Mood requests often produce a good natural-language intent but zero exact title matches.
+  const qLower=(query+" "+searchQuery).toLowerCase();
+  const variants=[searchQuery];
+  if(category==="music"&&/kayfiyat|mood|sad|happy|cheer|uplift|feel.?good|поднять настроение|груст|радост/i.test(qLower)){
+   variants.push("uplifting music","happy music","music");
+  }else if(category==="anime"&&/kayfiyat|mood|sad|happy|cheer|uplift|feel.?good|поднять настроение|груст|радост/i.test(qLower)){
+   variants.push("feel good anime","comedy anime","anime");
+  }else if(category==="movie"&&/kayfiyat|mood|sad|happy|cheer|uplift|feel.?good|поднять настроение|груст|радост/i.test(qLower)){
+   variants.push("feel good movies","comedy movies","movies");
+  }
+  variants.push(config.description.split(" ").slice(0,2).join(" "));
+  const tried=new Set();
+  for(const candidateQuery of variants){
+   const normalized=String(candidateQuery||"").trim();
+   if(!normalized||tried.has(normalized.toLowerCase()))continue;
+   tried.add(normalized.toLowerCase());
+   const url=new URL("https://hackathon.api.qloo.com/search");
+   url.searchParams.set("query",normalized);url.searchParams.set("types",config.type);url.searchParams.set("take","12");
+   const r=await fetch(url,{headers,signal:AbortSignal.timeout(12000)});
+   if(r.status===401||r.status===403)throw Object.assign(new Error(M.auth),{status:r.status});
+   if(r.status===429)throw Object.assign(new Error(M.limit),{status:429});
+   if(!r.ok)throw Object.assign(new Error(M.unavailable),{status:r.status});
+   const d=await r.json(),items=d&&d.results&&Array.isArray(d.results.entities)?d.results.entities:d&&Array.isArray(d.entities)?d.entities:d&&Array.isArray(d.results)?d.results:[];
+   if(items.length)return items.map(item=>Object.assign({},item,{_tastepilotCategory:category,_tastepilotCategoryLabel:config.label,_tastepilotSearchQuery:normalized,_tastepilotDiscoveryMode:"catalogue"}));
+  }
+  return [];
  }
  try{
   const settled=await Promise.allSettled(chosen.map(searchCategory)),failed=settled.filter(x=>x.status==="rejected"),entities=settled.filter(x=>x.status==="fulfilled").flatMap(x=>x.value);
