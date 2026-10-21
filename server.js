@@ -466,14 +466,71 @@ const chosen=automatic?(inferredCategory?[primaryCategory]:["anime","movie","mus
   }catch(e){return query}
  }
  async function searchCategory(category){
-  const config=categories[category],searchQuery=await interpretForCategory(category),url=new URL("https://hackathon.api.qloo.com/search");
+  const config=categories[category],searchQuery=await interpretForCategory(category);
+  const headers={"X-Api-Key":apiKey,"Accept":"application/json"};
+  const tokens=[...new Set(searchQuery.toLowerCase().normalize("NFKD").replace(/[^\p{L}\p{N}\s]/gu," ").split(/\s+/).filter(x=>x.length>=4))].slice(0,3);
+  const scopePattern={
+   music:/music|media|genre|mood/i,
+   anime:/media|genre|tv|show/i,
+   movie:/media|genre|film|movie/i,
+   books:/book|literature|genre/i,
+   games:/game|genre/i,
+   places:/place|destination|restaurant|food|cuisine/i
+  }[category]||/genre|media/i;
+  // Prefer Qloo Insights using real tag IDs returned by Qloo; never fabricate IDs.
+  try{
+   const tagResponses=await Promise.all(tokens.map(async term=>{
+    const u=new URL("https://hackathon.api.qloo.com/v2/tags");
+    u.searchParams.set("filter.query",term);u.searchParams.set("take","8");
+    const r=await fetch(u,{headers,signal:AbortSignal.timeout(6500)});
+    if(r.status===401||r.status===403)throw Object.assign(new Error(M.auth),{status:r.status});
+    if(r.status===429)throw Object.assign(new Error(M.limit),{status:429});
+    if(!r.ok)return [];
+    const d=await r.json();
+    return d?.results?.tags||d?.results?.entities||d?.tags||[];
+   }));
+   const tagMap=new Map();
+   for(const tag of tagResponses.flat()){
+    const id=String(tag.id||tag.tag_id||"").trim(),name=String(tag.name||tag.label||"").trim(),type=String(tag.type||"");
+    if(!id||!name||!scopePattern.test(type))continue;
+    const nameTokens=name.toLowerCase().normalize("NFKD").replace(/[^\p{L}\p{N}\s]/gu," ").split(/\s+/);
+    const score=tokens.reduce((n,t)=>n+(nameTokens.some(w=>w===t||w.includes(t)||t.includes(w))?3:0),0);
+    if(score>0&&(!tagMap.has(id)||tagMap.get(id).score<score))tagMap.set(id,{id,name,type,score});
+   }
+   const chosenTags=[...tagMap.values()].sort((a,b)=>b.score-a.score).slice(0,3);
+   if(chosenTags.length){
+    const u=new URL("https://hackathon.api.qloo.com/v2/insights");
+    u.searchParams.set("filter.type",config.type);
+    u.searchParams.set("signal.interests.tags",chosenTags.map(t=>t.id).join(","));
+    u.searchParams.set("take","12");
+    u.searchParams.set("feature.explainability","true");
+    const r=await fetch(u,{headers,signal:AbortSignal.timeout(12000)});
+    if(r.status===401||r.status===403)throw Object.assign(new Error(M.auth),{status:r.status});
+    if(r.status===429)throw Object.assign(new Error(M.limit),{status:429});
+    if(r.ok){
+     const d=await r.json(),items=d?.results?.entities||d?.entities||[];
+     if(Array.isArray(items)&&items.length){
+      return items.map(item=>Object.assign({},item,{
+       _tastepilotCategory:category,_tastepilotCategoryLabel:config.label,
+       _tastepilotSearchQuery:searchQuery,_tastepilotDiscoveryMode:"insights",
+       _tastepilotSignalTags:chosenTags.map(t=>t.name)
+      }));
+     }
+    }
+   }
+  }catch(error){
+   if(error?.status===401||error?.status===403||error?.status===429)throw error;
+   console.warn("Qloo Insights unavailable for category:",category,error?.name||"Error");
+  }
+  // Fallback: catalogue search when no suitable taste tag can be resolved.
+  const url=new URL("https://hackathon.api.qloo.com/search");
   url.searchParams.set("query",searchQuery);url.searchParams.set("types",config.type);url.searchParams.set("take","12");
-  const r=await fetch(url,{headers:{"X-Api-Key":apiKey,"Accept":"application/json"},signal:AbortSignal.timeout(12000)});
+  const r=await fetch(url,{headers,signal:AbortSignal.timeout(12000)});
   if(r.status===401||r.status===403)throw Object.assign(new Error(M.auth),{status:r.status});
   if(r.status===429)throw Object.assign(new Error(M.limit),{status:429});
   if(!r.ok)throw Object.assign(new Error(M.unavailable),{status:r.status});
   const d=await r.json(),items=d&&d.results&&Array.isArray(d.results.entities)?d.results.entities:d&&Array.isArray(d.entities)?d.entities:d&&Array.isArray(d.results)?d.results:[];
-  return items.map(item=>Object.assign({},item,{_tastepilotCategory:category,_tastepilotCategoryLabel:config.label,_tastepilotSearchQuery:searchQuery}));
+  return items.map(item=>Object.assign({},item,{_tastepilotCategory:category,_tastepilotCategoryLabel:config.label,_tastepilotSearchQuery:searchQuery,_tastepilotDiscoveryMode:"catalogue"}));
  }
  try{
   const settled=await Promise.allSettled(chosen.map(searchCategory)),failed=settled.filter(x=>x.status==="rejected"),entities=settled.filter(x=>x.status==="fulfilled").flatMap(x=>x.value);
@@ -545,6 +602,9 @@ const chosen=automatic?(inferredCategory?[primaryCategory]:["anime","movie","mus
     tastepilotCategory:item._tastepilotCategory,
     tastepilotCategoryLabel:label,
     tastepilotSearchQuery:item._tastepilotSearchQuery,
+    tastepilotDiscoveryMode:item._tastepilotDiscoveryMode||"catalogue",
+    tastepilotSignalTags:Array.isArray(item._tastepilotSignalTags)?item._tastepilotSignalTags:[],
+    tastepilotDescription:description,
     tastepilotReason:found?found.reason:(fallbackReasons[resultLanguage]||fallbackReasons.en)(label)
    });
   });
