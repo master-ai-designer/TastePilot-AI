@@ -475,7 +475,14 @@ const chosen=automatic?(inferredCategory?[primaryCategory]:["anime","movie","mus
   const config=categories[category],searchQuery=await interpretForCategory(category);
   const headers={"X-Api-Key":apiKey,"Accept":"application/json"};
   const stopTerms=new Set(["music","song","songs","artist","artists","anime","series","show","shows","movie","movies","film","films","book","books","game","games","place","places","restaurant","restaurants","food","video","the","with","for","from","when","that","your","and","like","want","find","good","best","recommend","please"]);
+  const qLower=(query+" "+searchQuery).toLowerCase();
   const tokens=[...new Set(searchQuery.toLowerCase().normalize("NFKD").replace(/[^\p{L}\p{N}\s]/gu," ").split(/\s+/).filter(x=>x.length>=4&&!stopTerms.has(x)))].slice(0,3);
+  // Add category-aware intent tags so mood requests are not reduced to generic words like "mood".
+  const moodRequest=/kayfiyat.{0,24}(ko.tar|yaxshi|yomon|ko'tar|ko‘tar)|ko.tarish|ruh(lan|iy)|cheer|uplift|feel.?good|comfort|happy|sad mood|поднять настроение|груст|радост|لتحسين المزاج|気分を上げ|元気になりたい/i.test(qLower);
+  const intentTerms=category==="anime"&&moodRequest?["comedy","slice of life","feel good","wholesome"]:
+   category==="music"&&moodRequest?["uplifting","happy music","feel good"]:
+   category==="movie"&&moodRequest?["feel good","comedy","heartwarming"]:[];
+  const tagTerms=[...new Set([...tokens,...intentTerms])].slice(0,6);
   const scopePattern={
    music:/music|media|genre|mood/i,
    anime:/media|genre|tv|show/i,
@@ -486,7 +493,7 @@ const chosen=automatic?(inferredCategory?[primaryCategory]:["anime","movie","mus
   }[category]||/genre|media/i;
   // Prefer Qloo Insights using real tag IDs returned by Qloo; never fabricate IDs.
   try{
-   const tagResponses=await Promise.all(tokens.map(async term=>{
+   const tagResponses=await Promise.all(tagTerms.map(async term=>{
     const u=new URL("https://hackathon.api.qloo.com/v2/tags");
     u.searchParams.set("filter.query",term);u.searchParams.set("take","8");
     const r=await fetch(u,{headers,signal:AbortSignal.timeout(6500)});
@@ -501,7 +508,7 @@ const chosen=automatic?(inferredCategory?[primaryCategory]:["anime","movie","mus
     const id=String(tag.id||tag.tag_id||"").trim(),name=String(tag.name||tag.label||"").trim(),type=String(tag.type||"");
     if(!id||!name||!scopePattern.test(type))continue;
     const nameTokens=name.toLowerCase().normalize("NFKD").replace(/[^\p{L}\p{N}\s]/gu," ").split(/\s+/);
-    const score=tokens.reduce((n,t)=>n+(nameTokens.some(w=>w===t||w.includes(t)||t.includes(w))?3:0),0);
+    const score=tagTerms.reduce((n,t)=>n+(nameTokens.some(w=>w===t||w.includes(t)||t.includes(w))?3:0),0);
     if(score>0&&(!tagMap.has(id)||tagMap.get(id).score<score))tagMap.set(id,{id,name,type,score});
    }
    const chosenTags=[...tagMap.values()].sort((a,b)=>b.score-a.score).slice(0,3);
@@ -582,7 +589,15 @@ const chosen=automatic?(inferredCategory?[primaryCategory]:["anime","movie","mus
      const raw=vp?vp.map(p=>p.text||"").join("").trim():"";
      const decisions=JSON.parse(raw.replace(/^\\x60\\x60\\x60(?:json)?/i,"").replace(/\\x60\\x60\\x60$/,""));
      if(Array.isArray(decisions)&&decisions.length===selected.length&&decisions.every(x=>Number.isInteger(Number(x.index))&&typeof x.keep==="boolean")){
-      selected=selected.filter((item,index)=>decisions.some(x=>Number(x.index)===index&&x.keep===true));
+      const validated=selected.filter((item,index)=>decisions.some(x=>Number(x.index)===index&&x.keep===true));
+      if(validated.length){
+       selected=validated;
+      }else{
+       // Do not turn an otherwise successful catalogue response into an empty screen.
+       // Keep a tiny fallback set, while the explanation explicitly avoids claiming an unverified mood fit.
+       selected=selected.slice(0,3).map(item=>Object.assign({},item,{_tastepilotValidationFallback:true}));
+       console.warn("Discovery quality gate rejected every candidate; retaining up to three cautious fallback results.");
+      }
      }
     }
    }catch(e){console.warn("Discovery relevance validation unavailable; using conservative title filtering.");}
@@ -593,7 +608,7 @@ const chosen=automatic?(inferredCategory?[primaryCategory]:["anime","movie","mus
     const model=process.env.GEMINI_MODEL||"gemini-3.5-flash-lite";
     const compact=selected.map((x,i)=>({index:i,title:x.name||x.title||(x.entity&&x.entity.name)||(x.properties&&x.properties.name)||x.id||"Unknown",category:x._tastepilotCategoryLabel,description:x.short_description||x.description||(x.properties&&x.properties.description)||""}));
     const languageNames={uz:"Uzbek (Latin)",en:"English",ru:"Russian",ar:"Arabic",ja:"Japanese",de:"German",es:"Spanish",fr:"French",tr:"Turkish"};
-    const prompt="You are TastePilot, a careful multilingual recommendation explainer. The required response language for this request is "+(languageNames[responseLanguage]||"the user language")+". Write EVERY reason in that language and script; never switch languages. User request: "+query+"\\nCatalogue candidates (only these facts are known): "+JSON.stringify(compact)+"\\nFor every candidate return one concise explanation based only on the request, category, title, and provided description. Keep official catalogue titles unchanged. Never invent plot, ending, genre, lyrics, artist style, availability, personal history, or claim certainty. If the title and description do not establish a fit, say so cautiously. Return only a valid JSON array of objects, each with index and reason fields.";
+    const prompt="You are TastePilot, a careful multilingual recommendation explainer. The required response language for this request is "+(languageNames[responseLanguage]||"the user language")+". Write EVERY reason in that language and script; never switch languages. User request: "+query+"\\nCatalogue candidates (only these facts are known): "+JSON.stringify(compact)+"\\nFor every candidate return one concise explanation based only on the request, category, title, and provided description. Keep official catalogue titles unchanged. Never invent plot, ending, genre, lyrics, artist style, availability, personal history, or claim certainty. If the title and description do not establish a fit, say so cautiously. For any candidate marked _tastepilotValidationFallback, explicitly state that the catalogue information is insufficient to confirm it matches the requested mood; do not present it as a verified mood match. Return only a valid JSON array of objects, each with index and reason fields.";
     const rr=await fetch("https://generativelanguage.googleapis.com/v1beta/models/"+encodeURIComponent(model)+":generateContent?key="+encodeURIComponent(geminiKey),{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({contents:[{role:"user",parts:[{text:prompt}]}],generationConfig:{maxOutputTokens:1000,temperature:0.2,responseMimeType:"application/json"}}),signal:AbortSignal.timeout(9000)});
     if(rr.ok){const dd=await rr.json(),parts=dd&&dd.candidates&&dd.candidates[0]&&dd.candidates[0].content&&dd.candidates[0].content.parts;let raw=parts?parts.map(p=>p.text||"").join("").trim():"[]";raw=raw.replace(/^\x60\x60\x60(?:json)?/i,"").replace(/\x60\x60\x60$/,"");const parsed=JSON.parse(raw);if(Array.isArray(parsed))explanations=parsed;}
    }catch(e){console.warn("TastePilot explanation generation unavailable.");}
